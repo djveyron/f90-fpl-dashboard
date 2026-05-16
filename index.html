@@ -1488,50 +1488,51 @@ function renderVisual() {
   //   seasonOwes[mgr]  = total season fees this manager still owes (to The Bank)
   //                    + total season prize contributions still owed by this manager
 
-  const seasonOwed = {};   // money owed TO manager from season prizes
-  const seasonOwes = {};   // money manager still owes (fees + prize contributions)
+  const seasonOwed = {};   // money owed TO manager from season prizes (unpaid portion)
+  const seasonOwes = {};   // money manager still owes (season fees via SEASON_PAYS only)
   ACTIVE.forEach(m => { seasonOwed[m] = 0; seasonOwes[m] = 0; });
 
-  // H2H1 prize pool: unpaid contributors owe 1000 each
-  // Winners share: Note 6000, Tung 3000, DJ 1000 (from 10 payers × 1000)
+  // ── SEASON FEES OWED (single source of truth: SEASON_PAYS) ──────────────────
+  // Each manager owes 1000 for Classic + 1000 for H2H = 2000 total to The Bank
+  // SEASON_PAYS already tracks paid/unpaid status per manager
+  SEASON_PAYS.filter(p => p.status !== "paid" && !p.badDebt).forEach(p => {
+    if (seasonOwes[p.manager] !== undefined) seasonOwes[p.manager] += p.amount;
+  });
+
+  // ── SEASON PRIZE WINNINGS STILL OWED TO WINNERS ─────────────────────────────
+  // H2H1: Note=6000, Tung=3000, DJ=1000 from 10000 pot
+  // Unpaid contributors: Korn, Komsit, Poom, June (4 × 1000 = 4000 still outstanding)
+  // Each winner is owed their proportional share of the 4000 still unpaid
   const H2H1_UNPAID = ["Korn","Komsit","Poom","June"];
   const H2H1_WINNERS = {Note:6000, Tung:3000, DJ:1000};
-  const h2h1UnpaidTotal = H2H1_UNPAID.length * 1000; // 4000 still outstanding
-  // Each winner is owed their proportional share of the unpaid amount
   const h2h1Pot = 10000;
+  const h2h1UnpaidTotal = H2H1_UNPAID.length * 1000;
   Object.entries(H2H1_WINNERS).forEach(([mgr, prize]) => {
     if (seasonOwed[mgr] !== undefined)
       seasonOwed[mgr] += Math.round(h2h1UnpaidTotal * prize / h2h1Pot);
   });
-  H2H1_UNPAID.forEach(m => { if (seasonOwes[m] !== undefined) seasonOwes[m] += 1000; });
 
-  // CLS1 prize pool: unpaid contributors owe 1000 each
-  // Winners: Pladon 6000, Note 3000, Tung 1000
+  // CLS1: Pladon=6000, Note=3000, Tung=1000 from 10000 pot
+  // Unpaid contributors: Poom, Korn, Komsit, June (4 × 1000 = 4000 still outstanding)
   const CLS1_UNPAID = ["Poom","Korn","Komsit","June"];
   const CLS1_WINNERS = {Pladon:6000, Note:3000, Tung:1000};
-  const cls1UnpaidTotal = CLS1_UNPAID.length * 1000;
   const cls1Pot = 10000;
+  const cls1UnpaidTotal = CLS1_UNPAID.length * 1000;
   Object.entries(CLS1_WINNERS).forEach(([mgr, prize]) => {
     if (seasonOwed[mgr] !== undefined)
       seasonOwed[mgr] += Math.round(cls1UnpaidTotal * prize / cls1Pot);
   });
-  CLS1_UNPAID.forEach(m => { if (seasonOwes[m] !== undefined) seasonOwes[m] += 1000; });
 
   // GW1 prize: DJ and Phai each get 50% of unpaid contributions
-  // Unpaid by: Note, Komsit, Poom (each owes 1000 → 500 to DJ, 500 to Phai)
+  // Unpaid by: Note, Komsit, Poom (3 × 1000 = 3000 still outstanding)
+  // Note: this 1000/manager is the SAME season entry fee tracked in SEASON_PAYS
+  // We only add to seasonOwed for the WINNERS here (not to seasonOwes — already in SEASON_PAYS)
   const GW1_UNPAID = ["Note","Komsit","Poom"];
   const GW1_WINNERS = {DJ:0.5, Phai:0.5};
   const gw1UnpaidTotal = GW1_UNPAID.length * 1000;
   Object.entries(GW1_WINNERS).forEach(([mgr, share]) => {
     if (seasonOwed[mgr] !== undefined)
       seasonOwed[mgr] += Math.round(gw1UnpaidTotal * share);
-  });
-  GW1_UNPAID.forEach(m => { if (seasonOwes[m] !== undefined) seasonOwes[m] += 1000; });
-
-  // Season entry fees (SEASON_PAYS → owes to The Bank, not a manager)
-  // These add to the manager's "owes" side only
-  SEASON_PAYS.filter(p => p.status !== "paid" && !p.badDebt).forEach(p => {
-    if (seasonOwes[p.manager] !== undefined) seasonOwes[p.manager] += p.amount;
   });
 
   // ── GW DEBTS ─────────────────────────────────────────────────────────────
