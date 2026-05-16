@@ -1475,46 +1475,115 @@ function renderVisual() {
   const body = document.getElementById("visual-container");
   if (!body) return;
 
-  // Net position: GW + Season fees (full picture)
-  const net = {};
-  ACTIVE.forEach(m => { net[m] = {owes:0, owed:0}; });
-  PAYS.filter(p => p.gw !== 22 && p.gw !== 23 && p.status !== "paid" && !p.badDebt).forEach(p => {
-    if (net[p.manager]) net[p.manager].owes += p.amount;
-    if (net[p.owesTo])  net[p.owesTo].owed  += p.amount;
+  // ── SEASON PRIZE WINNINGS (1st half, hardcoded results) ──────────────────
+  // These are amounts each manager is OWED from the season prize pools.
+  // We only count them if the payer has NOT yet paid (i.e. still outstanding).
+  // H2H1: Note=6000, Tung=3000, DJ=1000  — unpaid by: Korn, Komsit, Poom, June
+  // CLS1: Pladon=6000, Note=3000, Tung=1000 — unpaid by: Poom, Korn, Komsit, June
+  // GW1:  DJ=50%, Phai=50% — unpaid by: Note, Komsit, Poom
+  //       (each unpaid payer owes 1000 total → 500 to DJ, 500 to Phai)
+  //
+  // For the net graph we compute:
+  //   seasonOwed[mgr]  = total season prize money still owed TO this manager
+  //   seasonOwes[mgr]  = total season fees this manager still owes (to The Bank)
+  //                    + total season prize contributions still owed by this manager
+
+  const seasonOwed = {};   // money owed TO manager from season prizes
+  const seasonOwes = {};   // money manager still owes (fees + prize contributions)
+  ACTIVE.forEach(m => { seasonOwed[m] = 0; seasonOwes[m] = 0; });
+
+  // H2H1 prize pool: unpaid contributors owe 1000 each
+  // Winners share: Note 6000, Tung 3000, DJ 1000 (from 10 payers × 1000)
+  const H2H1_UNPAID = ["Korn","Komsit","Poom","June"];
+  const H2H1_WINNERS = {Note:6000, Tung:3000, DJ:1000};
+  const h2h1UnpaidTotal = H2H1_UNPAID.length * 1000; // 4000 still outstanding
+  // Each winner is owed their proportional share of the unpaid amount
+  const h2h1Pot = 10000;
+  Object.entries(H2H1_WINNERS).forEach(([mgr, prize]) => {
+    if (seasonOwed[mgr] !== undefined)
+      seasonOwed[mgr] += Math.round(h2h1UnpaidTotal * prize / h2h1Pot);
   });
-  // Season fees: only owes side (goes to The Bank, not a manager)
+  H2H1_UNPAID.forEach(m => { if (seasonOwes[m] !== undefined) seasonOwes[m] += 1000; });
+
+  // CLS1 prize pool: unpaid contributors owe 1000 each
+  // Winners: Pladon 6000, Note 3000, Tung 1000
+  const CLS1_UNPAID = ["Poom","Korn","Komsit","June"];
+  const CLS1_WINNERS = {Pladon:6000, Note:3000, Tung:1000};
+  const cls1UnpaidTotal = CLS1_UNPAID.length * 1000;
+  const cls1Pot = 10000;
+  Object.entries(CLS1_WINNERS).forEach(([mgr, prize]) => {
+    if (seasonOwed[mgr] !== undefined)
+      seasonOwed[mgr] += Math.round(cls1UnpaidTotal * prize / cls1Pot);
+  });
+  CLS1_UNPAID.forEach(m => { if (seasonOwes[m] !== undefined) seasonOwes[m] += 1000; });
+
+  // GW1 prize: DJ and Phai each get 50% of unpaid contributions
+  // Unpaid by: Note, Komsit, Poom (each owes 1000 → 500 to DJ, 500 to Phai)
+  const GW1_UNPAID = ["Note","Komsit","Poom"];
+  const GW1_WINNERS = {DJ:0.5, Phai:0.5};
+  const gw1UnpaidTotal = GW1_UNPAID.length * 1000;
+  Object.entries(GW1_WINNERS).forEach(([mgr, share]) => {
+    if (seasonOwed[mgr] !== undefined)
+      seasonOwed[mgr] += Math.round(gw1UnpaidTotal * share);
+  });
+  GW1_UNPAID.forEach(m => { if (seasonOwes[m] !== undefined) seasonOwes[m] += 1000; });
+
+  // Season entry fees (SEASON_PAYS → owes to The Bank, not a manager)
+  // These add to the manager's "owes" side only
   SEASON_PAYS.filter(p => p.status !== "paid" && !p.badDebt).forEach(p => {
-    if (net[p.manager]) net[p.manager].owes += p.amount;
+    if (seasonOwes[p.manager] !== undefined) seasonOwes[p.manager] += p.amount;
   });
 
-  const maxVal = Math.max(...ACTIVE.map(m => Math.max(net[m].owes, net[m].owed)), 1);
-  const bars = ACTIVE.slice().sort((a, b) => (net[b].owes - net[b].owed) - (net[a].owes - net[a].owed)).map(m => {
-    const {owes, owed} = net[m];
-    const nv = owed - owes;
-    const col = nv >= 0 ? "var(--green)" : "var(--red)";
-    const ow = Math.round(owes / maxVal * 100), od = Math.round(owed / maxVal * 100);
-    return '<div style="display:grid;grid-template-columns:70px 1fr 55px;align-items:center;gap:8px;margin-bottom:5px">' +
-      '<div style="font-size:.75rem;font-weight:600;text-align:right">' + m + '</div>' +
-      '<div class="bar-wrap">' +
-        (owes > 0 ? '<div class="bar-owes" style="width:' + ow + '%"></div>' : '') +
-        (owed > 0 ? '<div class="bar-owed" style="width:' + od + '%"></div>' : '') +
-        '<div class="bar-lbl">' +
-          (owes > 0 ? '<span style="color:var(--red)">' + owes + '</span>' : '') +
-          (owes > 0 && owed > 0 ? '<span style="color:var(--muted)">|</span>' : '') +
-          (owed > 0 ? '<span style="color:var(--green)">' + owed + '</span>' : '') +
-        '</div>' +
-      '</div>' +
-      '<div style="font-size:.78rem;font-weight:700;color:' + col + '">' + (nv >= 0 ? '+' : '') + nv + '</div>' +
-      '</div>';
-  }).join('');
+  // ── GW DEBTS ─────────────────────────────────────────────────────────────
+  const gwOwes = {};
+  const gwOwed = {};
+  ACTIVE.forEach(m => { gwOwes[m] = 0; gwOwed[m] = 0; });
+  PAYS.filter(p => p.gw !== 22 && p.gw !== 23 && p.status !== "paid" && !p.badDebt).forEach(p => {
+    if (gwOwes[p.manager] !== undefined) gwOwes[p.manager] += p.amount;
+    if (gwOwed[p.owesTo]  !== undefined) gwOwed[p.owesTo]  += p.amount;
+  });
 
-  // Owed-to table (GW outstanding only — managers owe each other)
+  // ── COMBINED NET ─────────────────────────────────────────────────────────
+  // totalOwes = GW debts + season fees owed + season prize contributions owed
+  // totalOwed = GW winnings owed to manager + season prize winnings owed to manager
+  // Net = totalOwed - totalOwes
+  const combined = {};
+  ACTIVE.forEach(m => {
+    const owes = gwOwes[m] + seasonOwes[m];
+    const owed = gwOwed[m] + seasonOwed[m];
+    combined[m] = {owes, owed, net: owed - owes};
+  });
+
+  const maxVal = Math.max(...ACTIVE.map(m => Math.max(combined[m].owes, combined[m].owed)), 1);
+  const bars = ACTIVE.slice()
+    .sort((a, b) => combined[b].net - combined[a].net)
+    .map(m => {
+      const {owes, owed, net} = combined[m];
+      const col = net >= 0 ? "var(--green)" : "var(--red)";
+      const ow = Math.round(owes / maxVal * 100);
+      const od = Math.round(owed / maxVal * 100);
+      return '<div style="display:grid;grid-template-columns:70px 1fr 60px;align-items:center;gap:8px;margin-bottom:6px">' +
+        '<div style="font-size:.75rem;font-weight:600;text-align:right">' + m + '</div>' +
+        '<div class="bar-wrap">' +
+          (owes > 0 ? '<div class="bar-owes" style="width:' + ow + '%"></div>' : '') +
+          (owed > 0 ? '<div class="bar-owed" style="width:' + od + '%"></div>' : '') +
+          '<div class="bar-lbl">' +
+            (owes > 0 ? '<span style="color:var(--red)">' + owes + '</span>' : '') +
+            (owes > 0 && owed > 0 ? '<span style="color:var(--muted)">|</span>' : '') +
+            (owed > 0 ? '<span style="color:var(--green)">' + owed + '</span>' : '') +
+          '</div>' +
+        '</div>' +
+        '<div style="font-size:.78rem;font-weight:700;color:' + col + ';text-align:right">' + (net >= 0 ? '+' : '') + net + '</div>' +
+        '</div>';
+    }).join('');
+
+  // ── OWED-TO TABLE (GW outstanding only) ──────────────────────────────────
   const owedTo = {};
   ACTIVE.forEach(m => { owedTo[m] = 0; });
-  PAYS.filter(p => p.gw !== 22 && p.gw !== 23 && p.status !== "paid" && !p.badDebt).forEach(p => {
-    if (owedTo[p.owesTo] !== undefined) owedTo[p.owesTo] += p.amount;
-  });
-  const owedRows = ACTIVE.filter(m => owedTo[m] > 0).sort((a, b) => owedTo[b] - owedTo[a])
+  PAYS.filter(p => p.gw !== 22 && p.gw !== 23 && p.status !== "paid" && !p.badDebt)
+    .forEach(p => { if (owedTo[p.owesTo] !== undefined) owedTo[p.owesTo] += p.amount; });
+  const owedRows = ACTIVE.filter(m => owedTo[m] > 0)
+    .sort((a, b) => owedTo[b] - owedTo[a])
     .map(m => '<tr><td><strong>' + m + '</strong></td><td style="text-align:right;font-weight:700;color:var(--orange)">' + owedTo[m] + '</td></tr>').join('');
 
   const totalGWUnpaid     = PAYS.filter(p => p.status !== "paid" && p.gw !== 22 && p.gw !== 23 && !p.badDebt).reduce((s,p) => s+p.amount, 0);
@@ -1522,7 +1591,7 @@ function renderVisual() {
   const totalSeasonUnpaid = SEASON_PAYS.filter(p => p.status !== "paid" && !p.badDebt).reduce((s,p) => s+p.amount, 0);
   const totalSeasonPaid   = SEASON_PAYS.filter(p => p.status === "paid"  && !p.badDebt).reduce((s,p) => s+p.amount, 0);
 
-  // Season fee toggle section builder
+  // ── SEASON FEE TOGGLE SECTION ─────────────────────────────────────────────
   function buildSeasonFeeSection(leagueType, label) {
     const entries = SEASON_PAYS.filter(p => !p.badDebt && p.reason && p.reason.toLowerCase().includes(leagueType));
     if (!entries.length) return '';
@@ -1550,7 +1619,7 @@ function renderVisual() {
       '</div></div>';
   }
 
-  // Prize card (static display)
+  // ── PRIZE CARDS (static display) ─────────────────────────────────────────
   function prizeCard(data) {
     const paidH   = data.paid.length   ? data.paid.map(m   => '<span class="badge badge-g" style="font-size:.65rem;margin:2px">' + m + '</span>').join('') : '<span style="color:var(--muted);font-size:.72rem">None yet</span>';
     const unpaidH = data.unpaid.length ? data.unpaid.map(m => '<span class="badge badge-r" style="font-size:.65rem;margin:2px">' + m + '</span>').join('') : '<span style="color:var(--green);font-size:.72rem">All paid</span>';
@@ -1581,6 +1650,7 @@ function renderVisual() {
     results:[{rank:1,mgr:"TBD",prize:5000},{rank:2,mgr:"TBD",prize:2500},{rank:3,mgr:"TBD",prize:500}],
     paid:[], unpaid:["Season in progress"]};
 
+  // ── ASSEMBLE HTML ─────────────────────────────────────────────────────────
   body.innerHTML =
     '<div class="alert a-red" style="margin-bottom:10px;font-size:.8rem"><strong>Bad Debts \u2014 Kim &amp; Arm:</strong> Both managers cancelled. 1st half totals reflect 13 managers. GW debts uncollectable. All bad debt amounts excluded from totals.</div>' +
 
@@ -1597,25 +1667,33 @@ function renderVisual() {
       '<div>' + buildSeasonFeeSection('h2h', '&#129309; H2H Entry Fee (1000 each)') + '</div>' +
     '</div>' +
 
-    '<div class="sec sec-o">Outstanding Net Position (GW + Season Fees)</div>' +
+    '<div class="sec sec-o">True Net Position (GW + Season Fees + Season Prize Winnings)</div>' +
+    '<div class="alert a-info" style="font-size:.75rem;margin-bottom:10px">' +
+      '<strong>Net = (GW winnings owed to manager + season prize share owed) \u2212 (GW debts + season fees + prize contributions owed)</strong>. ' +
+      'Green = net credit, Red = net debt. Includes all first-half season results.' +
+    '</div>' +
     '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:12px">' +
       '<div class="card" style="padding:10px;text-align:center"><div style="font-size:1.4rem;font-weight:700;color:var(--red)">' + totalGWUnpaid + '</div><div style="font-size:.7rem;color:var(--muted)">GW Outstanding</div></div>' +
       '<div class="card" style="padding:10px;text-align:center"><div style="font-size:1.4rem;font-weight:700;color:var(--green)">' + totalGWPaid + '</div><div style="font-size:.7rem;color:var(--muted)">GW Settled</div></div>' +
       '<div class="card" style="padding:10px;text-align:center"><div style="font-size:1.4rem;font-weight:700;color:var(--red)">' + totalSeasonUnpaid + '</div><div style="font-size:.7rem;color:var(--muted)">Season Fees Unpaid</div></div>' +
       '<div class="card" style="padding:10px;text-align:center"><div style="font-size:1.4rem;font-weight:700;color:var(--green)">' + totalSeasonPaid + '</div><div style="font-size:.7rem;color:var(--muted)">Season Fees Paid</div></div>' +
     '</div>' +
-
     '<div class="card" style="padding:12px;margin-bottom:14px">' +
-      '<div style="font-size:.72rem;color:var(--muted);margin-bottom:8px">Net balance per manager (GW debts + unpaid season fees). Red = owes, Green = owed to them.</div>' +
-      '<div style="display:grid;grid-template-columns:70px 1fr 55px;gap:8px;margin-bottom:6px;font-size:.65rem;color:var(--muted);font-weight:600">' +
-        '<div style="text-align:right">Manager</div><div style="text-align:center"><span style="color:var(--red)">&#9632; Owes</span> &nbsp; <span style="color:var(--green)">&#9632; Owed</span></div><div>Net</div>' +
+      '<div style="display:grid;grid-template-columns:70px 1fr 60px;gap:8px;margin-bottom:6px;font-size:.65rem;color:var(--muted);font-weight:600">' +
+        '<div style="text-align:right">Manager</div>' +
+        '<div style="text-align:center"><span style="color:var(--red)">&#9632; Owes</span> &nbsp; <span style="color:var(--green)">&#9632; Owed</span></div>' +
+        '<div style="text-align:right">Net</div>' +
       '</div>' + bars +
     '</div>' +
 
-    '<div class="sec sec-o">Total Owed TO Each Manager (GW Outstanding)</div>' +
+    '<div class="sec sec-o">Total Owed TO Each Manager (GW Outstanding Only)</div>' +
     '<div class="tbl-wrap"><table id="tbl-owed-to">' +
-    '<thead><tr><th data-sort-tbl="tbl-owed-to" data-sort-col="0">Manager</th><th data-sort-tbl="tbl-owed-to" data-sort-col="1" style="text-align:right">Total Owed To Them</th></tr></thead>' +
-    '<tbody>' + (owedRows || '<tr><td colspan="2" style="text-align:center;color:var(--green)">No outstanding amounts</td></tr>') + '</tbody></table></div>';
+    '<thead><tr>' +
+      '<th data-sort-tbl="tbl-owed-to" data-sort-col="0">Manager</th>' +
+      '<th data-sort-tbl="tbl-owed-to" data-sort-col="1" style="text-align:right">Total Owed To Them</th>' +
+    '</tr></thead>' +
+    '<tbody>' + (owedRows || '<tr><td colspan="2" style="text-align:center;color:var(--green)">No outstanding amounts</td></tr>') + '</tbody>' +
+    '</table></div>';
 }
 
 // ═══════════════════════════════════════════════════════════
