@@ -433,14 +433,14 @@ let PAYS = [
   {id:"19-korn-dj",gw:19,manager:"Korn",owesTo:"DJ",amount:100,reason:"GW19 tie \u2014 100 to DJ (1st tie)",status:"paid",note:""},
   {id:"19-korn-phai",gw:19,manager:"Korn",owesTo:"Phai",amount:100,reason:"GW19 tie \u2014 100 to Phai (1st tie)",status:"paid",note:""},
   {id:"19-komsit-dj",gw:19,manager:"Komsit",owesTo:"DJ",amount:100,reason:"GW19 tie \u2014 100 to DJ (1st tie)",status:"unpaid",note:""},
-  {id:"19-komsit-phai",gw:19,manager:"Komsit",owesTo:"DJ",amount:100,reason:"GW19 tie \u2014 100 to Phai (1st tie)",status:"unpaid",note:""},
+  {id:"19-komsit-phai",gw:19,manager:"Komsit",owesTo:"Phai",amount:100,reason:"GW19 tie \u2014 100 to Phai (1st tie)",status:"unpaid",note:""},
   {id:"19-chat-dj",gw:19,manager:"Chat",owesTo:"DJ",amount:100,reason:"GW19 tie \u2014 100 to DJ (1st tie)",status:"paid",note:""},
   {id:"19-chat-phai",gw:19,manager:"Chat",owesTo:"Phai",amount:100,reason:"GW19 tie \u2014 100 to Phai (1st tie)",status:"paid",note:""},
   {id:"19-tung-dj",gw:19,manager:"Tung",owesTo:"DJ",amount:100,reason:"GW19 tie \u2014 100 to DJ (1st tie)",status:"paid",note:""},
   {id:"19-tung-phai",gw:19,manager:"Tung",owesTo:"Phai",amount:100,reason:"GW19 tie \u2014 100 to Phai (1st tie)",status:"paid",note:""},
   {id:"19-palmmy-dj",gw:19,manager:"Palmmy",owesTo:"DJ",amount:100,reason:"GW19 tie \u2014 100 to DJ (1st tie)",status:"paid",note:""},
   {id:"19-palmmy-phai",gw:19,manager:"Palmmy",owesTo:"Phai",amount:100,reason:"GW19 tie \u2014 100 to Phai (1st tie)",status:"paid",note:""},
-  {id:"19-poom-dj",gw:19,manager:"Poom",owesTo:"Phai",amount:100,reason:"GW19 tie \u2014 100 to DJ (1st tie)",status:"unpaid",note:""},
+  {id:"19-poom-dj",gw:19,manager:"Poom",owesTo:"DJ",amount:100,reason:"GW19 tie \u2014 100 to DJ (1st tie)",status:"unpaid",note:""},
   {id:"19-poom-phai",gw:19,manager:"Poom",owesTo:"Phai",amount:100,reason:"GW19 tie \u2014 100 to Phai (1st tie)",status:"unpaid",note:""},
   {id:"19-passakorn-dj",gw:19,manager:"Passakorn",owesTo:"DJ",amount:100,reason:"GW19 tie \u2014 100 to DJ (1st tie)",status:"paid",note:""},
   {id:"19-passakorn-phai",gw:19,manager:"Passakorn",owesTo:"Phai",amount:100,reason:"GW19 tie \u2014 100 to Phai (1st tie)",status:"paid",note:""},
@@ -628,35 +628,34 @@ const DEFAULT_PAYS = []; // JSON is sole source of truth
 //   Owed by: Poom, Korn, Komsit, June
 //   Already paid: DJ, Ta, Palmmy, Chat, Phai, Passakorn
 //
-// GW Prize 1st half (via Note → 50/50 DJ & Phai):
 //   Owed by: Note, Komsit, Poom (100 each to DJ, 100 each to Phai)
 //   Already paid: Pladon, Ta, Palmmy, June, Passakorn, Korn, Tung, Chat
 // ─────────────────────────────────────────────────────────────────────────────
 const SEASON_PAYS = [
-  {id:"s-cls-korn",manager:"Korn",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic \u2014 1000 entry fee",status:"unpaid",custom:false,badDebt:false},
-  {id:"s-cls-komsit",manager:"Komsit",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic \u2014 1000 entry fee",status:"unpaid",custom:false,badDebt:false},
-  {id:"s-cls-poom",manager:"Poom",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic \u2014 1000 entry fee",status:"unpaid",custom:false,badDebt:false},
-  {id:"s-cls-dj",manager:"DJ",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic \u2014 1000 entry fee",status:"paid",custom:false,badDebt:false},
-  {id:"s-cls-note",manager:"Note",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic \u2014 1000 entry fee",status:"paid",custom:false,badDebt:false},
-  {id:"s-cls-chat",manager:"Chat",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic \u2014 1000 entry fee",status:"paid",custom:false,badDebt:false},
-  {id:"s-cls-tung",manager:"Tung",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic \u2014 1000 entry fee",status:"paid",custom:false,badDebt:false},
-  {id:"s-cls-palmmy",manager:"Palmmy",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic \u2014 1000 entry fee",status:"paid",custom:false,badDebt:false},
-  {id:"s-cls-phai",manager:"Phai",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic \u2014 1000 entry fee",status:"paid",custom:false,badDebt:false},
-  {id:"s-cls-passakorn",manager:"Passakorn",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic \u2014 1000 entry fee",status:"paid",custom:false,badDebt:false},
-  {id:"s-cls-pladon",manager:"Pladon",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic \u2014 1000 entry fee",status:"paid",custom:false,badDebt:false},
-  {id:"s-cls-june",manager:"June",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic \u2014 1000 entry fee",status:"paid",custom:false,badDebt:false},
-  {id:"s-h2h-korn",manager:"Korn",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H \u2014 1000 entry fee",status:"unpaid",custom:false,badDebt:false},
-  {id:"s-h2h-komsit",manager:"Komsit",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H \u2014 1000 entry fee",status:"unpaid",custom:false,badDebt:false},
-  {id:"s-h2h-poom",manager:"Poom",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H \u2014 1000 entry fee",status:"unpaid",custom:false,badDebt:false},
-  {id:"s-h2h-dj",manager:"DJ",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H \u2014 1000 entry fee",status:"paid",custom:false,badDebt:false},
-  {id:"s-h2h-note",manager:"Note",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H \u2014 1000 entry fee",status:"paid",custom:false,badDebt:false},
-  {id:"s-h2h-chat",manager:"Chat",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H \u2014 1000 entry fee",status:"paid",custom:false,badDebt:false},
-  {id:"s-h2h-tung",manager:"Tung",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H \u2014 1000 entry fee",status:"paid",custom:false,badDebt:false},
-  {id:"s-h2h-palmmy",manager:"Palmmy",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H \u2014 1000 entry fee",status:"paid",custom:false,badDebt:false},
-  {id:"s-h2h-phai",manager:"Phai",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H \u2014 1000 entry fee",status:"paid",custom:false,badDebt:false},
-  {id:"s-h2h-passakorn",manager:"Passakorn",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H \u2014 1000 entry fee",status:"paid",custom:false,badDebt:false},
-  {id:"s-h2h-pladon",manager:"Pladon",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H \u2014 1000 entry fee",status:"paid",custom:false,badDebt:false},
-  {id:"s-h2h-june",manager:"June",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H \u2014 1000 entry fee",status:"paid",custom:false,badDebt:false},
+  {id:"s-cls-korn",manager:"Korn",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic \u2014 1000 entry fee",status:"unpaid",poolKey:"CLS1",custom:false,badDebt:false},
+  {id:"s-cls-komsit",manager:"Komsit",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic \u2014 1000 entry fee",status:"unpaid",poolKey:"CLS1",custom:false,badDebt:false},
+  {id:"s-cls-poom",manager:"Poom",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic \u2014 1000 entry fee",status:"unpaid",poolKey:"CLS1",custom:false,badDebt:false},
+  {id:"s-cls-dj",manager:"DJ",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic \u2014 1000 entry fee",status:"paid",poolKey:"CLS1",custom:false,badDebt:false},
+  {id:"s-cls-note",manager:"Note",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic \u2014 1000 entry fee",status:"paid",poolKey:"CLS1",custom:false,badDebt:false},
+  {id:"s-cls-chat",manager:"Chat",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic \u2014 1000 entry fee",status:"paid",poolKey:"CLS1",custom:false,badDebt:false},
+  {id:"s-cls-tung",manager:"Tung",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic \u2014 1000 entry fee",status:"paid",poolKey:"CLS1",custom:false,badDebt:false},
+  {id:"s-cls-palmmy",manager:"Palmmy",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic \u2014 1000 entry fee",status:"paid",poolKey:"CLS1",custom:false,badDebt:false},
+  {id:"s-cls-phai",manager:"Phai",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic \u2014 1000 entry fee",status:"paid",poolKey:"CLS1",custom:false,badDebt:false},
+  {id:"s-cls-passakorn",manager:"Passakorn",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic \u2014 1000 entry fee",status:"paid",poolKey:"CLS1",custom:false,badDebt:false},
+  {id:"s-cls-pladon",manager:"Pladon",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic \u2014 1000 entry fee",status:"paid",poolKey:"CLS1",custom:false,badDebt:false},
+  {id:"s-cls-june",manager:"June",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic \u2014 1000 entry fee",status:"paid",poolKey:"CLS1",custom:false,badDebt:false},
+  {id:"s-h2h-korn",manager:"Korn",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H \u2014 1000 entry fee",status:"unpaid",poolKey:"H2H1",custom:false,badDebt:false},
+  {id:"s-h2h-komsit",manager:"Komsit",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H \u2014 1000 entry fee",status:"unpaid",poolKey:"H2H1",custom:false,badDebt:false},
+  {id:"s-h2h-poom",manager:"Poom",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H \u2014 1000 entry fee",status:"unpaid",poolKey:"H2H1",custom:false,badDebt:false},
+  {id:"s-h2h-dj",manager:"DJ",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H \u2014 1000 entry fee",status:"paid",poolKey:"H2H1",custom:false,badDebt:false},
+  {id:"s-h2h-note",manager:"Note",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H \u2014 1000 entry fee",status:"paid",poolKey:"H2H1",custom:false,badDebt:false},
+  {id:"s-h2h-chat",manager:"Chat",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H \u2014 1000 entry fee",status:"paid",poolKey:"H2H1",custom:false,badDebt:false},
+  {id:"s-h2h-tung",manager:"Tung",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H \u2014 1000 entry fee",status:"paid",poolKey:"H2H1",custom:false,badDebt:false},
+  {id:"s-h2h-palmmy",manager:"Palmmy",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H \u2014 1000 entry fee",status:"paid",poolKey:"H2H1",custom:false,badDebt:false},
+  {id:"s-h2h-phai",manager:"Phai",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H \u2014 1000 entry fee",status:"paid",poolKey:"H2H1",custom:false,badDebt:false},
+  {id:"s-h2h-passakorn",manager:"Passakorn",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H \u2014 1000 entry fee",status:"paid",poolKey:"H2H1",custom:false,badDebt:false},
+  {id:"s-h2h-pladon",manager:"Pladon",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H \u2014 1000 entry fee",status:"paid",poolKey:"H2H1",custom:false,badDebt:false},
+  {id:"s-h2h-june",manager:"June",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H \u2014 1000 entry fee",status:"paid",poolKey:"H2H1",custom:false,badDebt:false},
   {id:"s-gw-palmmy-dj",manager:"Palmmy",owesTo:"DJ",amount:100,reason:"GW prize 1st half \u2014 100 to DJ (50%)",status:"paid",custom:false,badDebt:false},
   {id:"s-gw-palmmy-ph",manager:"Palmmy",owesTo:"Phai",amount:100,reason:"GW prize 1st half \u2014 100 to Phai (50%)",status:"paid",custom:false,badDebt:false},
   {id:"s-gw-june-dj",manager:"June",owesTo:"DJ",amount:100,reason:"GW prize 1st half \u2014 100 to DJ (50%)",status:"paid",custom:false,badDebt:false},
@@ -1524,16 +1523,6 @@ function renderVisual() {
   });
 
   // GW1 prize: DJ and Phai each get 50% of unpaid contributions
-  // Unpaid by: Note, Komsit, Poom (3 × 1000 = 3000 still outstanding)
-  // Note: this 1000/manager is the SAME season entry fee tracked in SEASON_PAYS
-  // We only add to seasonOwed for the WINNERS here (not to seasonOwes — already in SEASON_PAYS)
-  const GW1_UNPAID = ["Note","Komsit","Poom"];
-  const GW1_WINNERS = {DJ:0.5, Phai:0.5};
-  const gw1UnpaidTotal = GW1_UNPAID.length * 1000;
-  Object.entries(GW1_WINNERS).forEach(([mgr, share]) => {
-    if (seasonOwed[mgr] !== undefined)
-      seasonOwed[mgr] += Math.round(gw1UnpaidTotal * share);
-  });
 
   // ── GW DEBTS ─────────────────────────────────────────────────────────────
   const gwOwes = {};
@@ -1638,15 +1627,21 @@ function renderVisual() {
       '</div></div>';
   }
 
-  const H2H1 = {pot:10000, note:"Head-to-Head 1st half (13 managers, 1000 each from 4th\u201313th)",
-    results:[{rank:1,mgr:"Note",prize:6000},{rank:2,mgr:"Tung",prize:3000},{rank:3,mgr:"DJ",prize:1000}],
-    paid:["Ta","Palmmy","Passakorn","Chat","Pladon","Phai"], unpaid:["Korn","Komsit","Poom","June"]};
-  const CLS1 = {pot:10000, note:"Classic 1st half (13 managers, 1000 each from 4th\u201313th)",
-    results:[{rank:1,mgr:"Pladon",prize:6000},{rank:2,mgr:"Note",prize:3000},{rank:3,mgr:"Tung",prize:1000}],
-    paid:["DJ","Ta","Palmmy","Chat","Phai","Passakorn"], unpaid:["Poom","Korn","Komsit","June"]};
-  const GW1  = {pot:null, note:"GW Prize 1st half \u2014 via Note, distributes 50/50 to DJ & Phai",
-    results:[{rank:1,mgr:"DJ",prize:"50%"},{rank:2,mgr:"Phai",prize:"50%"}],
-    paid:["Pladon","Ta","Palmmy","June","Passakorn","Korn","Tung","Chat"], unpaid:["Note","Komsit","Poom"]};
+  const H2H1 = (function(){
+    const paid   = SEASON_PAYS.filter(p => p.poolKey === 'H2H1' && p.status === 'paid').map(p => p.manager);
+    const unpaid = SEASON_PAYS.filter(p => p.poolKey === 'H2H1' && p.status !== 'paid').map(p => p.manager);
+    return {pot:10000, poolKey:'H2H1', note:"Head-to-Head 1st half (13 managers, 1000 each from 4th–13th)",
+      results:[{rank:1,mgr:"Note",prize:6000},{rank:2,mgr:"Tung",prize:3000},{rank:3,mgr:"DJ",prize:1000}],
+      paid, unpaid};
+  })()
+  const CLS1 = (function(){
+    const paid   = SEASON_PAYS.filter(p => p.poolKey === 'CLS1' && p.status === 'paid').map(p => p.manager);
+    const unpaid = SEASON_PAYS.filter(p => p.poolKey === 'CLS1' && p.status !== 'paid').map(p => p.manager);
+    return {pot:10000, poolKey:'CLS1', note:"Classic 1st half (13 managers, 1000 each from 4th–13th)",
+      results:[{rank:1,mgr:"Pladon",prize:6000},{rank:2,mgr:"Note",prize:3000},{rank:3,mgr:"Tung",prize:1000}],
+      paid, unpaid};
+  })()
+  // GW1 prize data removed per user instruction
   const CLS2 = {pot:8000, note:"Classic 2nd half (11 managers, 1000 from 4th\u201311th)",
     results:[{rank:1,mgr:"TBD",prize:5000},{rank:2,mgr:"TBD",prize:2500},{rank:3,mgr:"TBD",prize:500}],
     paid:[], unpaid:["Season in progress"]};
@@ -1657,7 +1652,7 @@ function renderVisual() {
 
     '<div class="sec sec-o">Season Prize Pools</div>' +
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">' +
-      '<div><div style="font-size:.68rem;font-weight:700;color:var(--orange);margin-bottom:6px;text-transform:uppercase">1st Half</div>' + prizeCard(H2H1) + prizeCard(CLS1) + prizeCard(GW1) + '</div>' +
+      '<div><div style="font-size:.68rem;font-weight:700;color:var(--orange);margin-bottom:6px;text-transform:uppercase">1st Half</div>' + prizeCard(H2H1) + prizeCard(CLS1) + '</div>' +
       '<div><div style="font-size:.68rem;font-weight:700;color:var(--blue);margin-bottom:6px;text-transform:uppercase">2nd Half</div>' + prizeCard(CLS2) +
         '<div class="alert a-info" style="font-size:.75rem">H2H 2nd half on hold \u2014 Kim, Ta &amp; June teams still active.</div></div>' +
     '</div>' +
