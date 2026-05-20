@@ -95,18 +95,14 @@ tr:hover td{background:rgba(255,255,255,.02);}
 #pwa-banner button{background:none;border:none;color:var(--blue);cursor:pointer;font-size:1rem;}
 .inline-sel{background:var(--bg);border:1px solid var(--border);color:var(--text);padding:3px 6px;border-radius:4px;font-size:.72rem;min-height:28px;}
 .inline-inp{background:var(--bg);border:1px solid var(--border);color:var(--text);padding:3px 6px;border-radius:4px;font-size:.72rem;min-height:28px;}
-.season-toggle-btn{padding:3px 8px;font-size:.65rem;}
 @media(max-width:480px){main{padding:8px;}.form-grid{grid-template-columns:1fr 1fr;}th,td{padding:6px 8px;font-size:.72rem;}.btn{padding:8px 10px;font-size:.72rem;}}
 </style>
 </head>
 <body>
-
 <div id="pwa-banner">
   <span>&#128241; Add to Home Screen for the best experience</span>
   <button onclick="document.getElementById('pwa-banner').remove()">&#10005;</button>
 </div>
-
-<!-- PIN MODAL -->
 <div class="pin-modal" id="pin-modal">
   <div class="pin-box">
     <h3 id="pm-title">Admin PIN</h3>
@@ -126,18 +122,16 @@ tr:hover td{background:rgba(255,255,255,.02);}
     <div class="pin-error" id="pm-err"></div>
   </div>
 </div>
-
 <header>
   <div class="hdr-left">
     <h1>&#9917;&#127942; F90 League Dashboard <span>#1204639</span></h1>
     <div class="hdr-sub">Super90 Classic &middot; GW19&ndash;38 &middot; Tracked by DJ</div>
   </div>
   <div class="hdr-right">
-    <span class="badge badge-o">GW37</span>
+    <span class="badge badge-o">GW38 Pending</span>
     <span class="badge badge-g" id="live-badge" style="cursor:pointer" title="Click to refresh">&#9679; LIVE</span>
   </div>
 </header>
-
 <div class="admin-bar">
   <span class="admin-status locked" id="admin-status">&#128274; Admin Locked</span>
   <button class="btn btn-o" id="admin-toggle-btn">Unlock</button>
@@ -147,7 +141,6 @@ tr:hover td{background:rgba(255,255,255,.02);}
   <button class="btn btn-b" id="btn-export-data" title="Download all data as JSON">&#11015; Export Data</button>
   <label class="btn btn-b" id="btn-import-label" title="Upload a previously exported JSON file" style="cursor:pointer">&#11014; Import Data<input type="file" id="import-file-input" accept=".json" style="display:none"></label>
 </div>
-
 <nav>
   <button class="active" data-tab="standings">&#127942; Standings</button>
   <button data-tab="visual">&#128200; Overview</button>
@@ -156,10 +149,7 @@ tr:hover td{background:rgba(255,255,255,.02);}
   <button data-tab="debts">&#128202; Total Dt/Cr</button>
   <button data-tab="gw-input">&#9999; Add New GW</button>
 </nav>
-
 <main>
-
-<!-- STANDINGS -->
 <div class="tab-content active" id="tab-standings">
   <div class="alert a-info">&#127942; Live FPL standings for F90 league. GW19&ndash;38 tracked. Ta, June &amp; Kim excluded from prize standings.</div>
   <div class="tbl-wrap">
@@ -168,21 +158,17 @@ tr:hover td{background:rgba(255,255,255,.02);}
       <th data-sort-tbl="tbl-standings" data-sort-col="0">Rank</th>
       <th data-sort-tbl="tbl-standings" data-sort-col="1">Manager</th>
       <th data-sort-tbl="tbl-standings" data-sort-col="2">Team</th>
-      <th data-sort-tbl="tbl-standings" data-sort-col="3">GW Pts</th>
+      <th data-sort-tbl="tbl-standings" data-sort-col="3">GW37 Pts</th>
       <th data-sort-tbl="tbl-standings" data-sort-col="4">Total</th>
       <th data-sort-tbl="tbl-standings" data-sort-col="5">+/-</th>
     </tr></thead>
     <tbody id="standings-body"></tbody>
   </table></div>
 </div>
-
-<!-- OVERVIEW -->
 <div class="tab-content" id="tab-visual">
   <div class="alert a-info">&#128200; Full season financial overview &mdash; GW payments + season prize pools.</div>
   <div id="visual-container"></div>
 </div>
-
-<!-- GW TRACKER -->
 <div class="tab-content" id="tab-gw-tracker">
   <div class="alert a-info">&#128197; Master control panel. Expand a gameweek to view and update payment statuses. Admin PIN required for all edits.</div>
   <div style="margin-bottom:10px">
@@ -194,8 +180,6 @@ tr:hover td{background:rgba(255,255,255,.02);}
   </div>
   <div id="gw-tracker-body"></div>
 </div>
-
-<!-- PAYMENTS -->
 <div class="tab-content" id="tab-payments">
   <div class="alert a-info">&#128179; Grouped by recipient. <span style="color:var(--green);font-weight:700">GREEN = paid</span> &middot; <span style="color:var(--red);font-weight:700">RED = outstanding</span>. Click manager to expand.</div>
   <div style="margin-bottom:10px">
@@ -207,14 +191,10 @@ tr:hover td{background:rgba(255,255,255,.02);}
   </div>
   <div id="payments-body"></div>
 </div>
-
-<!-- DEBTS -->
 <div class="tab-content" id="tab-debts">
   <div class="alert a-red">&#128202; Net balances per manager (GW19&ndash;38, excl. GW22/23). Updates when payments are confirmed.</div>
   <div id="debts-body"></div>
 </div>
-
-<!-- ADD NEW GW -->
 <div class="tab-content" id="tab-gw-input">
   <div class="alert a-info">&#9999; Enter results for any upcoming gameweek. Confirming auto-creates all payment records. Admin PIN required.</div>
   <div class="card" style="padding:14px;margin-bottom:12px">
@@ -255,17 +235,12 @@ tr:hover td{background:rgba(255,255,255,.02);}
     </tbody>
   </table></div>
 </div>
-
 </main>
 <div id="toast"></div>
-
 <script>
 
-// ═══════════════════════════════════════════════════════════
-// CONSTANTS
-// ═══════════════════════════════════════════════════════════
-const ADMIN_PIN   = "1904";
-const STORAGE_KEY = "f90_fpl_v5";
+const ADMIN_PIN = "1904";
+const STORAGE_KEY = "f90_fpl_v4";
 
 const ACTIVE = ["DJ","Note","Korn","Komsit","Chat","Tung","Palmmy","Poom","Phai","Passakorn","Pladon"];
 
@@ -292,8 +267,32 @@ const GW_META = {
   38:{p1:"—",p2:"—",bot:"—",note:"Not yet played"}
 };
 
-// GW scores per manager [gw34, gw35, gw36, ...]
-const GW_SCORES = {};
+const SEASON_PAYS = [
+  {id:"s-cls-korn",manager:"Korn",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic — 1000 entry fee",status:"unpaid",poolKey:"CLS1",custom:false,badDebt:false},
+  {id:"s-cls-komsit",manager:"Komsit",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic — 1000 entry fee",status:"unpaid",poolKey:"CLS1",custom:false,badDebt:false},
+  {id:"s-cls-poom",manager:"Poom",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic — 1000 entry fee",status:"unpaid",poolKey:"CLS1",custom:false,badDebt:false},
+  {id:"s-cls-dj",manager:"DJ",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic — 1000 entry fee",status:"paid",poolKey:"CLS1",custom:false,badDebt:false},
+  {id:"s-cls-note",manager:"Note",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic — 1000 entry fee",status:"paid",poolKey:"CLS1",custom:false,badDebt:false},
+  {id:"s-cls-chat",manager:"Chat",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic — 1000 entry fee",status:"paid",poolKey:"CLS1",custom:false,badDebt:false},
+  {id:"s-cls-tung",manager:"Tung",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic — 1000 entry fee",status:"paid",poolKey:"CLS1",custom:false,badDebt:false},
+  {id:"s-cls-palmmy",manager:"Palmmy",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic — 1000 entry fee",status:"paid",poolKey:"CLS1",custom:false,badDebt:false},
+  {id:"s-cls-phai",manager:"Phai",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic — 1000 entry fee",status:"paid",poolKey:"CLS1",custom:false,badDebt:false},
+  {id:"s-cls-passakorn",manager:"Passakorn",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic — 1000 entry fee",status:"paid",poolKey:"CLS1",custom:false,badDebt:false},
+  {id:"s-cls-pladon",manager:"Pladon",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic — 1000 entry fee",status:"paid",poolKey:"CLS1",custom:false,badDebt:false},
+  {id:"s-cls-june",manager:"June",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic — 1000 entry fee",status:"paid",poolKey:"CLS1",custom:false,badDebt:false},
+  {id:"s-h2h-korn",manager:"Korn",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H — 1000 entry fee",status:"unpaid",poolKey:"H2H1",custom:false,badDebt:false},
+  {id:"s-h2h-komsit",manager:"Komsit",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H — 1000 entry fee",status:"unpaid",poolKey:"H2H1",custom:false,badDebt:false},
+  {id:"s-h2h-poom",manager:"Poom",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H — 1000 entry fee",status:"unpaid",poolKey:"H2H1",custom:false,badDebt:false},
+  {id:"s-h2h-dj",manager:"DJ",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H — 1000 entry fee",status:"paid",poolKey:"H2H1",custom:false,badDebt:false},
+  {id:"s-h2h-note",manager:"Note",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H — 1000 entry fee",status:"paid",poolKey:"H2H1",custom:false,badDebt:false},
+  {id:"s-h2h-chat",manager:"Chat",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H — 1000 entry fee",status:"paid",poolKey:"H2H1",custom:false,badDebt:false},
+  {id:"s-h2h-tung",manager:"Tung",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H — 1000 entry fee",status:"paid",poolKey:"H2H1",custom:false,badDebt:false},
+  {id:"s-h2h-palmmy",manager:"Palmmy",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H — 1000 entry fee",status:"paid",poolKey:"H2H1",custom:false,badDebt:false},
+  {id:"s-h2h-phai",manager:"Phai",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H — 1000 entry fee",status:"paid",poolKey:"H2H1",custom:false,badDebt:false},
+  {id:"s-h2h-passakorn",manager:"Passakorn",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H — 1000 entry fee",status:"paid",poolKey:"H2H1",custom:false,badDebt:false},
+  {id:"s-h2h-pladon",manager:"Pladon",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H — 1000 entry fee",status:"paid",poolKey:"H2H1",custom:false,badDebt:false},
+  {id:"s-h2h-june",manager:"June",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H — 1000 entry fee",status:"paid",poolKey:"H2H1",custom:false,badDebt:false}
+];
 
 let PAYS = [
   {id:"19-note-dj",gw:19,manager:"Note",owesTo:"DJ",amount:100,reason:"GW19 tie — 100 to DJ (1st tie)",status:"paid",note:""},
@@ -489,244 +488,117 @@ let PAYS = [
   {id:"gw37-bot2-Tung",gw:37,manager:"Tung",owesTo:"Pladon",amount:200,reason:"GW37 bottom → Pladon",status:"paid",note:""}
 ];
 
-// Snapshot of default PAYS for field-filling during load
-const DEFAULT_PAYS = []; // JSON is sole source of truth
-
-// ─────────────────────────────────────────────────────────────────────────────
-// SEASON_PAYS — each manager pays ONE 1000 per league type (Classic / H2H).
-// The prize split (6000/3000/1000) is handled by the winners internally.
-// owesTo = the 1st-place winner who collects and distributes the pot.
-//
-// H2H 1st half (10,000 pot): Note 1st, Tung 2nd, DJ 3rd
-//   Owed by: Korn, Komsit, Poom, June (4th–13th who haven't paid)
-//   Already paid: Ta, Palmmy, Passakorn, Chat, Pladon, Phai
-//
-// Classic 1st half (10,000 pot): Pladon 1st, Note 2nd, Tung 3rd
-//   Owed by: Poom, Korn, Komsit, June
-//   Already paid: DJ, Ta, Palmmy, Chat, Phai, Passakorn
-//
-//   Owed by: Note, Komsit, Poom (100 each to DJ, 100 each to Phai)
-//   Already paid: Pladon, Ta, Palmmy, June, Passakorn, Korn, Tung, Chat
-// ─────────────────────────────────────────────────────────────────────────────
-const SEASON_PAYS = [
-  {id:"s-cls-korn",manager:"Korn",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic \u2014 1000 entry fee",status:"unpaid",poolKey:"CLS1",custom:false,badDebt:false},
-  {id:"s-cls-komsit",manager:"Komsit",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic \u2014 1000 entry fee",status:"unpaid",poolKey:"CLS1",custom:false,badDebt:false},
-  {id:"s-cls-poom",manager:"Poom",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic \u2014 1000 entry fee",status:"unpaid",poolKey:"CLS1",custom:false,badDebt:false},
-  {id:"s-cls-dj",manager:"DJ",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic \u2014 1000 entry fee",status:"paid",poolKey:"CLS1",custom:false,badDebt:false},
-  {id:"s-cls-note",manager:"Note",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic \u2014 1000 entry fee",status:"paid",poolKey:"CLS1",custom:false,badDebt:false},
-  {id:"s-cls-chat",manager:"Chat",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic \u2014 1000 entry fee",status:"paid",poolKey:"CLS1",custom:false,badDebt:false},
-  {id:"s-cls-tung",manager:"Tung",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic \u2014 1000 entry fee",status:"paid",poolKey:"CLS1",custom:false,badDebt:false},
-  {id:"s-cls-palmmy",manager:"Palmmy",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic \u2014 1000 entry fee",status:"paid",poolKey:"CLS1",custom:false,badDebt:false},
-  {id:"s-cls-phai",manager:"Phai",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic \u2014 1000 entry fee",status:"paid",poolKey:"CLS1",custom:false,badDebt:false},
-  {id:"s-cls-passakorn",manager:"Passakorn",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic \u2014 1000 entry fee",status:"paid",poolKey:"CLS1",custom:false,badDebt:false},
-  {id:"s-cls-pladon",manager:"Pladon",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic \u2014 1000 entry fee",status:"paid",poolKey:"CLS1",custom:false,badDebt:false},
-  {id:"s-cls-june",manager:"June",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic \u2014 1000 entry fee",status:"paid",poolKey:"CLS1",custom:false,badDebt:false},
-  {id:"s-h2h-korn",manager:"Korn",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H \u2014 1000 entry fee",status:"unpaid",poolKey:"H2H1",custom:false,badDebt:false},
-  {id:"s-h2h-komsit",manager:"Komsit",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H \u2014 1000 entry fee",status:"unpaid",poolKey:"H2H1",custom:false,badDebt:false},
-  {id:"s-h2h-poom",manager:"Poom",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H \u2014 1000 entry fee",status:"unpaid",poolKey:"H2H1",custom:false,badDebt:false},
-  {id:"s-h2h-dj",manager:"DJ",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H \u2014 1000 entry fee",status:"paid",poolKey:"H2H1",custom:false,badDebt:false},
-  {id:"s-h2h-note",manager:"Note",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H \u2014 1000 entry fee",status:"paid",poolKey:"H2H1",custom:false,badDebt:false},
-  {id:"s-h2h-chat",manager:"Chat",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H \u2014 1000 entry fee",status:"paid",poolKey:"H2H1",custom:false,badDebt:false},
-  {id:"s-h2h-tung",manager:"Tung",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H \u2014 1000 entry fee",status:"paid",poolKey:"H2H1",custom:false,badDebt:false},
-  {id:"s-h2h-palmmy",manager:"Palmmy",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H \u2014 1000 entry fee",status:"paid",poolKey:"H2H1",custom:false,badDebt:false},
-  {id:"s-h2h-phai",manager:"Phai",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H \u2014 1000 entry fee",status:"paid",poolKey:"H2H1",custom:false,badDebt:false},
-  {id:"s-h2h-passakorn",manager:"Passakorn",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H \u2014 1000 entry fee",status:"paid",poolKey:"H2H1",custom:false,badDebt:false},
-  {id:"s-h2h-pladon",manager:"Pladon",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H \u2014 1000 entry fee",status:"paid",poolKey:"H2H1",custom:false,badDebt:false},
-  {id:"s-h2h-june",manager:"June",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H \u2014 1000 entry fee",status:"paid",poolKey:"H2H1",custom:false,badDebt:false},
-  {id:"s-gw-palmmy-dj",manager:"Palmmy",owesTo:"DJ",amount:100,reason:"GW prize 1st half \u2014 100 to DJ (50%)",status:"paid",custom:false,badDebt:false},
-  {id:"s-gw-palmmy-ph",manager:"Palmmy",owesTo:"Phai",amount:100,reason:"GW prize 1st half \u2014 100 to Phai (50%)",status:"paid",custom:false,badDebt:false},
-  {id:"s-gw-june-dj",manager:"June",owesTo:"DJ",amount:100,reason:"GW prize 1st half \u2014 100 to DJ (50%)",status:"paid",custom:false,badDebt:false},
-  {id:"s-gw-june-ph",manager:"June",owesTo:"Phai",amount:100,reason:"GW prize 1st half \u2014 100 to Phai (50%)",status:"paid",custom:false,badDebt:false},
-  {id:"s-gw-tung-dj",manager:"Tung",owesTo:"DJ",amount:100,reason:"GW prize 1st half \u2014 100 to DJ (50%)",status:"paid",custom:false,badDebt:false},
-  {id:"s-gw-tung-ph",manager:"Tung",owesTo:"Phai",amount:100,reason:"GW prize 1st half \u2014 100 to Phai (50%)",status:"paid",custom:false,badDebt:false},
-  {id:"s-gw-chat-dj",manager:"Chat",owesTo:"DJ",amount:100,reason:"GW prize 1st half \u2014 100 to DJ (50%)",status:"paid",custom:false,badDebt:false},
-  {id:"s-gw-chat-ph",manager:"Chat",owesTo:"Phai",amount:100,reason:"GW prize 1st half \u2014 100 to Phai (50%)",status:"paid",custom:false,badDebt:false}
+const LIVE = [
+  {rank:1,last:1,name:"DJ",team:"Enzoid & da Moisters",gw:82,total:1110},
+  {rank:2,last:2,name:"Korn",team:"Korn",gw:0,total:1024},
+  {rank:3,last:3,name:"Note",team:"FPL Gamo",gw:0,total:1014},
+  {rank:4,last:4,name:"Komsit",team:"CHJR",gw:0,total:966},
+  {rank:5,last:5,name:"Chat",team:"Storm11",gw:0,total:957},
+  {rank:6,last:6,name:"June",team:"June90'",gw:0,total:952},
+  {rank:7,last:7,name:"Palmmy",team:"Pleecheap FC",gw:0,total:936},
+  {rank:8,last:8,name:"Tung",team:"Tung168",gw:0,total:935},
+  {rank:9,last:9,name:"Kim",team:"Khunkim",gw:0,total:933},
+  {rank:10,last:10,name:"Poom",team:"PPP",gw:0,total:925},
+  {rank:11,last:11,name:"Ta",team:"Ta.90",gw:0,total:898},
+  {rank:12,last:12,name:"Phai",team:"Dezign",gw:0,total:885},
+  {rank:13,last:13,name:"Pladon",team:"PlaDonATH71",gw:0,total:820},
+  {rank:14,last:14,name:"Passakorn",team:"The Spooky",gw:0,total:742}
 ];
 
-// Snapshot of default SEASON_PAYS for field-filling during load
-const DEFAULT_SEASON_PAYS = []; // JSON is sole source of truth
-
-// ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 // STATE
-// ═══════════════════════════════════════════════════════════
-
 // ═══════════════════════════════════════════
-// LIVE STANDINGS DATA
-// ═══════════════════════════════════════════
-let LIVE = [
-  {rank:1,last:1,name:"DJ",team:"Enzoid & da Moisters",gw:0,total:1028,gwH:[0, 0, 0]},
-  {rank:2,last:2,name:"Korn",team:"Korn",gw:0,total:1024,gwH:[0, 0, 0]},
-  {rank:3,last:3,name:"Note",team:"FPL Gamo",gw:0,total:1014,gwH:[0, 0, 0]},
-  {rank:4,last:4,name:"Komsit",team:"CHJR",gw:0,total:966,gwH:[0, 0, 0]},
-  {rank:5,last:5,name:"Chat",team:"Storm11",gw:0,total:957,gwH:[0, 0, 0]},
-  {rank:6,last:6,name:"June",team:"June90'",gw:0,total:952,gwH:[0, 0, 0]},
-  {rank:7,last:7,name:"Palmmy",team:"Pleecheap FC",gw:0,total:936,gwH:[0, 0, 0]},
-  {rank:8,last:8,name:"Tung",team:"Tung168",gw:0,total:935,gwH:[0, 0, 0]},
-  {rank:9,last:9,name:"Kim",team:"Khunkim",gw:0,total:933,gwH:[0, 0, 0]},
-  {rank:10,last:10,name:"Poom",team:"PPP",gw:0,total:925,gwH:[0, 0, 0]},
-  {rank:11,last:11,name:"Ta",team:"Ta.90",gw:0,total:898,gwH:[0, 0, 0]},
-  {rank:12,last:12,name:"Phai",team:"Dezign",gw:0,total:885,gwH:[0, 0, 0]},
-  {rank:13,last:13,name:"Pladon",team:"PlaDonATH71",gw:0,total:820,gwH:[0, 0, 0]},
-  {rank:14,last:14,name:"Passakorn",team:"The Spooky",gw:0,total:742,gwH:[0, 0, 0]}
-];
-
 let adminUnlocked  = false;
 let pendingChanges = false;
 let pinBuf         = "";
 let pinMode        = "unlock";
 let pendingAction  = null;
-let selectedDebtManager = null;
-let scoreCalcResult = null; // holds calculated GW result before confirm
 
-// ═══════════════════════════════════════════════════════════
-// STORAGE — localStorage (works on GitHub Pages & local file)
-// ═══════════════════════════════════════════════════════════
 // ═══════════════════════════════════════════
-// SAVE / LOAD / EXPORT / IMPORT
+// STORAGE
 // ═══════════════════════════════════════════
-
-// Build the full data snapshot
-function buildSaveData() {
-  return {
-    version: 4,
-    savedAt: new Date().toISOString(),
-    pays: PAYS.map(p => ({
-      id: p.id, gw: p.gw, manager: p.manager,
-      owesTo: p.owesTo, amount: p.amount,
-      reason: p.reason, status: p.status, note: p.note || ''
-    })),
-    season: SEASON_PAYS.map(p => ({
-      id: p.id, manager: p.manager, owesTo: p.owesTo,
-      amount: p.amount, reason: p.reason, status: p.status,
-      custom: !!p.custom, badDebt: !!p.badDebt
-    })),
-    live: LIVE.map(p => ({
-      rank: p.rank, last: p.last, name: p.name,
-      team: p.team, gw: p.gw, total: p.total, gwH: p.gwH || [0,0,0]
-    })),
-    gwMeta:   JSON.parse(JSON.stringify(GW_META)),
-    gwScores: JSON.parse(JSON.stringify(GW_SCORES)),
-  };
-}
-
-// Write to localStorage immediately (called after every edit)
-function autoSave() {
+function saveToStorage() {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(buildSaveData()));
-  } catch(e) { console.warn('Auto-save failed:', e); }
-}
-
-// Manual save (PIN-confirmed) — same data, just shows toast + clears pending flag
-function manualSave() {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(buildSaveData()));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(PAYS));
     pendingChanges = false;
     updateAdminBar();
-    toast('✓ Saved!');
-  } catch(e) { toast('Save failed: ' + e.message); }
+    toast("Changes saved to device!");
+  } catch(e) { toast("Save failed: " + e.message); }
 }
-
-// Export data as downloadable JSON file
-function exportData() {
-  try {
-    const data = buildSaveData();
-    const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
-    const url  = URL.createObjectURL(blob);
-    const a    = document.createElement('a');
-    const ts   = new Date().toISOString().slice(0,10);
-    a.href     = url;
-    a.download = 'f90-fpl-data-' + ts + '.json';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    toast('✓ Data exported!');
-  } catch(e) { toast('Export failed: ' + e.message); }
-}
-
-// Import data from uploaded JSON file
-function importData(file) {
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    try {
-      const data = JSON.parse(e.target.result);
-      applyLoadedData(data);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-      pendingChanges = false;
-      updateAdminBar();
-      renderAll();
-      toast('✓ Data imported successfully!');
-    } catch(err) {
-      toast('Import failed: ' + err.message);
-      console.error('Import error:', err);
-    }
-  };
-  reader.readAsText(file);
-}
-
-// Apply a loaded data object to the live arrays (used by both loadFromStorage and importData)
-function applyLoadedData(data) {
-  const paysArr   = Array.isArray(data) ? data          : (data.pays    || []);
-  const seasonArr = Array.isArray(data) ? []             : (data.season  || []);
-  const liveArr   = Array.isArray(data) ? []             : (data.live    || []);
-  const gwMetaIn  = Array.isArray(data) ? null           : (data.gwMeta  || null);
-  const gwScIn    = Array.isArray(data) ? null           : (data.gwScores|| null);
-
-  // Full wipe — JSON is the only source of truth
-  PAYS.length = 0;
-  paysArr.forEach(s => {
-    PAYS.push({
-      id:s.id||'', gw:s.gw!=null?Number(s.gw):0,
-      manager:s.manager||'', owesTo:s.owesTo||'',
-      amount:s.amount!=null?Number(s.amount):0,
-      reason:s.reason||'', status:s.status||'unpaid', note:s.note||''
-    });
-  });
-
-  SEASON_PAYS.length = 0;
-  seasonArr.forEach(s => {
-    SEASON_PAYS.push({
-      id:s.id||'', manager:s.manager||'', owesTo:s.owesTo||'',
-      amount:s.amount!=null?Number(s.amount):0,
-      reason:s.reason||'', status:s.status||'unpaid',
-      custom:!!s.custom, badDebt:!!s.badDebt
-    });
-  });
-
-  if (liveArr.length) {
-    liveArr.forEach(s => {
-      const p = LIVE.find(x => x.name === s.name);
-      if (p) { p.rank=s.rank; p.last=s.last; p.team=s.team; p.gw=s.gw; p.total=s.total; p.gwH=s.gwH||[0,0,0]; }
-    });
-  }
-
-  if (gwMetaIn) {
-    Object.keys(GW_META).forEach(k => delete GW_META[k]);
-    Object.assign(GW_META, gwMetaIn);
-  }
-  if (gwScIn) {
-    Object.keys(GW_SCORES).forEach(k => delete GW_SCORES[k]);
-    Object.assign(GW_SCORES, gwScIn);
-  }
-}
-
 
 function loadFromStorage() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return;
-    const data = JSON.parse(raw);
-    applyLoadedData(data);
-  } catch(e) { console.warn('Storage load failed:', e); }
+    const stored = JSON.parse(raw);
+    stored.forEach(s => {
+      const p = PAYS.find(x => x.id === s.id);
+      if (p) {
+        p.status = s.status;
+        if (s.note)   p.note   = s.note;
+        if (s.owesTo) p.owesTo = s.owesTo;
+        if (s.amount) p.amount = s.amount;
+      } else {
+        PAYS.push(s);
+      }
+    });
+  } catch(e) { console.warn("Storage load failed:", e); }
 }
 
+// ═══════════════════════════════════════════
+// EXPORT / IMPORT
+// ═══════════════════════════════════════════
+function exportData() {
+  const payload = {
+    version: 4,
+    savedAt: new Date().toISOString(),
+    pays: PAYS,
+    seasonPays: SEASON_PAYS,
+    gwMeta: GW_META,
+    live: LIVE
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], {type: "application/json"});
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement("a");
+  a.href     = url;
+  a.download = "f90-fpl-data-" + new Date().toISOString().slice(0,10) + ".json";
+  a.click();
+  URL.revokeObjectURL(url);
+  toast("Data exported!");
+}
 
-function markPendingChange() { pendingChanges = true; updateAdminBar(); autoSave(); }
+function importData(file) {
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const d = JSON.parse(e.target.result);
+      if (d.pays) {
+        PAYS.length = 0;
+        d.pays.forEach(p => PAYS.push(p));
+      }
+      if (d.seasonPays && d.seasonPays.length) {
+        SEASON_PAYS.length = 0;
+        d.seasonPays.forEach(p => SEASON_PAYS.push(p));
+      }
+      if (d.gwMeta) {
+        Object.keys(GW_META).forEach(k => delete GW_META[k]);
+        Object.assign(GW_META, d.gwMeta);
+      }
+      if (d.live) {
+        LIVE.length = 0;
+        d.live.forEach(p => LIVE.push(p));
+      }
+      saveToStorage();
+      renderAll();
+      toast("Data imported successfully!");
+    } catch(err) { toast("Import failed: " + err.message); }
+  };
+  reader.readAsText(file);
+}
 
-// ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 // PIN MODAL
-// ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 function openPin(mode, action) {
   pinMode = mode || "unlock";
   pendingAction = action || null;
@@ -734,13 +606,13 @@ function openPin(mode, action) {
   updateDots();
   document.getElementById("pm-err").textContent = "";
   const titles = {
-    "unlock":       ["&#128272; Admin PIN",    "Enter your 4-digit PIN to unlock"],
-    "confirm-save": ["&#128190; Confirm Save", "Re-enter PIN to commit changes"],
-    "reset":        ["&#128465; Reset Data",   "Enter PIN to clear all saved data"]
+    "unlock":       ["Admin PIN", "Enter your 4-digit PIN to unlock"],
+    "confirm-save": ["Confirm Save", "Re-enter PIN to commit changes"],
+    "reset":        ["Reset Data", "Enter PIN to clear all saved data"]
   };
   const [t, d] = titles[pinMode] || titles["unlock"];
-  document.getElementById("pm-title").innerHTML = t;
-  document.getElementById("pm-desc").textContent = d;
+  document.getElementById("pm-title").textContent = t;
+  document.getElementById("pm-desc").textContent  = d;
   document.getElementById("pin-modal").classList.add("show");
 }
 
@@ -772,13 +644,11 @@ function checkPin() {
     adminUnlocked = true;
     closePin();
     updateAdminBar();
-    renderAll();
     toast("Admin unlocked");
-    renderPayments(); // refresh so add-season rows appear
     if (pendingAction) { const a = pendingAction; pendingAction = null; execAction(a); }
   } else if (pinMode === "confirm-save") {
     closePin();
-    manualSave();
+    saveToStorage();
   } else if (pinMode === "reset") {
     closePin();
     localStorage.removeItem(STORAGE_KEY);
@@ -786,43 +656,36 @@ function checkPin() {
   }
 }
 
-// ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 // ADMIN BAR
-// ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 function updateAdminBar() {
   const st  = document.getElementById("admin-status");
-  const tb  = document.getElementById("admin-toggle-btn");
+  const btn = document.getElementById("admin-toggle-btn");
   const pl  = document.getElementById("admin-pending-lbl");
   const sb  = document.getElementById("admin-save-btn");
-  const lb  = document.getElementById("admin-lock-btn");
   const rb  = document.getElementById("admin-reset-btn");
-  const esb = document.getElementById("btn-edit-standings");
   if (adminUnlocked) {
-    st.textContent = pendingChanges ? "Admin — Unsaved Changes" : "Admin Unlocked";
-    st.className   = "admin-status " + (pendingChanges ? "pending" : "unlocked");
-    tb.style.display = "none";
+    st.textContent  = pendingChanges ? "Admin \u2014 Unsaved Changes" : "Admin Unlocked";
+    st.className    = "admin-status " + (pendingChanges ? "pending" : "unlocked");
+    btn.textContent = "Lock";
+    btn.className   = "btn";
     pl.style.display = pendingChanges ? "inline" : "none";
-    sb.style.display = lb.style.display = rb.style.display = "inline-flex";
-    if (esb) esb.style.display = "inline-flex";
+    sb.style.display = rb.style.display = "inline-flex";
   } else {
-    st.textContent = "&#128274; Admin Locked";
-    st.className   = "admin-status locked";
-    tb.style.display = "inline-flex";
-    pl.style.display = sb.style.display = lb.style.display = rb.style.display = "none";
-    if (esb) esb.style.display = "none";
-    // Hide edit panel if open
-    const ep = document.getElementById("standings-edit-panel");
-    if (ep) ep.style.display = "none";
-    const bss = document.getElementById("btn-save-standings");
-    const bcs = document.getElementById("btn-cancel-standings");
-    if (bss) bss.style.display = "none";
-    if (bcs) bcs.style.display = "none";
+    st.textContent  = "Admin Locked";
+    st.className    = "admin-status locked";
+    btn.textContent = "Unlock";
+    btn.className   = "btn btn-o";
+    pl.style.display = sb.style.display = rb.style.display = "none";
   }
 }
 
-// ═══════════════════════════════════════════════════════════
+function markPendingChange() { pendingChanges = true; updateAdminBar(); }
+
+// ═══════════════════════════════════════════
 // ACTION DISPATCHER
-// ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 function requireAdmin(action) {
   if (adminUnlocked) { execAction(action); }
   else { openPin("unlock", action); }
@@ -830,17 +693,21 @@ function requireAdmin(action) {
 
 function execAction(a) {
   if (!a) return;
-
   if (a.type === "markPay") {
-    const arr = a.isseason ? SEASON_PAYS : PAYS;
-    const p = arr.find(x => x.id === a.id);
+    const p = PAYS.find(x => x.id === a.id);
     if (!p) return;
     p.status = a.status;
     markPendingChange();
-    if (!a.isseason) refreshGWBody(p.gw);
+    refreshGWBody(p.gw);
     renderPayments(); renderDebts(); renderVisual();
-    toast((a.status === "paid" ? p.manager + " marked paid" : "Reverted to unpaid"));
-
+    toast(a.status === "paid" ? p.manager + " GW" + p.gw + " marked paid" : "Reverted to unpaid");
+  } else if (a.type === "markSeasonPay") {
+    const p = SEASON_PAYS.find(x => x.id === a.id);
+    if (!p) return;
+    p.status = a.status;
+    markPendingChange();
+    renderVisual(); renderPayments(); renderDebts();
+    toast(p.manager + " season fee " + a.status);
   } else if (a.type === "editOwesTo") {
     const p = PAYS.find(x => x.id === a.id);
     if (!p) return;
@@ -849,7 +716,6 @@ function execAction(a) {
     refreshGWBody(p.gw);
     renderPayments(); renderDebts();
     toast("Updated: " + p.manager + " now owes " + a.owesTo);
-
   } else if (a.type === "deleteDebt") {
     const idx = PAYS.findIndex(x => x.id === a.id);
     if (idx === -1) return;
@@ -859,50 +725,27 @@ function execAction(a) {
     refreshGWBody(p.gw);
     renderPayments(); renderDebts(); renderVisual();
     toast("Deleted: " + p.manager + " GW" + p.gw);
-
   } else if (a.type === "addDebt") {
     const mgr    = document.getElementById("add-mgr-"    + a.gw).value;
     const owesTo = document.getElementById("add-owesto-" + a.gw).value;
-    const amount = parseInt(document.getElementById("add-amt-"    + a.gw).value) || 200;
+    const amount = parseInt(document.getElementById("add-amt-" + a.gw).value) || 200;
     const reason = document.getElementById("add-reason-" + a.gw).value || ("GW" + a.gw + " custom");
     if (!mgr || !owesTo) { toast("Select both manager and owes-to!"); return; }
     if (mgr === owesTo)  { toast("Manager cannot owe themselves!"); return; }
     const id = "custom-" + a.gw + "-" + mgr + "-" + owesTo + "-" + Date.now();
-    PAYS.push({id, gw:a.gw, manager:mgr, owesTo, amount, reason, status:"unpaid", note:""});
+    PAYS.push({id, gw: a.gw, manager: mgr, owesTo, amount, reason, status: "unpaid", note: ""});
     markPendingChange();
     refreshGWBody(a.gw);
     renderPayments(); renderDebts(); renderVisual();
     toast("Added: " + mgr + " owes " + owesTo + " " + amount);
-
-  } else if (a.type === "deleteSeasonDebt") {
-    const idx = SEASON_PAYS.findIndex(x => x.id === a.id);
-    if (idx === -1) return;
-    const p = SEASON_PAYS[idx];
-    SEASON_PAYS.splice(idx, 1);
-    markPendingChange();
-    renderPayments(); renderDebts(); renderVisual();
-    toast("Deleted season debt: " + p.manager);
-
-  } else if (a.type === "addSeasonDebt") {
-    const owesTo = document.getElementById("add-sea-owesto-" + a.manager).value;
-    const amount = parseInt(document.getElementById("add-sea-amt-" + a.manager).value) || 1000;
-    const reason = document.getElementById("add-sea-reason-" + a.manager).value || "Season custom";
-    if (!owesTo) { toast("Select recipient!"); return; }
-    if (a.manager === owesTo) { toast("Manager cannot owe themselves!"); return; }
-    const id = "sea-custom-" + a.manager + "-" + owesTo + "-" + Date.now();
-    SEASON_PAYS.push({id, type:"season", manager:a.manager, owesTo, amount, reason, status:"unpaid", custom:true});
-    markPendingChange();
-    renderPayments(); renderDebts(); renderVisual();
-    toast("Added season debt: " + a.manager + " owes " + owesTo + " " + amount);
-
-  } else if (a.type === "confirmScores") {
-    doConfirmScores();
+  } else if (a.type === "confirmNewGW") {
+    doConfirmNewGW();
   }
 }
 
-// ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 // HELPERS
-// ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 function gwStatus(gw) {
   const e = PAYS.filter(p => p.gw === gw);
   if (!e.length) return "cancelled";
@@ -925,15 +768,14 @@ function toast(msg) {
 function showTab(id) {
   document.querySelectorAll(".tab-content").forEach(t => t.classList.remove("active"));
   document.querySelectorAll("nav button").forEach(b => b.classList.remove("active"));
-  const tab = document.getElementById("tab-" + id);
+  document.getElementById("tab-" + id).classList.add("active");
   const btn = document.querySelector("nav button[data-tab='" + id + "']");
-  if (tab) tab.classList.add("active");
   if (btn) btn.classList.add("active");
 }
 
-// ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 // SORT
-// ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 const sortState = {};
 function sortTable(tblId, col) {
   const tbl = document.getElementById(tblId);
@@ -956,100 +798,33 @@ function sortTable(tblId, col) {
   }).forEach(r => tbody.appendChild(r));
 }
 
-// ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 // RENDER STANDINGS
-// ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 function renderStandings() {
   const tbody = document.getElementById("standings-body");
   if (!tbody) return;
-  const sorted = LIVE.slice().sort((a, b) => a.rank - b.rank);
-  tbody.innerHTML = sorted.map(p => {
+  tbody.innerHTML = LIVE.map(p => {
     const d = p.last - p.rank;
     const trend = d > 0 ? '<span style="color:var(--green)">&#9650;' + d + '</span>'
                 : d < 0 ? '<span style="color:var(--red)">&#9660;' + Math.abs(d) + '</span>'
                 : '<span style="color:var(--muted)">&mdash;</span>';
     const rc = p.rank === 1 ? "rank-1" : p.rank === 2 ? "rank-2" : p.rank === 3 ? "rank-3" : "";
-    const gwH = p.gwH || [0,0,0];
-    return "<tr>" +
-      "<td class='" + rc + "'>" + p.rank + "</td>" +
-      "<td><strong>" + p.name + "</strong></td>" +
+    const gwPts = p.gw > 0 ? '<span style="color:var(--blue)">' + p.gw + '</span>' : '<span style="color:var(--muted)">—</span>';
+    return "<tr><td class='" + rc + "'>" + p.rank + "</td><td><strong>" + p.name + "</strong></td>" +
       "<td style='color:var(--muted);font-size:.72rem'>" + p.team + "</td>" +
-      "<td style='color:var(--blue)'>" + (p.gw || "&mdash;") + "</td>" +
-      "<td style='font-weight:700'>" + (p.total || "&mdash;") + "</td>" +
-      "<td>" + trend + "</td>" +
-      "<td style='color:var(--muted)'>" + (gwH[0] || "&mdash;") + "</td>" +
-      "<td style='color:var(--muted)'>" + (gwH[1] || "&mdash;") + "</td>" +
-      "<td style='color:var(--muted)'>" + (gwH[2] || "&mdash;") + "</td>" +
-      "</tr>";
+      "<td>" + gwPts + "</td>" +
+      "<td style='font-weight:700'>" + p.total + "</td><td>" + trend + "</td></tr>";
   }).join("");
 }
 
-// ═══════════════════════════════════════════════════════════
-// STANDINGS EDIT
-// ═══════════════════════════════════════════════════════════
-function openStandingsEdit() {
-  if (!adminUnlocked) { requireAdmin({type:"noop"}); return; }
-  const panel = document.getElementById("standings-edit-panel");
-  const tbody = document.getElementById("standings-edit-body");
-  const sorted = LIVE.slice().sort((a, b) => a.rank - b.rank);
-  tbody.innerHTML = sorted.map((p, i) => {
-    const gwH = p.gwH || [0,0,0];
-    return "<tr>" +
-      "<td><input class='inline-inp' type='number' id='se-rank-" + i + "' value='" + p.rank + "' style='width:50px'></td>" +
-      "<td><strong style='font-size:.82rem'>" + p.name + "</strong><input type='hidden' id='se-name-" + i + "' value='" + p.name + "'></td>" +
-      "<td><input class='inline-inp' type='text' id='se-team-" + i + "' value='" + p.team.replace(/'/g,"&#39;") + "' style='width:140px'></td>" +
-      "<td><input class='inline-inp' type='number' id='se-gw-" + i + "' value='" + p.gw + "' style='width:60px'></td>" +
-      "<td><input class='inline-inp' type='number' id='se-total-" + i + "' value='" + p.total + "' style='width:70px'></td>" +
-      "<td><input class='inline-inp' type='number' id='se-last-" + i + "' value='" + p.last + "' style='width:50px'></td>" +
-      "<td><input class='inline-inp' type='number' id='se-gw34-" + i + "' value='" + gwH[0] + "' style='width:55px'></td>" +
-      "<td><input class='inline-inp' type='number' id='se-gw35-" + i + "' value='" + gwH[1] + "' style='width:55px'></td>" +
-      "<td><input class='inline-inp' type='number' id='se-gw36-" + i + "' value='" + gwH[2] + "' style='width:55px'></td>" +
-      "</tr>";
-  }).join("");
-  panel.style.display = "block";
-  document.getElementById("btn-edit-standings").style.display = "none";
-  document.getElementById("btn-save-standings").style.display = "inline-flex";
-  document.getElementById("btn-cancel-standings").style.display = "inline-flex";
-}
-
-function saveStandingsEdit() {
-  const sorted = LIVE.slice().sort((a, b) => a.rank - b.rank);
-  sorted.forEach((p, i) => {
-    const name = document.getElementById("se-name-" + i).value;
-    const entry = LIVE.find(x => x.name === name);
-    if (!entry) return;
-    entry.rank  = parseInt(document.getElementById("se-rank-"  + i).value) || entry.rank;
-    entry.team  = document.getElementById("se-team-"  + i).value || entry.team;
-    entry.gw    = parseInt(document.getElementById("se-gw-"    + i).value) || 0;
-    entry.total = parseInt(document.getElementById("se-total-" + i).value) || 0;
-    entry.last  = parseInt(document.getElementById("se-last-"  + i).value) || entry.last;
-    entry.gwH   = [
-      parseInt(document.getElementById("se-gw34-" + i).value) || 0,
-      parseInt(document.getElementById("se-gw35-" + i).value) || 0,
-      parseInt(document.getElementById("se-gw36-" + i).value) || 0,
-    ];
-  });
-  markPendingChange();
-  closeStandingsEdit();
-  renderStandings();
-  toast("Standings updated!");
-}
-
-function closeStandingsEdit() {
-  document.getElementById("standings-edit-panel").style.display = "none";
-  document.getElementById("btn-edit-standings").style.display = adminUnlocked ? "inline-flex" : "none";
-  document.getElementById("btn-save-standings").style.display = "none";
-  document.getElementById("btn-cancel-standings").style.display = "none";
-}
-
-// ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 // RENDER GW TRACKER
-// ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 function buildGWBody(gw) {
   const entries = PAYS.filter(p => p.gw === gw).sort((a, b) => a.manager.localeCompare(b.manager));
   if (!entries.length) return '<div style="padding:12px;color:var(--muted)">No records for GW' + gw + '.</div>';
-  const mgrOpts = ACTIVE.map(a => '<option value="' + a + '">' + a + '</option>').join('');
-  const rows = entries.map(p => {
+  let rows = entries.map(p => {
     const bg = p.status === "paid" ? "rgba(63,185,80,.04)" : "rgba(248,81,73,.04)";
     const owesOpts = ACTIVE.map(a => '<option value="' + a + '"' + (a === p.owesTo ? ' selected' : '') + '>' + a + '</option>').join('');
     const payLabel = p.status === "paid" ? "&#8617; Unpaid" : "&#10003; Paid";
@@ -1063,10 +838,11 @@ function buildGWBody(gw) {
       '<td>' + pill(p.status) + '</td>' +
       '<td style="font-size:.7rem;color:var(--muted)">' + (p.note || '&mdash;') + '</td>' +
       '<td style="white-space:nowrap">' +
-        '<button class="' + payClass + ' pay-btn" style="padding:3px 8px;font-size:.65rem;margin-right:4px" data-id="' + p.id + '" data-status="' + payNewStatus + '" data-isseason="0">' + payLabel + '</button>' +
+        '<button class="' + payClass + ' pay-btn" style="padding:3px 8px;font-size:.65rem;margin-right:4px" data-id="' + p.id + '" data-status="' + payNewStatus + '">' + payLabel + '</button>' +
         '<button class="btn btn-r del-btn" style="padding:3px 8px;font-size:.65rem" data-id="' + p.id + '" data-gw="' + gw + '">&#128465;</button>' +
       '</td></tr>';
   }).join('');
+  const mgrOpts = ACTIVE.map(a => '<option value="' + a + '">' + a + '</option>').join('');
   const addRow = '<tr style="background:rgba(88,166,255,.04)">' +
     '<td><select id="add-mgr-' + gw + '" class="inline-sel">' + mgrOpts + '</select></td>' +
     '<td><select id="add-owesto-' + gw + '" class="inline-sel">' + mgrOpts + '</select></td>' +
@@ -1075,16 +851,15 @@ function buildGWBody(gw) {
     '<td></td>' +
     '<td><button class="btn btn-b add-debt-btn" style="padding:3px 8px;font-size:.65rem" data-gw="' + gw + '">&#43; Add</button></td>' +
     '</tr>';
-  const tid = "gw-tbl-" + gw;
   return '<div class="tbl-wrap" style="border:none;border-radius:0">' +
-    '<table id="' + tid + '">' +
+    '<table id="gw-tbl-' + gw + '">' +
     '<thead><tr>' +
-    '<th data-sort-tbl="' + tid + '" data-sort-col="0">Manager</th>' +
-    '<th data-sort-tbl="' + tid + '" data-sort-col="1">Owes To</th>' +
-    '<th data-sort-tbl="' + tid + '" data-sort-col="2" style="text-align:right">Amount</th>' +
-    '<th data-sort-tbl="' + tid + '" data-sort-col="3">Reason</th>' +
-    '<th data-sort-tbl="' + tid + '" data-sort-col="4">Status</th>' +
-    '<th data-sort-tbl="' + tid + '" data-sort-col="5">Note</th>' +
+    '<th data-sort-tbl="gw-tbl-' + gw + '" data-sort-col="0">Manager</th>' +
+    '<th data-sort-tbl="gw-tbl-' + gw + '" data-sort-col="1">Owes To</th>' +
+    '<th data-sort-tbl="gw-tbl-' + gw + '" data-sort-col="2" style="text-align:right">Amount</th>' +
+    '<th data-sort-tbl="gw-tbl-' + gw + '" data-sort-col="3">Reason</th>' +
+    '<th data-sort-tbl="gw-tbl-' + gw + '" data-sort-col="4">Status</th>' +
+    '<th data-sort-tbl="gw-tbl-' + gw + '" data-sort-col="5">Note</th>' +
     '<th>Action</th>' +
     '</tr></thead>' +
     '<tbody>' + rows + addRow + '</tbody></table></div>';
@@ -1100,7 +875,7 @@ function refreshGWBody(gw) {
 
 function renderGWTracker() {
   const filter = document.getElementById("gw-filter").value;
-  const wrap   = document.getElementById("gw-tracker-body");
+  const wrap = document.getElementById("gw-tracker-body");
   wrap.innerHTML = "";
   Object.keys(GW_META).map(Number).sort((a, b) => a - b).forEach(gw => {
     const m  = GW_META[gw] || {};
@@ -1109,8 +884,8 @@ function renderGWTracker() {
     if (filter === "done"   && st !== "done")    return;
     const stColor = st === "done" ? "var(--green)" : st === "pending" ? "var(--red)" : "var(--muted)";
     const stLabel = st === "done" ? "DONE" : st === "pending" ? "PENDING" : "CANCELLED";
-    const p1txt = m.p1 && m.p1 !== "—" ? "1st: <strong style='color:var(--orange)'>" + m.p1 + "</strong>" : "";
-    const p2txt = m.p2 && m.p2 !== "—" ? " &middot; 2nd: <strong style='color:var(--blue)'>" + m.p2 + "</strong>" : "";
+    const p1txt = m.p1 && m.p1 !== "\u2014" ? "1st: <strong style='color:var(--orange)'>" + m.p1 + "</strong>" : "";
+    const p2txt = m.p2 && m.p2 !== "\u2014" ? " &middot; 2nd: <strong style='color:var(--blue)'>" + m.p2 + "</strong>" : "";
     const ntxt  = m.note ? " &middot; <em>" + m.note + "</em>" : "";
     const card  = document.createElement("div");
     card.className = "gw-card";
@@ -1128,70 +903,36 @@ function renderGWTracker() {
   });
 }
 
-// ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 // RENDER PAYMENTS
-// ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 function renderPayments() {
-  const statusFilter = document.getElementById("pay-filter").value;
-  const typeFilter   = document.getElementById("pay-type-filter").value;
-  const body = document.getElementById("payments-body");
+  const filter = document.getElementById("pay-filter").value;
+  const body   = document.getElementById("payments-body");
   body.innerHTML = "";
-
-  let list = [];
-  if (typeFilter !== "season") list = list.concat(PAYS.map(p => Object.assign({}, p, {type:"gw"})));
-  if (typeFilter !== "gw")     list = list.concat(SEASON_PAYS.map(p => Object.assign({}, p, {type:"season"})));
-  // Exclude Ta, Kim, Arm from Payments tab entirely
-  const EXCLUDED_FROM_PAYMENTS = ["Ta", "Kim", "Arm"];
-  list = list.filter(p => !EXCLUDED_FROM_PAYMENTS.includes(p.manager));
-
-  if (statusFilter === "unpaid") list = list.filter(p => p.status !== "paid");
-  if (statusFilter === "paid")   list = list.filter(p => p.status === "paid");
-
-  if (!list.length) {
-    body.innerHTML = '<div style="text-align:center;color:var(--muted);padding:24px">No records match this filter.</div>';
-    return;
-  }
-
-  // Group by PAYER
+  const list = filter === "all" ? PAYS : PAYS.filter(p => p.status === (filter === "unpaid" ? "unpaid" : "paid"));
+  if (!list.length) { body.innerHTML = '<div style="text-align:center;color:var(--muted);padding:24px">No records match this filter.</div>'; return; }
   const groups = {};
-  list.forEach(p => { if (!groups[p.manager]) groups[p.manager] = []; groups[p.manager].push(p); });
-
+  list.forEach(p => { if (!groups[p.owesTo]) groups[p.owesTo] = []; groups[p.owesTo].push(p); });
   Object.keys(groups).sort((a, b) => {
     const aU = groups[a].some(p => p.status !== "paid") ? 0 : 1;
     const bU = groups[b].some(p => p.status !== "paid") ? 0 : 1;
     return aU !== bU ? aU - bU : a.localeCompare(b);
-  }).forEach(manager => {
-    const recs = groups[manager].sort((a, b) => {
-      if (a.type !== b.type) return a.type === "season" ? -1 : 1;
-      return (a.gw || 0) - (b.gw || 0);
-    });
-    const totalOwed = recs.filter(p => p.status !== "paid" && !p.badDebt).reduce((s, p) => s + p.amount, 0);
-    const totalPaid = recs.filter(p => p.status === "paid" && !p.badDebt).reduce((s, p) => s + p.amount, 0);
-    const hasUnpaid = recs.some(p => p.status !== "paid" && !p.badDebt);
-    const tid = "pay-tbl-" + manager.replace(/[^a-z0-9]/gi, "");
+  }).forEach(recipient => {
+    const recs = groups[recipient].sort((a, b) => a.gw - b.gw);
+    const totalOwed = recs.filter(p => p.status !== "paid").reduce((s, p) => s + p.amount, 0);
+    const totalPaid = recs.filter(p => p.status === "paid").reduce((s, p) => s + p.amount, 0);
+    const hasUnpaid = recs.some(p => p.status !== "paid");
+    const tid = "pay-tbl-" + recipient.replace(/[^a-z0-9]/gi, "");
     const rows = recs.map(p => {
-      const isBad = !!p.badDebt;
-      const bg = isBad ? "rgba(139,148,158,.06)" : p.status === "paid" ? "rgba(63,185,80,.04)" : "rgba(248,81,73,.04)";
-      const gwLabel = p.type === "season"
-        ? '<span style="color:var(--purple);font-size:.68rem;font-weight:700">SEASON</span>'
-        : '<span style="color:var(--orange);font-weight:700">GW' + p.gw + '</span>';
-      const payNewStatus = p.status === "paid" ? "unpaid" : "paid";
-      const payClass = p.status === "paid" ? "btn" : "btn btn-g";
-      const payLabel = p.status === "paid" ? "&#8617;" : "&#10003; Paid";
-      const isseason = p.type === "season" ? "1" : "0";
-      const badDebtBadge = isBad ? '<span class="pill" style="background:rgba(139,148,158,.2);color:var(--muted);border:1px solid rgba(139,148,158,.4);font-size:.62rem">Bad Debt</span>' : '';
-      const actionBtns = isBad
-        ? badDebtBadge
-        : '<button class="' + payClass + ' pay-btn" style="padding:2px 7px;font-size:.62rem;margin-right:3px" data-id="' + p.id + '" data-status="' + payNewStatus + '" data-isseason="' + isseason + '">' + payLabel + '</button>' +
-          (p.type === "season" ? '<button class="btn btn-r del-season-btn" style="padding:2px 7px;font-size:.62rem" data-id="' + p.id + '">&#128465;</button>' : '');
-      const amtColor = isBad ? "var(--muted)" : p.status === "paid" ? "var(--green)" : "var(--red)";
-      const noteText = p.note ? ' &mdash; <em style="color:var(--muted)">' + p.note + '</em>' : '';
+      const bg = p.status === "paid" ? "rgba(63,185,80,.04)" : "rgba(248,81,73,.04)";
       return '<tr style="background:' + bg + '">' +
-        '<td>' + gwLabel + '</td>' +
-        '<td style="color:var(--green);font-weight:600">' + p.owesTo + '</td>' +
-        '<td style="text-align:right;font-weight:700;color:' + amtColor + '">' + (isBad ? '<s>' + p.amount + '</s>' : p.amount) + '</td>' +
-        '<td style="font-size:.72rem;color:var(--muted)">' + p.reason + noteText + '</td>' +
-        '<td>' + actionBtns + '</td>' +
+        '<td style="color:var(--orange);font-weight:700">GW' + p.gw + '</td>' +
+        '<td><strong>' + p.manager + '</strong></td>' +
+        '<td style="text-align:right;font-weight:700;color:' + (p.status === "paid" ? "var(--green)" : "var(--red)") + '">' + p.amount + '</td>' +
+        '<td style="font-size:.72rem;color:var(--muted)">' + p.reason + '</td>' +
+        '<td>' + pill(p.status) + '</td>' +
+        '<td style="font-size:.7rem;color:var(--muted)">' + (p.note || '&mdash;') + '</td>' +
         '</tr>';
     }).join('');
     const bdr = hasUnpaid ? "rgba(248,81,73,.4)" : "rgba(63,185,80,.3)";
@@ -1199,73 +940,59 @@ function renderPayments() {
     card.style.cssText = "background:var(--card);border-radius:10px;margin-bottom:12px;overflow:hidden;border:1px solid " + bdr;
     card.innerHTML =
       '<div class="pay-group-hdr" style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--card2);cursor:pointer">' +
-        '<div><span style="font-weight:700;font-size:.92rem;color:' + (hasUnpaid ? "var(--orange)" : "var(--green)") + '">' + manager + '</span>' +
+        '<div><span style="font-weight:700;font-size:.92rem;color:' + (hasUnpaid ? "var(--orange)" : "var(--green)") + '">' + recipient + '</span>' +
         '<span style="font-size:.7rem;color:var(--muted);margin-left:8px">' + recs.length + ' payment' + (recs.length !== 1 ? 's' : '') + '</span></div>' +
         '<div style="display:flex;gap:10px;align-items:center">' +
-          (totalOwed > 0 ? '<span style="color:var(--red);font-weight:700;font-size:.8rem">' + totalOwed + ' still owed</span>' : '') +
+          (totalOwed > 0 ? '<span style="color:var(--red);font-weight:700;font-size:.8rem">' + totalOwed + ' outstanding</span>' : '') +
           (totalPaid > 0 ? '<span style="color:var(--green);font-size:.75rem">' + totalPaid + ' paid</span>' : '') +
           '<span style="color:var(--muted)">&#9660;</span>' +
         '</div>' +
       '</div>' +
       '<div class="pay-group-body" style="display:none">' +
-        '<div class="tbl-wrap" style="border:none;border-radius:0"><table id="' + tid + '">' +
+        '<div class="tbl-wrap" style="border:none;border-radius:0">' +
+        '<table id="' + tid + '">' +
         '<thead><tr>' +
-          '<th data-sort-tbl="' + tid + '" data-sort-col="0">GW/Type</th>' +
-          '<th data-sort-tbl="' + tid + '" data-sort-col="1">Paying To</th>' +
+          '<th data-sort-tbl="' + tid + '" data-sort-col="0">GW</th>' +
+          '<th data-sort-tbl="' + tid + '" data-sort-col="1">From</th>' +
           '<th data-sort-tbl="' + tid + '" data-sort-col="2" style="text-align:right">Amount</th>' +
           '<th data-sort-tbl="' + tid + '" data-sort-col="3">Reason</th>' +
-          '<th data-sort-tbl="' + tid + '" data-sort-col="4">Status/Action</th>' +
+          '<th data-sort-tbl="' + tid + '" data-sort-col="4">Status</th>' +
+          '<th data-sort-tbl="' + tid + '" data-sort-col="5">Note</th>' +
         '</tr></thead>' +
         '<tbody>' + rows + '</tbody></table></div>' +
-        (adminUnlocked ?
-          '<div style="padding:8px 12px;background:rgba(88,166,255,.04);border-top:1px solid var(--border);display:flex;gap:6px;flex-wrap:wrap;align-items:center">' +
-            '<span style="font-size:.7rem;color:var(--blue);font-weight:600">+ Add Season Debt:</span>' +
-            '<select id="add-sea-owesto-' + manager + '" class="inline-sel" style="min-height:28px">' + ACTIVE.map(a => '<option value="' + a + '">' + a + '</option>').join('') + '</select>' +
-            '<input id="add-sea-amt-' + manager + '" type="number" value="1000" class="inline-inp" style="width:65px;min-height:28px">' +
-            '<input id="add-sea-reason-' + manager + '" placeholder="Reason" class="inline-inp" style="width:130px;min-height:28px">' +
-            '<button class="btn btn-b add-season-btn" style="padding:3px 8px;font-size:.65rem" data-manager="' + manager + '">+ Add</button>' +
-          '</div>'
-        : '') +
       '</div>';
     body.appendChild(card);
   });
 }
 
-// ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 // RENDER DEBTS
-// ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 function renderDebts() {
   const body = document.getElementById("debts-body");
   if (!body) return;
   const net = {};
-  ACTIVE.forEach(m => { net[m] = {owes:0, owed:0}; });
-
-  // GW-ONLY debts (excl GW22/23, excl bad debts) — NO season fees
-  PAYS.filter(p => p.gw !== 22 && p.gw !== 23 && p.status !== "paid" && !p.badDebt).forEach(p => {
+  ACTIVE.forEach(m => { net[m] = {owes: 0, owed: 0}; });
+  PAYS.filter(p => p.gw !== 22 && p.gw !== 23 && p.status !== "paid").forEach(p => {
     if (net[p.manager]) net[p.manager].owes += p.amount;
     if (net[p.owesTo])  net[p.owesTo].owed  += p.amount;
   });
-
   const cards = ACTIVE.map(m => {
     const {owes, owed} = net[m];
-    const nv  = owed - owes;
+    const nv = owed - owes;
     const col = nv > 0 ? "var(--green)" : nv < 0 ? "var(--red)" : "var(--muted)";
     const lbl = nv > 0 ? "+" + nv + " net credit" : nv < 0 ? nv + " net debt" : "Settled";
     const bdr = nv > 0 ? "rgba(63,185,80,.3)" : nv < 0 ? "rgba(248,81,73,.3)" : "var(--border)";
-    const sel = selectedDebtManager === m;
-    return '<div class="debt-card card' + (sel ? ' selected' : '') + '" data-manager="' + m + '" style="padding:12px;border-color:' + bdr + ';cursor:pointer">' +
+    return '<div class="card" style="padding:12px;border-color:' + bdr + '">' +
       '<div style="font-weight:700;font-size:.9rem;margin-bottom:6px">' + m + '</div>' +
       '<div style="font-size:.72rem;color:var(--muted)">Owes: <span style="color:var(--red);font-weight:600">' + owes + '</span></div>' +
       '<div style="font-size:.72rem;color:var(--muted)">Owed: <span style="color:var(--green);font-weight:600">' + owed + '</span></div>' +
-      '<div style="font-size:.8rem;font-weight:700;color:' + col + ';margin-top:4px">' + lbl + '</div>' +
-      '<div style="font-size:.65rem;color:var(--muted);margin-top:4px">&#128269; Click for details</div>' +
-      '</div>';
+      '<div style="font-size:.8rem;font-weight:700;color:' + col + ';margin-top:4px">' + lbl + '</div></div>';
   }).join('');
-
   const flows = {};
-  PAYS.filter(p => p.gw !== 22 && p.gw !== 23 && p.status !== "paid" && !p.badDebt).forEach(p => {
+  PAYS.filter(p => p.gw !== 22 && p.gw !== 23 && p.status !== "paid").forEach(p => {
     const k = p.manager + "\u2192" + p.owesTo;
-    if (!flows[k]) flows[k] = {from:p.manager, to:p.owesTo, total:0, gws:[]};
+    if (!flows[k]) flows[k] = {from: p.manager, to: p.owesTo, total: 0, gws: []};
     flows[k].total += p.amount;
     if (!flows[k].gws.includes(p.gw)) flows[k].gws.push(p.gw);
   });
@@ -1274,13 +1001,11 @@ function renderDebts() {
     '<td style="text-align:center;color:var(--muted)">&rarr;</td>' +
     '<td><strong style="color:var(--green)">' + f.to + '</strong></td>' +
     '<td style="text-align:right;font-weight:700;color:var(--orange)">' + f.total + '</td>' +
-    '<td style="font-size:.7rem;color:var(--muted)">GW' + f.gws.sort((a,b)=>a-b).join(', GW') + '</td></tr>'
+    '<td style="font-size:.7rem;color:var(--muted)">GW' + f.gws.sort((a, b) => a - b).join(', GW') + '</td></tr>'
   ).join('');
-
   body.innerHTML =
-    '<div class="alert a-info" style="font-size:.78rem;margin-bottom:10px">&#128202; GW payments only (GW19\u201338, excl. GW22/23). Season fees are shown in the Overview tab.</div>' +
     '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:14px">' + cards + '</div>' +
-    '<div class="sec sec-o" style="margin-bottom:8px">Outstanding GW Payment Flows</div>' +
+    '<div class="sec sec-o" style="margin-bottom:8px">Outstanding Payment Flows</div>' +
     '<div class="tbl-wrap"><table id="tbl-flows">' +
     '<thead><tr>' +
       '<th data-sort-tbl="tbl-flows" data-sort-col="0">From</th><th></th>' +
@@ -1288,103 +1013,31 @@ function renderDebts() {
       '<th data-sort-tbl="tbl-flows" data-sort-col="3" style="text-align:right">Amount</th>' +
       '<th data-sort-tbl="tbl-flows" data-sort-col="4">Gameweeks</th>' +
     '</tr></thead>' +
-    '<tbody>' + (flowRows || '<tr><td colspan="5" style="text-align:center;color:var(--green)">No outstanding GW debts!</td></tr>') + '</tbody>' +
+    '<tbody>' + (flowRows || '<tr><td colspan="5" style="text-align:center;color:var(--green)">No outstanding debts!</td></tr>') + '</tbody>' +
     '</table></div>';
 }
 
-function showDebtDetail(manager) {
-  const panel = document.getElementById("debt-detail-panel");
-  if (selectedDebtManager === manager) {
-    selectedDebtManager = null;
-    panel.style.display = "none";
-    renderDebts();
-    return;
-  }
-  selectedDebtManager = manager;
-  renderDebts();
-
-  const allTx = [
-    ...PAYS.filter(p => p.gw !== 22 && p.gw !== 23 && (p.manager === manager || p.owesTo === manager)),
-    ...SEASON_PAYS.filter(p => p.manager === manager || p.owesTo === manager)
-  ].sort((a, b) => (a.gw || 999) - (b.gw || 999));
-
-  const rows = allTx.map(p => {
-    const dir = p.manager === manager ? "paying" : "receiving";
-    const other = p.manager === manager ? p.owesTo : p.manager;
-    const sign = dir === "paying" ? "-" : "+";
-    const col  = dir === "paying" ? "var(--red)" : "var(--green)";
-    const gwLbl = p.gw ? "GW" + p.gw : "Season";
-    return '<tr>' +
-      '<td style="color:var(--muted);font-size:.72rem">' + gwLbl + '</td>' +
-      '<td>' + (dir === "paying" ? '&#8594; <strong>' + other + '</strong>' : '&#8592; <strong>' + other + '</strong>') + '</td>' +
-      '<td style="text-align:right;font-weight:700;color:' + col + '">' + sign + p.amount + '</td>' +
-      '<td style="font-size:.7rem;color:var(--muted)">' + p.reason + '</td>' +
-      '<td>' + pill(p.status) + '</td>' +
-      '</tr>';
-  }).join('');
-
-  const totalOwes = allTx.filter(p => p.manager === manager && p.status !== "paid").reduce((s, p) => s + p.amount, 0);
-  const totalOwed = allTx.filter(p => p.owesTo === manager && p.status !== "paid").reduce((s, p) => s + p.amount, 0);
-  const net = totalOwed - totalOwes;
-
-  panel.style.display = "block";
-  panel.innerHTML =
-    '<div class="card" style="padding:14px">' +
-    '<div style="font-weight:700;font-size:.95rem;margin-bottom:10px;color:var(--orange)">&#128269; ' + manager + ' &mdash; All Transactions</div>' +
-    '<div style="display:flex;gap:12px;margin-bottom:10px;flex-wrap:wrap">' +
-      '<span style="font-size:.78rem">Still owes: <strong style="color:var(--red)">' + totalOwes + '</strong></span>' +
-      '<span style="font-size:.78rem">Still owed: <strong style="color:var(--green)">' + totalOwed + '</strong></span>' +
-      '<span style="font-size:.78rem">Net: <strong style="color:' + (net >= 0 ? "var(--green)" : "var(--red)") + '">' + (net >= 0 ? "+" : "") + net + '</strong></span>' +
-    '</div>' +
-    '<div class="tbl-wrap"><table id="tbl-detail-' + manager.replace(/[^a-z0-9]/gi,"") + '">' +
-    '<thead><tr><th>GW/Type</th><th>Direction</th><th style="text-align:right">Amount</th><th>Reason</th><th>Status</th></tr></thead>' +
-    '<tbody>' + (rows || '<tr><td colspan="5" style="text-align:center;color:var(--muted)">No transactions</td></tr>') + '</tbody>' +
-    '</table></div>' +
-    '<button class="btn" style="margin-top:10px" id="btn-close-detail">&#10005; Close</button>' +
-    '</div>';
-}
-
-// ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 // RENDER VISUAL OVERVIEW
-// ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 function renderVisual() {
   const body = document.getElementById("visual-container");
   if (!body) return;
 
-  // ═══════════════════════════════════════════════════════════════
-  // TRUE NET POSITION FORMULA
-  // Net = (GW unpaid inflows, excl Kim bad debt)
-  //     + (season prize winnings — full amount owed to winner)
-  //     - (GW unpaid outflows, excl Kim bad debt)
-  //     - (season fees still unpaid)
-  //
-  // Validation:
-  //   DJ   = +2800 GW + 1500 H2H prize = +4300
-  //   Poom = -2800 GW - 2000 season fees = -4800
-  // ═══════════════════════════════════════════════════════════════
-
-  // ── GW unpaid flows (exclude Kim bad-debt entries) ──────────────
-  const gwInU  = {};   // unpaid GW inflows owed TO manager
-  const gwOutU = {};   // unpaid GW outflows manager owes
+  const gwInU  = {};
+  const gwOutU = {};
   ACTIVE.forEach(m => { gwInU[m] = 0; gwOutU[m] = 0; });
-
   PAYS.filter(p =>
     p.gw !== 22 && p.gw !== 23 &&
     p.status === "unpaid" &&
-    p.manager !== "Kim"   // Kim is a bad debt — exclude
+    p.manager !== "Kim"
   ).forEach(p => {
     if (gwOutU[p.manager] !== undefined) gwOutU[p.manager] += p.amount;
     if (gwInU[p.owesTo]   !== undefined) gwInU[p.owesTo]   += p.amount;
   });
 
-  // ── Season prize winnings (full prize owed to winner) ───────────
-  // H2H 1st half: Note=6000, Tung=3000, DJ=1500
-  // CLS 1st half: Pladon=6000, Note=3000, Tung=1000
-  const SEASON_PRIZES = {
-    DJ:1500, Note:9000, Tung:4000, Pladon:6000
-  };
+  const SEASON_PRIZES = {DJ:1500, Note:9000, Tung:4000, Pladon:6000};
 
-  // ── Season fees still unpaid ────────────────────────────────────
   const seasonFeesUnpaid = {};
   ACTIVE.forEach(m => { seasonFeesUnpaid[m] = 0; });
   SEASON_PAYS.filter(p => p.status !== "paid" && !p.badDebt).forEach(p => {
@@ -1392,7 +1045,6 @@ function renderVisual() {
       seasonFeesUnpaid[p.manager] += p.amount;
   });
 
-  // ── Combined net ────────────────────────────────────────────────
   const combined = {};
   ACTIVE.forEach(m => {
     const owed  = gwInU[m]  + (SEASON_PRIZES[m] || 0);
@@ -1406,8 +1058,7 @@ function renderVisual() {
     .map(m => {
       const { owed, owes, net } = combined[m];
       const col = net >= 0 ? "var(--green)" : "var(--red)";
-      const ow  = Math.round(owes / maxVal * 100);
-      const od  = Math.round(owed / maxVal * 100);
+      const ow  = Math.round(owes / maxVal * 100), od = Math.round(owed / maxVal * 100);
       return '<div style="display:grid;grid-template-columns:70px 1fr 60px;align-items:center;gap:8px;margin-bottom:6px">' +
         '<div style="font-size:.75rem;font-weight:600;text-align:right">' + m + '</div>' +
         '<div class="bar-wrap">' +
@@ -1419,34 +1070,29 @@ function renderVisual() {
             (owed > 0 ? '<span style="color:var(--green)">' + owed + '</span>' : '') +
           '</div>' +
         '</div>' +
-        '<div style="font-size:.78rem;font-weight:700;color:' + col + ';text-align:right">' +
-          (net >= 0 ? '+' : '') + net +
-        '</div>' +
+        '<div style="font-size:.78rem;font-weight:700;color:' + col + ';text-align:right">' + (net >= 0 ? '+' : '') + net + '</div>' +
         '</div>';
     }).join('');
 
-  // ── GW outstanding owed-to table ────────────────────────────────
   const owedTo = {};
   ACTIVE.forEach(m => { owedTo[m] = 0; });
-  PAYS.filter(p => p.gw !== 22 && p.gw !== 23 && p.status !== "paid" && !p.badDebt)
+  PAYS.filter(p => p.gw !== 22 && p.gw !== 23 && p.status !== "paid" && p.manager !== "Kim")
     .forEach(p => { if (owedTo[p.owesTo] !== undefined) owedTo[p.owesTo] += p.amount; });
-  const owedRows = ACTIVE.filter(m => owedTo[m] > 0)
-    .sort((a, b) => owedTo[b] - owedTo[a])
+  const owedRows = ACTIVE.filter(m => owedTo[m] > 0).sort((a, b) => owedTo[b] - owedTo[a])
     .map(m => '<tr><td><strong>' + m + '</strong></td><td style="text-align:right;font-weight:700;color:var(--orange)">' + owedTo[m] + '</td></tr>').join('');
 
-  const totalGWUnpaid     = PAYS.filter(p => p.status !== "paid" && p.gw !== 22 && p.gw !== 23 && !p.badDebt).reduce((s,p) => s+p.amount, 0);
-  const totalGWPaid       = PAYS.filter(p => p.status === "paid"  && p.gw !== 22 && p.gw !== 23 && !p.badDebt).reduce((s,p) => s+p.amount, 0);
+  const totalGWUnpaid     = PAYS.filter(p => p.status !== "paid" && p.gw !== 22 && p.gw !== 23 && p.manager !== "Kim").reduce((s,p) => s+p.amount, 0);
+  const totalGWPaid       = PAYS.filter(p => p.status === "paid"  && p.gw !== 22 && p.gw !== 23).reduce((s,p) => s+p.amount, 0);
   const totalSeasonUnpaid = SEASON_PAYS.filter(p => p.status !== "paid" && !p.badDebt).reduce((s,p) => s+p.amount, 0);
   const totalSeasonPaid   = SEASON_PAYS.filter(p => p.status === "paid"  && !p.badDebt).reduce((s,p) => s+p.amount, 0);
 
-  // ── Season fee toggle section ───────────────────────────────────
   function buildSeasonFeeSection(leagueType, label) {
     const entries = SEASON_PAYS.filter(p => !p.badDebt && p.reason && p.reason.toLowerCase().includes(leagueType));
     if (!entries.length) return '';
     const rows = entries.map(p => {
-      const isPaid    = p.status === "paid";
+      const isPaid = p.status === "paid";
       const newStatus = isPaid ? "unpaid" : "paid";
-      const rowBg     = isPaid ? "rgba(63,185,80,.04)" : "rgba(248,81,73,.04)";
+      const rowBg = isPaid ? "rgba(63,185,80,.04)" : "rgba(248,81,73,.04)";
       return '<tr style="background:' + rowBg + '">' +
         '<td><strong>' + p.manager + '</strong></td>' +
         '<td style="text-align:right;font-weight:700;color:' + (isPaid ? "var(--green)" : "var(--red)") + '">' + p.amount + '</td>' +
@@ -1467,7 +1113,6 @@ function renderVisual() {
       '</div></div>';
   }
 
-  // ── Prize cards (static display) ───────────────────────────────
   function prizeCard(data) {
     const paidH   = data.paid.length   ? data.paid.map(m   => '<span class="badge badge-g" style="font-size:.65rem;margin:2px">' + m + '</span>').join('') : '<span style="color:var(--muted);font-size:.72rem">None yet</span>';
     const unpaidH = data.unpaid.length ? data.unpaid.map(m => '<span class="badge badge-r" style="font-size:.65rem;margin:2px">' + m + '</span>').join('') : '<span style="color:var(--green);font-size:.72rem">All paid</span>';
@@ -1503,28 +1148,21 @@ function renderVisual() {
     results:[{rank:1,mgr:"TBD",prize:5000},{rank:2,mgr:"TBD",prize:2500},{rank:3,mgr:"TBD",prize:500}],
     paid:[], unpaid:["Season in progress"]};
 
-  // ── Assemble HTML ───────────────────────────────────────────────
   body.innerHTML =
-    '<div class="alert a-red" style="margin-bottom:10px;font-size:.8rem"><strong>Bad Debts \u2014 Kim &amp; Arm:</strong> Both managers cancelled. 1st half totals reflect 13 managers. GW debts uncollectable. All bad debt amounts excluded from totals.</div>' +
-
+    '<div class="alert a-red" style="margin-bottom:10px;font-size:.8rem"><strong>Bad Debts \u2014 Kim &amp; Arm:</strong> Both managers cancelled. 1st half totals reflect 13 managers. GW debts uncollectable.</div>' +
     '<div class="sec sec-o">Season Prize Pools</div>' +
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">' +
       '<div><div style="font-size:.68rem;font-weight:700;color:var(--orange);margin-bottom:6px;text-transform:uppercase">1st Half</div>' + prizeCard(H2H1) + prizeCard(CLS1) + '</div>' +
       '<div><div style="font-size:.68rem;font-weight:700;color:var(--blue);margin-bottom:6px;text-transform:uppercase">2nd Half</div>' + prizeCard(CLS2) +
         '<div class="alert a-info" style="font-size:.75rem">H2H 2nd half on hold \u2014 Kim, Ta &amp; June teams still active.</div></div>' +
     '</div>' +
-
     '<div class="sec sec-o">Season Entry Fees (1st Half \u2014 Paid to The Bank)</div>' +
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">' +
       '<div>' + buildSeasonFeeSection('classic', '&#127942; Classic Entry Fee (1000 each)') + '</div>' +
       '<div>' + buildSeasonFeeSection('h2h', '&#129309; H2H Entry Fee (1000 each)') + '</div>' +
     '</div>' +
-
     '<div class="sec sec-o">True Net Position (GW Outstanding + Season)</div>' +
-    '<div class="alert a-info" style="font-size:.75rem;margin-bottom:10px">' +
-      '<strong>Net = (GW unpaid inflows + season prize winnings) \u2212 (GW unpaid outflows + season fees unpaid)</strong>. ' +
-      'Green = net credit &nbsp;|&nbsp; Red = net debt. DJ +4300 &middot; Poom \u22124800 validated.' +
-    '</div>' +
+    '<div class="alert a-info" style="font-size:.75rem;margin-bottom:10px"><strong>Net = (GW unpaid inflows + season prize winnings) \u2212 (GW unpaid outflows + season fees unpaid)</strong>. DJ +4300 &middot; Poom \u22124800 validated.</div>' +
     '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:12px">' +
       '<div class="card" style="padding:10px;text-align:center"><div style="font-size:1.4rem;font-weight:700;color:var(--red)">' + totalGWUnpaid + '</div><div style="font-size:.7rem;color:var(--muted)">GW Outstanding</div></div>' +
       '<div class="card" style="padding:10px;text-align:center"><div style="font-size:1.4rem;font-weight:700;color:var(--green)">' + totalGWPaid + '</div><div style="font-size:.7rem;color:var(--muted)">GW Settled</div></div>' +
@@ -1533,174 +1171,123 @@ function renderVisual() {
     '</div>' +
     '<div class="card" style="padding:12px;margin-bottom:14px">' +
       '<div style="display:grid;grid-template-columns:70px 1fr 60px;gap:8px;margin-bottom:6px;font-size:.65rem;color:var(--muted);font-weight:600">' +
-        '<div style="text-align:right">Manager</div>' +
-        '<div style="text-align:center"><span style="color:var(--red)">&#9632; Owes</span> &nbsp; <span style="color:var(--green)">&#9632; Owed</span></div>' +
-        '<div style="text-align:right">Net</div>' +
+        '<div style="text-align:right">Manager</div><div style="text-align:center"><span style="color:var(--red)">&#9632; Owes</span> &nbsp; <span style="color:var(--green)">&#9632; Owed</span></div><div style="text-align:right">Net</div>' +
       '</div>' + bars +
     '</div>' +
-
     '<div class="sec sec-o">Total Owed TO Each Manager (GW Outstanding Only)</div>' +
     '<div class="tbl-wrap"><table id="tbl-owed-to">' +
-    '<thead><tr>' +
-      '<th data-sort-tbl="tbl-owed-to" data-sort-col="0">Manager</th>' +
-      '<th data-sort-tbl="tbl-owed-to" data-sort-col="1" style="text-align:right">Total Owed To Them</th>' +
-    '</tr></thead>' +
-    '<tbody>' + (owedRows || '<tr><td colspan="2" style="text-align:center;color:var(--green)">No outstanding amounts</td></tr>') + '</tbody>' +
-    '</table></div>';
+    '<thead><tr><th data-sort-tbl="tbl-owed-to" data-sort-col="0">Manager</th><th data-sort-tbl="tbl-owed-to" data-sort-col="1" style="text-align:right">Total Owed To Them</th></tr></thead>' +
+    '<tbody>' + (owedRows || '<tr><td colspan="2" style="text-align:center;color:var(--green)">No outstanding amounts</td></tr>') + '</tbody></table></div>';
 }
 
-
-function buildScoreInputs() {
-  const grid = document.getElementById("score-inputs");
-  if (!grid) return;
-  grid.innerHTML = ACTIVE.map(m =>
-    '<div class="score-cell">' +
-    '<label>' + m + '</label>' +
-    '<input type="number" id="sc-' + m + '" placeholder="0" min="0" max="200">' +
-    '</div>'
-  ).join('');
+// ═══════════════════════════════════════════
+// ADD NEW GW
+// ═══════════════════════════════════════════
+function populateSelects() {
+  ["new-gw-1st","new-gw-2nd","new-gw-bot1","new-gw-bot2"].forEach(id => {
+    const s = document.getElementById(id);
+    if (!s) return;
+    s.innerHTML = '<option value="">&#8212; Select &#8212;</option>';
+    ACTIVE.forEach(m => { s.innerHTML += '<option value="' + m + '">' + m + '</option>'; });
+  });
 }
 
-function calcScores() {
-  const gwNum = parseInt(document.getElementById("score-gw-num").value) || 0;
-  if (!gwNum) { toast("Enter a gameweek number first."); return; }
-  const isTieOverride = document.getElementById("score-tie-mode").value === "yes";
-
-  const scores = ACTIVE.map(m => ({
-    name: m,
-    score: parseInt(document.getElementById("sc-" + m).value) || 0
-  })).filter(x => x.score > 0);
-
-  if (scores.length < 3) { toast("Enter scores for at least 3 managers."); return; }
-
-  scores.sort((a, b) => b.score - a.score);
-
-  const maxScore = scores[0].score;
-  const tied1st  = scores.filter(x => x.score === maxScore);
-  const isTie    = isTieOverride || tied1st.length > 1;
-
-  let p1, p2, bot1, bot2, others;
-  let html = '<h3>GW' + gwNum + ' Calculated Result' + (isTie ? ' (TIE)' : '') + '</h3>';
-
+function calcNewGW() {
+  const gwNum = parseInt(document.getElementById("new-gw-num").value) || 0;
+  const p1    = document.getElementById("new-gw-1st").value;
+  const p2    = document.getElementById("new-gw-2nd").value;
+  const isTie = document.getElementById("new-gw-tie").value === "yes";
+  const b1    = isTie ? "" : document.getElementById("new-gw-bot1").value;
+  const b2    = isTie ? "" : document.getElementById("new-gw-bot2").value;
+  const prev  = document.getElementById("new-gw-preview");
+  if (!gwNum && !p1 && !p2) { prev.style.display = "none"; return; }
+  const sel = [p1, p2, b1, b2].filter(Boolean);
+  if (new Set(sel).size < sel.length) { prev.style.display = "block"; prev.innerHTML = '<h3 style="color:var(--red)">Duplicate manager selected!</h3>'; return; }
+  let html = '<h3>GW' + (gwNum || '?') + ' Preview ' + (isTie ? '(TIE)' : '') + '</h3>';
   if (isTie) {
-    p1   = tied1st[0].name;
-    p2   = tied1st[1] ? tied1st[1].name : null;
-    others = scores.filter(x => x.score < maxScore);
-    html += '<div class="prev-row"><span>&#127945; Tied 1st: <strong>' + tied1st.map(x => x.name + ' (' + x.score + ')').join(' & ') + '</strong></span><span style="color:var(--green)">receive 100 from each</span></div>';
-    html += '<div class="prev-row"><span>Others (' + others.length + ')</span><span style="color:var(--red)">pay 100 to each tied winner</span></div>';
+    if (p1) html += '<div class="prev-row"><span>Tied 1st: <strong>' + p1 + '</strong></span><span style="color:var(--green)">receives 100 from each</span></div>';
+    if (p2) html += '<div class="prev-row"><span>Tied 1st: <strong>' + p2 + '</strong></span><span style="color:var(--green)">receives 100 from each</span></div>';
+    if (p1 && p2) { const oth = ACTIVE.filter(m => m !== p1 && m !== p2); html += '<div class="prev-row"><span>Others (' + oth.length + ')</span><span style="color:var(--red)">&minus;100 each to ' + p1 + ' &amp; ' + p2 + '</span></div>'; }
   } else {
-    p1   = scores[0].name;
-    p2   = scores[1].name;
-    bot1 = scores[scores.length - 2].name;
-    bot2 = scores[scores.length - 1].name;
-    others = scores.slice(2, scores.length - 2);
-    html += '<div class="prev-row"><span>&#127945; 1st: <strong>' + p1 + ' (' + scores[0].score + ')</strong></span><span style="color:var(--green)">receives 200 from 3rd–7th</span></div>';
-    html += '<div class="prev-row"><span>&#127944; 2nd: <strong>' + p2 + ' (' + scores[1].score + ')</strong></span><span style="color:var(--green)">receives 200 from bottom 2</span></div>';
-    html += '<div class="prev-row"><span>&#11015; Bottom 1: <strong>' + bot1 + ' (' + scores[scores.length-2].score + ')</strong></span><span style="color:var(--red)">−200 → ' + p2 + '</span></div>';
-    html += '<div class="prev-row"><span>&#11015; Bottom 2: <strong>' + bot2 + ' (' + scores[scores.length-1].score + ')</strong></span><span style="color:var(--red)">−200 → ' + p2 + '</span></div>';
-    html += '<div class="prev-row"><span>3rd–7th (' + others.length + '): ' + others.map(x => x.name).join(', ') + '</span><span style="color:var(--red)">−200 each → ' + p1 + '</span></div>';
+    if (p1) html += '<div class="prev-row"><span>1st: <strong>' + p1 + '</strong></span><span style="color:var(--green)">receives 200 from 3rd&ndash;7th</span></div>';
+    if (p2) html += '<div class="prev-row"><span>2nd: <strong>' + p2 + '</strong></span><span style="color:var(--green)">receives 200 from bottom 2</span></div>';
+    if (b1) html += '<div class="prev-row"><span>Bottom 1: <strong>' + b1 + '</strong></span><span style="color:var(--red)">&minus;200 &rarr; ' + (p2 || '2nd') + '</span></div>';
+    if (b2) html += '<div class="prev-row"><span>Bottom 2: <strong>' + b2 + '</strong></span><span style="color:var(--red)">&minus;200 &rarr; ' + (p2 || '2nd') + '</span></div>';
+    if (p1 && p2 && b1 && b2) { const oth = ACTIVE.filter(m => m !== p1 && m !== p2 && m !== b1 && m !== b2); html += '<div class="prev-row"><span>3rd&ndash;7th (' + oth.length + '): ' + oth.join(', ') + '</span><span style="color:var(--red)">&minus;200 each &rarr; ' + p1 + '</span></div>'; }
   }
-
-  scoreCalcResult = {gwNum, isTie, scores, p1, p2, bot1, bot2, others: others.map(x => x.name), tied1st: tied1st.map(x => x.name)};
-
-  const prev = document.getElementById("score-preview");
-  prev.style.display = "block";
-  prev.innerHTML = html;
+  prev.style.display = "block"; prev.innerHTML = html;
 }
 
-function doConfirmScores() {
-  if (!scoreCalcResult) { toast("Calculate rankings first."); return; }
-  const {gwNum, isTie, p1, p2, bot1, bot2, others, tied1st} = scoreCalcResult;
-
-  // Remove existing records for this GW
+function doConfirmNewGW() {
+  const gwNum = parseInt(document.getElementById("new-gw-num").value) || 0;
+  const p1    = document.getElementById("new-gw-1st").value;
+  const p2    = document.getElementById("new-gw-2nd").value;
+  const isTie = document.getElementById("new-gw-tie").value === "yes";
+  const b1    = isTie ? "" : document.getElementById("new-gw-bot1").value;
+  const b2    = isTie ? "" : document.getElementById("new-gw-bot2").value;
+  if (!gwNum)           { toast("Enter a gameweek number."); return; }
+  if (!p1 || !p2)       { toast("Select both 1st and 2nd place."); return; }
+  if (!isTie && (!b1 || !b2)) { toast("Select both bottom managers (or switch to Tie mode)."); return; }
+  const sel = [p1, p2, b1, b2].filter(Boolean);
+  if (new Set(sel).size < sel.length) { toast("Duplicate manager selected!"); return; }
   const existing = PAYS.filter(p => p.gw === gwNum);
-  if (existing.length > 0) {
-    if (!confirm("GW" + gwNum + " already has " + existing.length + " records. Replace them?")) return;
-    for (let i = PAYS.length - 1; i >= 0; i--) { if (PAYS[i].gw === gwNum) PAYS.splice(i, 1); }
-  }
-
+  if (existing.length > 0) { if (!confirm("GW" + gwNum + " already has " + existing.length + " records. Replace them?")) return; for (let i = PAYS.length - 1; i >= 0; i--) { if (PAYS[i].gw === gwNum) PAYS.splice(i, 1); } }
   const newPays = [];
   if (isTie) {
-    const nonTied = ACTIVE.filter(m => !tied1st.includes(m));
-    nonTied.forEach(m => {
-      tied1st.forEach(winner => {
-        newPays.push({id:"gw"+gwNum+"-tie-"+m+"-"+winner, gw:gwNum, manager:m, owesTo:winner, amount:100, reason:"GW"+gwNum+" tie — 100 to "+winner, status:"unpaid", note:""});
-      });
+    const oth = ACTIVE.filter(m => m !== p1 && m !== p2);
+    oth.forEach(m => {
+      newPays.push({id:"gw"+gwNum+"-tie-"+m+"-"+p1, gw:gwNum, manager:m, owesTo:p1, amount:100, reason:"GW"+gwNum+" tie 100 to "+p1, status:"unpaid", note:""});
+      newPays.push({id:"gw"+gwNum+"-tie-"+m+"-"+p2, gw:gwNum, manager:m, owesTo:p2, amount:100, reason:"GW"+gwNum+" tie 100 to "+p2, status:"unpaid", note:""});
     });
-    GW_META[gwNum] = {p1:tied1st.join(" / ") + " (Tie)", p2:"—", bot:"—", note:"Tie"};
+    GW_META[gwNum] = {p1:p1+"/"+p2+" (Tie)", p2:"\u2014", bot:"\u2014", note:"Tie"};
   } else {
-    others.forEach(m => {
-      newPays.push({id:"gw"+gwNum+"-fee-"+m, gw:gwNum, manager:m, owesTo:p1, amount:200, reason:"GW"+gwNum+" 3rd–7th → "+p1, status:"unpaid", note:""});
-    });
-    newPays.push({id:"gw"+gwNum+"-bot1-"+bot1, gw:gwNum, manager:bot1, owesTo:p2, amount:200, reason:"GW"+gwNum+" bottom → "+p2, status:"unpaid", note:""});
-    newPays.push({id:"gw"+gwNum+"-bot2-"+bot2, gw:gwNum, manager:bot2, owesTo:p2, amount:200, reason:"GW"+gwNum+" bottom → "+p2, status:"unpaid", note:""});
-    GW_META[gwNum] = {p1, p2, bot:bot1+"/"+bot2, note:"Entered via scores"};
+    const oth = ACTIVE.filter(m => m !== p1 && m !== p2 && m !== b1 && m !== b2);
+    oth.forEach(m => { newPays.push({id:"gw"+gwNum+"-fee-"+m, gw:gwNum, manager:m, owesTo:p1, amount:200, reason:"GW"+gwNum+" 3rd-7th to "+p1, status:"unpaid", note:""}); });
+    newPays.push({id:"gw"+gwNum+"-bot1-"+b1, gw:gwNum, manager:b1, owesTo:p2, amount:200, reason:"GW"+gwNum+" bottom to "+p2, status:"unpaid", note:""});
+    newPays.push({id:"gw"+gwNum+"-bot2-"+b2, gw:gwNum, manager:b2, owesTo:p2, amount:200, reason:"GW"+gwNum+" bottom to "+p2, status:"unpaid", note:""});
+    GW_META[gwNum] = {p1, p2, bot:b1+"/"+b2, note:"Entered via dashboard"};
   }
-
-  // Save scores to GW_SCORES
-  scoreCalcResult.scores.forEach(s => {
-    if (!GW_SCORES[s.name]) GW_SCORES[s.name] = {};
-    GW_SCORES[s.name][gwNum] = s.score;
-  });
-
   PAYS.push(...newPays);
   markPendingChange();
   renderAll();
-
   const listDiv = document.getElementById("confirmed-gws-list");
   const conf = document.createElement("div");
   conf.className = "alert a-green"; conf.style.marginBottom = "8px";
-  conf.textContent = "GW" + gwNum + " confirmed! " + newPays.length + " payment records created.";
+  conf.textContent = "GW" + gwNum + " confirmed! " + newPays.length + " records added.";
   listDiv.prepend(conf);
-
-  document.getElementById("score-preview").innerHTML = '<h3 style="color:var(--green)">&#10003; GW' + gwNum + ' Added!</h3>';
-  scoreCalcResult = null;
+  document.getElementById("new-gw-preview").innerHTML = "<h3>GW" + gwNum + " Added!</h3>";
   toast("GW" + gwNum + " confirmed! " + newPays.length + " records added.");
 }
 
-function clearScores() {
-  ACTIVE.forEach(m => { const el = document.getElementById("sc-" + m); if (el) el.value = ""; });
-  document.getElementById("score-gw-num").value = "";
-  document.getElementById("score-tie-mode").value = "no";
-  document.getElementById("score-preview").style.display = "none";
-  scoreCalcResult = null;
-}
-
-// ═══════════════════════════════════════════════════════════
-// LIVE REFRESH PANEL
-// ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════
+// LIVE REFRESH
+// ═══════════════════════════════════════════
 function refreshLive() {
   const badge = document.getElementById("live-badge");
   if (badge) badge.textContent = "Refreshing...";
   setTimeout(() => {
-    const unpaid = PAYS.filter(p => p.status === "unpaid").length + SEASON_PAYS.filter(p => p.status === "unpaid").length;
-    const paid   = PAYS.filter(p => p.status === "paid").length   + SEASON_PAYS.filter(p => p.status === "paid").length;
-    const gwNums = Object.keys(GW_META).map(Number);
-    const missing = [37, 38].filter(g => !PAYS.some(p => p.gw === g));
+    const unpaid = PAYS.filter(p => p.status === "unpaid").length;
+    const paid   = PAYS.filter(p => p.status === "paid").length;
+    const missing = [];
+    for (let g = 38; g <= 38; g++) { if (!GW_META[g] || !PAYS.some(p => p.gw === g)) missing.push(g); }
     let panel = document.getElementById("live-panel");
-    if (!panel) {
-      panel = document.createElement("div");
-      panel.id = "live-panel";
-      panel.style.cssText = "position:fixed;top:60px;right:12px;width:300px;max-width:92vw;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;z-index:9000;box-shadow:var(--shadow)";
-      document.body.appendChild(panel);
-    }
+    if (!panel) { panel = document.createElement("div"); panel.id = "live-panel"; panel.style.cssText = "position:fixed;top:60px;right:12px;width:300px;max-width:92vw;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;z-index:9000;box-shadow:var(--shadow)"; document.body.appendChild(panel); }
     panel.innerHTML =
       '<div style="font-weight:700;margin-bottom:10px">Dashboard Status</div>' +
       '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">' +
         '<div class="card" style="padding:10px;text-align:center"><div style="font-size:1.3rem;font-weight:700;color:var(--red)">' + unpaid + '</div><div style="font-size:.68rem;color:var(--muted)">Outstanding</div></div>' +
         '<div class="card" style="padding:10px;text-align:center"><div style="font-size:1.3rem;font-weight:700;color:var(--green)">' + paid + '</div><div style="font-size:.68rem;color:var(--muted)">Paid</div></div>' +
       '</div>' +
-      (missing.length ? '<div class="alert a-orange" style="font-size:.75rem">Next: Enter scores for GW' + missing.join(', GW') + ' in GW Scores tab.</div>' : '<div class="alert a-green" style="font-size:.75rem">All GW19–38 entered (excl. GW22/23)</div>') +
-      '<div class="alert a-info" style="font-size:.72rem;margin-top:8px">FPL API requires login — update standings manually via Admin Edit in Standings tab.</div>' +
+      (missing.length ? '<div class="alert a-orange" style="font-size:.75rem">Next: Add GW' + missing.join(', GW') + ' in Add New GW tab.</div>' : '<div class="alert a-green" style="font-size:.75rem">All GW19-38 entered (excl. GW22/23)</div>') +
       '<button class="btn" style="margin-top:8px;width:100%" id="close-live-panel">Close</button>';
     document.getElementById("close-live-panel").addEventListener("click", () => panel.remove());
     if (badge) badge.innerHTML = "&#9679; LIVE";
-  }, 400);
+  }, 500);
 }
 
-// ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 // RENDER ALL
-// ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 function renderAll() {
   renderStandings();
   renderGWTracker();
@@ -1709,39 +1296,18 @@ function renderAll() {
   renderVisual();
 }
 
-// ═══════════════════════════════════════════════════════════
-// EVENT DELEGATION — single listener, no inline handlers
-// ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════
+// EVENT DELEGATION
+// ═══════════════════════════════════════════
 document.addEventListener("click", function(e) {
   const t = e.target;
-
-  // PWA banner close
-  if (t.id === "pwa-close") { document.getElementById("pwa-banner").remove(); return; }
-
-  // Export data
-  if (t.id === "btn-export-data") { exportData(); return; }
-
-  // Nav tabs
   if (t.closest("nav") && t.dataset.tab) { showTab(t.dataset.tab); return; }
-
-  // Admin buttons
-  if (t.id === "admin-toggle-btn") { openPin("unlock", null); return; }
+  if (t.id === "admin-toggle-btn") { adminUnlocked ? (adminUnlocked = false, updateAdminBar(), toast("Admin locked")) : openPin("unlock", null); return; }
   if (t.id === "admin-save-btn")   { openPin("confirm-save", null); return; }
-  if (t.id === "admin-lock-btn")   { adminUnlocked = false; updateAdminBar(); renderAll(); toast("Admin locked"); return; }
   if (t.id === "admin-reset-btn")  { openPin("reset", null); return; }
-
-  // PIN keys
+  if (t.id === "btn-export-data")  { exportData(); return; }
   if (t.classList.contains("pin-key") && t.dataset.k) { handlePinKey(t.dataset.k); return; }
-
-  // Live badge
   if (t.id === "live-badge") { refreshLive(); return; }
-
-  // Standings edit buttons
-  if (t.id === "btn-edit-standings")   { openStandingsEdit(); return; }
-  if (t.id === "btn-save-standings")   { saveStandingsEdit(); return; }
-  if (t.id === "btn-cancel-standings") { closeStandingsEdit(); return; }
-
-  // GW header toggle
   if (t.closest(".gw-hdr")) {
     const hdr  = t.closest(".gw-hdr");
     const gw   = parseInt(hdr.dataset.gw);
@@ -1753,103 +1319,51 @@ document.addEventListener("click", function(e) {
     if (arrow) arrow.innerHTML = isOpen ? "&#9660;" : "&#9650;";
     return;
   }
-
-
-  // Season fee toggle (Overview tab)
-  if (t.classList.contains("season-toggle-btn")) {
-    requireAdmin({type:"markPay", id:t.dataset.id, status:t.dataset.status, isseason:true});
+  if (t.classList.contains("pay-btn"))       { requireAdmin({type:"markPay",    id:t.dataset.id, status:t.dataset.status}); return; }
+  if (t.classList.contains("del-btn"))       { requireAdmin({type:"deleteDebt", id:t.dataset.id, gw:parseInt(t.dataset.gw)}); return; }
+  if (t.classList.contains("add-debt-btn"))  { requireAdmin({type:"addDebt",    gw:parseInt(t.dataset.gw)}); return; }
+  if (t.classList.contains("season-toggle-btn")) { requireAdmin({type:"markSeasonPay", id:t.dataset.id, status:t.dataset.status}); return; }
+  if (t.id === "btn-confirm-gw") { requireAdmin({type:"confirmNewGW"}); return; }
+  if (t.id === "btn-clear-gw") {
+    ["new-gw-num","new-gw-1st","new-gw-2nd","new-gw-bot1","new-gw-bot2"].forEach(id => { const el = document.getElementById(id); if (el) el.value = ""; });
+    document.getElementById("new-gw-tie").value = "no";
+    document.getElementById("new-gw-bottom-wrap").style.display = "grid";
+    document.getElementById("new-gw-preview").style.display = "none";
     return;
   }
-
-  // Pay button (GW + Season)
-  if (t.classList.contains("pay-btn")) {
-    requireAdmin({type:"markPay", id:t.dataset.id, status:t.dataset.status, isseason:t.dataset.isseason === "1"});
-    return;
-  }
-
-  // Delete GW debt
-  if (t.classList.contains("del-btn")) {
-    requireAdmin({type:"deleteDebt", id:t.dataset.id, gw:parseInt(t.dataset.gw)});
-    return;
-  }
-
-  // Delete season debt
-  if (t.classList.contains("del-season-btn")) {
-    requireAdmin({type:"deleteSeasonDebt", id:t.dataset.id});
-    return;
-  }
-
-  // Add GW debt
-  if (t.classList.contains("add-debt-btn")) {
-    requireAdmin({type:"addDebt", gw:parseInt(t.dataset.gw)});
-    return;
-  }
-
-  // Add season debt
-  if (t.classList.contains("add-season-btn")) {
-    requireAdmin({type:"addSeasonDebt", manager:t.dataset.manager});
-    return;
-  }
-
-  // GW Scores tab buttons
-  if (t.id === "btn-calc-scores")    { requireAdmin({type:"noop"}); if (adminUnlocked) calcScores(); else { pendingAction = {type:"calcScores"}; } return; }
-  if (t.id === "btn-confirm-scores") { requireAdmin({type:"confirmScores"}); return; }
-  if (t.id === "btn-clear-scores")   { clearScores(); return; }
-
-  // Payment group header toggle
   if (t.closest(".pay-group-hdr")) {
     const hdr  = t.closest(".pay-group-hdr");
     const body = hdr.nextElementSibling;
     if (body) body.style.display = body.style.display === "none" ? "block" : "none";
     return;
   }
-
-  // Debt card click
-  if (t.closest(".debt-card")) {
-    showDebtDetail(t.closest(".debt-card").dataset.manager);
-    return;
-  }
-
-  // Close debt detail
-  if (t.id === "btn-close-detail") {
-    selectedDebtManager = null;
-    document.getElementById("debt-detail-panel").style.display = "none";
-    renderDebts();
-    return;
-  }
-
-  // Sortable table headers
-  if (t.tagName === "TH" && t.dataset.sortTbl) {
-    sortTable(t.dataset.sortTbl, parseInt(t.dataset.sortCol));
-    return;
-  }
+  if (t.tagName === "TH" && t.dataset.sortTbl) { sortTable(t.dataset.sortTbl, parseInt(t.dataset.sortCol)); return; }
 });
 
-// Change events
 document.addEventListener("change", function(e) {
   const t = e.target;
-  if (t.id === "gw-filter")      { renderGWTracker(); return; }
-  if (t.id === "pay-filter" || t.id === "pay-type-filter") { renderPayments(); return; }
-  if (t.classList.contains("owesto-sel")) {
-    requireAdmin({type:"editOwesTo", id:t.dataset.id, owesTo:t.value});
-    return;
+  if (t.id === "gw-filter")  { renderGWTracker(); return; }
+  if (t.id === "pay-filter") { renderPayments();  return; }
+  if (t.id === "new-gw-tie") {
+    document.getElementById("new-gw-bottom-wrap").style.display = t.value === "yes" ? "none" : "grid";
+    calcNewGW(); return;
   }
-
-  // Import data file
-  if (t.id === "import-file-input" && t.files && t.files[0]) {
-    importData(t.files[0]);
-    t.value = ""; // reset so same file can be re-imported
-    return;
-  }
+  if (["new-gw-num","new-gw-1st","new-gw-2nd","new-gw-bot1","new-gw-bot2"].includes(t.id)) { calcNewGW(); return; }
+  if (t.classList.contains("owesto-sel")) { requireAdmin({type:"editOwesTo", id:t.dataset.id, owesTo:t.value}); return; }
+  if (t.id === "import-file-input" && t.files.length) { importData(t.files[0]); return; }
 });
 
-// ═══════════════════════════════════════════════════════════
+document.addEventListener("input", function(e) {
+  if (e.target.id === "new-gw-num") calcNewGW();
+});
+
+// ═══════════════════════════════════════════
 // INIT
-// ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 document.addEventListener("DOMContentLoaded", function() {
   loadFromStorage();
-  buildScoreInputs();
   renderAll();
+  populateSelects();
   updateAdminBar();
   if (window.matchMedia("(min-width:768px)").matches) {
     const b = document.getElementById("pwa-banner");
