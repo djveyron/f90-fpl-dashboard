@@ -151,7 +151,7 @@ tr:hover td{background:rgba(255,255,255,.02);}
 </nav>
 <main>
 <div class="tab-content active" id="tab-standings">
-  <div class="alert a-info">&#127942; Live FPL standings for F90 league. GW19&ndash;38 tracked. Ta, June &amp; Kim excluded from prize standings.</div>
+  <div class="alert a-info">&#127942; Live FPL standings for F90 league. GW19&ndash;38 tracked. Ta, June &amp; Kim excluded from prize standings. <strong style="color:var(--green)">GW37 complete &mdash; all scores updated from FPL API.</strong></div>
   <div class="tbl-wrap">
   <table id="tbl-standings">
     <thead><tr>
@@ -181,10 +181,10 @@ tr:hover td{background:rgba(255,255,255,.02);}
   <div id="gw-tracker-body"></div>
 </div>
 <div class="tab-content" id="tab-payments">
-  <div class="alert a-info">&#128179; Grouped by recipient. <span style="color:var(--green);font-weight:700">GREEN = paid</span> &middot; <span style="color:var(--red);font-weight:700">RED = outstanding</span>. Click manager to expand.</div>
+  <div class="alert a-info">&#128179; Each manager's <strong>outgoing payments only</strong> &mdash; what they have paid or still owe. <span style="color:var(--green);font-weight:700">GREEN = paid</span> &middot; <span style="color:var(--red);font-weight:700">RED = outstanding</span>. Click manager to expand.</div>
   <div style="margin-bottom:10px">
     <select id="pay-filter" class="inline-sel" style="min-height:36px;padding:6px 10px;">
-      <option value="all">All Payments</option>
+      <option value="all">All Outgoing Payments</option>
       <option value="unpaid">Outstanding Only</option>
       <option value="paid">Paid Only</option>
     </select>
@@ -490,19 +490,19 @@ let PAYS = [
 
 const LIVE = [
   {rank:1,last:1,name:"DJ",team:"Enzoid & da Moisters",gw:82,total:1110},
-  {rank:2,last:2,name:"Korn",team:"Korn",gw:0,total:1024},
-  {rank:3,last:3,name:"Note",team:"FPL Gamo",gw:0,total:1014},
-  {rank:4,last:4,name:"Komsit",team:"CHJR",gw:0,total:966},
-  {rank:5,last:5,name:"Chat",team:"Storm11",gw:0,total:957},
-  {rank:6,last:6,name:"June",team:"June90'",gw:0,total:952},
-  {rank:7,last:7,name:"Palmmy",team:"Pleecheap FC",gw:0,total:936},
-  {rank:8,last:8,name:"Tung",team:"Tung168",gw:0,total:935},
-  {rank:9,last:9,name:"Kim",team:"Khunkim",gw:0,total:933},
-  {rank:10,last:10,name:"Poom",team:"PPP",gw:0,total:925},
-  {rank:11,last:11,name:"Ta",team:"Ta.90",gw:0,total:898},
-  {rank:12,last:12,name:"Phai",team:"Dezign",gw:0,total:885},
-  {rank:13,last:13,name:"Pladon",team:"PlaDonATH71",gw:0,total:820},
-  {rank:14,last:14,name:"Passakorn",team:"The Spooky",gw:0,total:742}
+  {rank:2,last:3,name:"Note",team:"FPL Gamo",gw:62,total:1076},
+  {rank:3,last:2,name:"Korn",team:"Korn",gw:45,total:1069},
+  {rank:4,last:7,name:"Palmmy",team:"Pleecheap FC",gw:68,total:1008},
+  {rank:5,last:4,name:"Komsit",team:"CHJR",gw:47,total:997},
+  {rank:6,last:5,name:"Chat",team:"Storm11",gw:46,total:994},
+  {rank:7,last:9,name:"Kim",team:"Khunkim",gw:65,total:989},
+  {rank:8,last:8,name:"Tung",team:"Tung168",gw:36,total:971},
+  {rank:9,last:6,name:"June",team:"June90'",gw:54,total:966},
+  {rank:10,last:10,name:"Poom",team:"PPP",gw:46,total:956},
+  {rank:11,last:12,name:"Phai",team:"Dezign",gw:65,total:950},
+  {rank:12,last:11,name:"Ta",team:"Ta.90",gw:43,total:941},
+  {rank:13,last:13,name:"Pladon",team:"PlaDonATH71",gw:71,total:866},
+  {rank:14,last:14,name:"Passakorn",team:"The Spooky",gw:56,total:789}
 ];
 
 // ═══════════════════════════════════════════
@@ -910,41 +910,62 @@ function renderPayments() {
   const filter = document.getElementById("pay-filter").value;
   const body   = document.getElementById("payments-body");
   body.innerHTML = "";
-  const list = filter === "all" ? PAYS : PAYS.filter(p => p.status === (filter === "unpaid" ? "unpaid" : "paid"));
-  if (!list.length) { body.innerHTML = '<div style="text-align:center;color:var(--muted);padding:24px">No records match this filter.</div>'; return; }
+
+  // Build outgoing list: what each manager OWES (paid or unpaid)
+  // Grouped by manager (payer), NOT by recipient
+  const outgoing = PAYS.filter(p => p.gw !== 22 && p.gw !== 23);
+  const filtered = filter === "all"    ? outgoing
+                 : filter === "unpaid" ? outgoing.filter(p => p.status === "unpaid")
+                 : outgoing.filter(p => p.status === "paid");
+
+  if (!filtered.length) {
+    body.innerHTML = '<div style="text-align:center;color:var(--muted);padding:24px">No records match this filter.</div>';
+    return;
+  }
+
+  // Group by manager (payer)
   const groups = {};
-  list.forEach(p => { if (!groups[p.owesTo]) groups[p.owesTo] = []; groups[p.owesTo].push(p); });
+  filtered.forEach(p => {
+    if (!groups[p.manager]) groups[p.manager] = [];
+    groups[p.manager].push(p);
+  });
+
+  // Sort: managers with unpaid first, then alphabetical
   Object.keys(groups).sort((a, b) => {
-    const aU = groups[a].some(p => p.status !== "paid") ? 0 : 1;
-    const bU = groups[b].some(p => p.status !== "paid") ? 0 : 1;
+    const aU = groups[a].some(p => p.status === "unpaid") ? 0 : 1;
+    const bU = groups[b].some(p => p.status === "unpaid") ? 0 : 1;
     return aU !== bU ? aU - bU : a.localeCompare(b);
-  }).forEach(recipient => {
-    const recs = groups[recipient].sort((a, b) => a.gw - b.gw);
-    const totalOwed = recs.filter(p => p.status !== "paid").reduce((s, p) => s + p.amount, 0);
-    const totalPaid = recs.filter(p => p.status === "paid").reduce((s, p) => s + p.amount, 0);
-    const hasUnpaid = recs.some(p => p.status !== "paid");
-    const tid = "pay-tbl-" + recipient.replace(/[^a-z0-9]/gi, "");
+  }).forEach(mgr => {
+    const recs     = groups[mgr].sort((a, b) => a.gw - b.gw);
+    const paidAmt  = recs.filter(p => p.status === "paid").reduce((s, p) => s + p.amount, 0);
+    const unpaidAmt= recs.filter(p => p.status === "unpaid").reduce((s, p) => s + p.amount, 0);
+    const hasUnpaid= recs.some(p => p.status === "unpaid");
+    const tid      = "pay-tbl-" + mgr.replace(/[^a-z0-9]/gi, "");
+
     const rows = recs.map(p => {
       const bg = p.status === "paid" ? "rgba(63,185,80,.04)" : "rgba(248,81,73,.04)";
       return '<tr style="background:' + bg + '">' +
         '<td style="color:var(--orange);font-weight:700">GW' + p.gw + '</td>' +
-        '<td><strong>' + p.manager + '</strong></td>' +
+        '<td style="color:var(--muted);font-size:.72rem">' + p.reason + '</td>' +
+        '<td style="font-weight:700;color:var(--blue)">&#8594; ' + p.owesTo + '</td>' +
         '<td style="text-align:right;font-weight:700;color:' + (p.status === "paid" ? "var(--green)" : "var(--red)") + '">' + p.amount + '</td>' +
-        '<td style="font-size:.72rem;color:var(--muted)">' + p.reason + '</td>' +
         '<td>' + pill(p.status) + '</td>' +
         '<td style="font-size:.7rem;color:var(--muted)">' + (p.note || '&mdash;') + '</td>' +
         '</tr>';
     }).join('');
-    const bdr = hasUnpaid ? "rgba(248,81,73,.4)" : "rgba(63,185,80,.3)";
+
+    const bdr  = hasUnpaid ? "rgba(248,81,73,.4)" : "rgba(63,185,80,.3)";
     const card = document.createElement("div");
     card.style.cssText = "background:var(--card);border-radius:10px;margin-bottom:12px;overflow:hidden;border:1px solid " + bdr;
     card.innerHTML =
       '<div class="pay-group-hdr" style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--card2);cursor:pointer">' +
-        '<div><span style="font-weight:700;font-size:.92rem;color:' + (hasUnpaid ? "var(--orange)" : "var(--green)") + '">' + recipient + '</span>' +
-        '<span style="font-size:.7rem;color:var(--muted);margin-left:8px">' + recs.length + ' payment' + (recs.length !== 1 ? 's' : '') + '</span></div>' +
+        '<div>' +
+          '<span style="font-weight:700;font-size:.92rem;color:' + (hasUnpaid ? "var(--orange)" : "var(--green)") + '">' + mgr + '</span>' +
+          '<span style="font-size:.7rem;color:var(--muted);margin-left:8px">' + recs.length + ' payment' + (recs.length !== 1 ? 's' : '') + '</span>' +
+        '</div>' +
         '<div style="display:flex;gap:10px;align-items:center">' +
-          (totalOwed > 0 ? '<span style="color:var(--red);font-weight:700;font-size:.8rem">' + totalOwed + ' outstanding</span>' : '') +
-          (totalPaid > 0 ? '<span style="color:var(--green);font-size:.75rem">' + totalPaid + ' paid</span>' : '') +
+          (unpaidAmt > 0 ? '<span style="color:var(--red);font-weight:700;font-size:.8rem">' + unpaidAmt + ' still owed</span>' : '') +
+          (paidAmt   > 0 ? '<span style="color:var(--green);font-size:.75rem">' + paidAmt + ' paid</span>' : '') +
           '<span style="color:var(--muted)">&#9660;</span>' +
         '</div>' +
       '</div>' +
@@ -953,9 +974,9 @@ function renderPayments() {
         '<table id="' + tid + '">' +
         '<thead><tr>' +
           '<th data-sort-tbl="' + tid + '" data-sort-col="0">GW</th>' +
-          '<th data-sort-tbl="' + tid + '" data-sort-col="1">From</th>' +
-          '<th data-sort-tbl="' + tid + '" data-sort-col="2" style="text-align:right">Amount</th>' +
-          '<th data-sort-tbl="' + tid + '" data-sort-col="3">Reason</th>' +
+          '<th data-sort-tbl="' + tid + '" data-sort-col="1">Reason</th>' +
+          '<th data-sort-tbl="' + tid + '" data-sort-col="2">Pay To</th>' +
+          '<th data-sort-tbl="' + tid + '" data-sort-col="3" style="text-align:right">Amount</th>' +
           '<th data-sort-tbl="' + tid + '" data-sort-col="4">Status</th>' +
           '<th data-sort-tbl="' + tid + '" data-sort-col="5">Note</th>' +
         '</tr></thead>' +
@@ -965,9 +986,6 @@ function renderPayments() {
   });
 }
 
-// ═══════════════════════════════════════════
-// RENDER DEBTS
-// ═══════════════════════════════════════════
 function renderDebts() {
   const body = document.getElementById("debts-body");
   if (!body) return;
