@@ -292,7 +292,15 @@ const SEASON_PAYS = [
   {id:"s-h2h-phai",manager:"Phai",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H — 1000 entry fee",status:"paid",poolKey:"H2H1",custom:false,badDebt:false},
   {id:"s-h2h-passakorn",manager:"Passakorn",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H — 1000 entry fee",status:"paid",poolKey:"H2H1",custom:false,badDebt:false},
   {id:"s-h2h-pladon",manager:"Pladon",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H — 1000 entry fee",status:"paid",poolKey:"H2H1",custom:false,badDebt:false},
-  {id:"s-h2h-june",manager:"June",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H — 1000 entry fee",status:"paid",poolKey:"H2H1",custom:false,badDebt:false}
+  {id:"s-h2h-june",manager:"June",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H — 1000 entry fee",status:"paid",poolKey:"H2H1",custom:false,badDebt:false},
+  {id:"s-cls2-komsit",manager:"Komsit",owesTo:"The Bank",amount:1000,reason:"GW20-38 Classic — 1000 entry fee (2nd half)",status:"unpaid",poolKey:"CLS2",custom:false,badDebt:false},
+  {id:"s-cls2-chat",manager:"Chat",owesTo:"The Bank",amount:1000,reason:"GW20-38 Classic — 1000 entry fee (2nd half)",status:"unpaid",poolKey:"CLS2",custom:false,badDebt:false},
+  {id:"s-cls2-palmmy",manager:"Palmmy",owesTo:"The Bank",amount:1000,reason:"GW20-38 Classic — 1000 entry fee (2nd half)",status:"unpaid",poolKey:"CLS2",custom:false,badDebt:false},
+  {id:"s-cls2-tung",manager:"Tung",owesTo:"The Bank",amount:1000,reason:"GW20-38 Classic — 1000 entry fee (2nd half)",status:"unpaid",poolKey:"CLS2",custom:false,badDebt:false},
+  {id:"s-cls2-poom",manager:"Poom",owesTo:"The Bank",amount:1000,reason:"GW20-38 Classic — 1000 entry fee (2nd half)",status:"unpaid",poolKey:"CLS2",custom:false,badDebt:false},
+  {id:"s-cls2-phai",manager:"Phai",owesTo:"The Bank",amount:1000,reason:"GW20-38 Classic — 1000 entry fee (2nd half)",status:"unpaid",poolKey:"CLS2",custom:false,badDebt:false},
+  {id:"s-cls2-passakorn",manager:"Passakorn",owesTo:"The Bank",amount:1000,reason:"GW20-38 Classic — 1000 entry fee (2nd half)",status:"unpaid",poolKey:"CLS2",custom:false,badDebt:false},
+  {id:"s-cls2-pladon",manager:"Pladon",owesTo:"The Bank",amount:1000,reason:"GW20-38 Classic — 1000 entry fee (2nd half)",status:"unpaid",poolKey:"CLS2",custom:false,badDebt:false}
 ];
 
 let PAYS = [
@@ -1130,7 +1138,9 @@ function renderVisual() {
   const totalSeasonPaid   = SEASON_PAYS.filter(p => p.status === "paid"  && !p.badDebt).reduce((s,p) => s+p.amount, 0);
 
   function buildSeasonFeeSection(leagueType, label) {
-    const winners1H = ["Note","Tung","DJ","Pladon"]; const entries = SEASON_PAYS.filter(p => !p.badDebt && p.reason && p.reason.toLowerCase().includes(leagueType) && !winners1H.includes(p.manager));
+    const winners1H = ["Note","Tung","DJ","Pladon"];
+    const is2ndHalf = leagueType === '2nd half';
+    const entries = SEASON_PAYS.filter(p => !p.badDebt && p.reason && p.reason.toLowerCase().includes(leagueType) && (is2ndHalf || !winners1H.includes(p.manager)));
     if (!entries.length) return '';
     const rows = entries.map(p => {
       const isPaid = p.status === "paid";
@@ -1189,9 +1199,13 @@ function renderVisual() {
       results:[{rank:1,mgr:"Pladon",prize:6000},{rank:2,mgr:"Note",prize:3000},{rank:3,mgr:"Tung",prize:1000}],
       paid, unpaid};
   })();
-  const CLS2 = {pot:8000, note:"Classic 2nd half (11 managers, 1000 from 4th\u201311th)",
-    results:[{rank:1,mgr:"DJ",prize:5000},{rank:2,mgr:"Note",prize:2500},{rank:3,mgr:"Korn",prize:500}],
-    paid:["Chat","Komsit","Tung","Palmmy","Phai","Passakorn","Pladon","Poom"], unpaid:[]};
+  const CLS2 = (function(){
+    const paid   = SEASON_PAYS.filter(p => p.poolKey === 'CLS2' && p.status === 'paid').map(p => p.manager);
+    const unpaid = SEASON_PAYS.filter(p => p.poolKey === 'CLS2' && p.status !== 'paid').map(p => p.manager);
+    return {pot:8000, note:"Classic 2nd half (11 managers, 1000 from 4th\u201311th)",
+      results:[{rank:1,mgr:"DJ",prize:5000},{rank:2,mgr:"Note",prize:2500},{rank:3,mgr:"Korn",prize:500}],
+      paid, unpaid};
+  })();
 
   body.innerHTML =
     '<div class="alert a-red" style="margin-bottom:10px;font-size:.8rem"><strong>Bad Debts \u2014 Kim &amp; Arm:</strong> Both managers cancelled. 1st half totals reflect 13 managers. GW debts uncollectable.</div>' +
@@ -1208,6 +1222,9 @@ function renderVisual() {
       '<div>' + buildSeasonFeeSection('classic', '&#127942; Classic Entry Fee (1000 each)') + '</div>' +
       '<div>' + buildSeasonFeeSection('h2h', '&#129309; H2H Entry Fee (1000 each)') + '</div>' +
     '</div>' +
+    '<div class="sec sec-o">Season Entry Fees (2nd Half \u2014 Paid to The Bank)</div>' +
+    '<div class="alert a-orange" style="font-size:.75rem;margin-bottom:8px">&#128197; 2nd Half Classic: 8 managers pay 1000 each (4th\u201311th). Winners DJ, Note &amp; Korn do not pay. All currently <strong>unpaid</strong>.</div>' +
+    '<div style="margin-bottom:14px">' + buildSeasonFeeSection('2nd half', '&#127942; Classic 2nd Half Entry Fee (1000 each) \u2014 Pay to The Bank') + '</div>' +
     '<div class="sec sec-o">True Net Position (GW Outstanding + Season)</div>' +
     '<div class="alert a-info" style="font-size:.75rem;margin-bottom:10px"><strong>Net = (GW unpaid inflows + season prize winnings) \u2212 (GW unpaid outflows + season fees unpaid)</strong>. DJ +4300 &middot; Poom \u22124800 validated.</div>' +
     '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:12px">' +
