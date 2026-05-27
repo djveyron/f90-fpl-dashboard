@@ -182,7 +182,7 @@ tr:hover td{background:rgba(255,255,255,.02);}
 <div id="gw-tracker-body"></div>
 </div>
 <div class="tab-content" id="tab-payments">
-<div class="alert a-info">💳 Each manager's <strong>outgoing payments only</strong> — what they have paid or still owe. <span style="color:var(--green);font-weight:700">GREEN = paid</span> · <span style="color:var(--red);font-weight:700">RED = outstanding</span>. Click manager to expand.</div>
+<div class="alert a-info">💳 Each manager's <strong>all outgoing payments</strong> — GW payments + season fees combined. <span style="color:var(--green);font-weight:700">GREEN = paid</span> · <span style="color:var(--red);font-weight:700">RED = outstanding</span>. <span style="background:rgba(188,140,255,.15);color:#bc8cff;border:1px solid rgba(188,140,255,.3);border-radius:4px;padding:1px 5px;font-size:.72rem;font-weight:700">CLS1/H2H1/CLS2</span> = season fees. Click manager to expand.</div>
 <div style="margin-bottom:10px">
 <select class="inline-sel" id="pay-filter" style="min-height:36px;padding:6px 10px;">
 <option value="all">All Outgoing Payments</option>
@@ -944,12 +944,21 @@ function renderPayments() {
   const body   = document.getElementById("payments-body");
   body.innerHTML = "";
 
-  // Build outgoing list: what each manager OWES (paid or unpaid)
-  // Grouped by manager (payer), NOT by recipient
-  const outgoing = PAYS.filter(p => p.gw !== 22 && p.gw !== 23);
-  const filtered = filter === "all"    ? outgoing
-                 : filter === "unpaid" ? outgoing.filter(p => p.status === "unpaid")
-                 : outgoing.filter(p => p.status === "paid");
+  // Combine GW payments + Season fee payments into one outgoing list
+  const gwEntries = PAYS.filter(p => p.gw !== 22 && p.gw !== 23).map(p => ({
+    id: p.id, manager: p.manager, owesTo: p.owesTo, amount: p.amount,
+    reason: p.reason, status: p.status, note: p.note || '',
+    sortKey: p.gw, label: 'GW' + p.gw, type: 'gw'
+  }));
+  const spEntries = SEASON_PAYS.filter(p => !p.badDebt).map(p => ({
+    id: p.id, manager: p.manager, owesTo: p.owesTo, amount: p.amount,
+    reason: p.reason, status: p.status, note: '',
+    sortKey: 0, label: p.poolKey, type: 'season'
+  }));
+  const allOutgoing = [...spEntries, ...gwEntries];
+  const filtered = filter === "all"    ? allOutgoing
+                 : filter === "unpaid" ? allOutgoing.filter(p => p.status === "unpaid")
+                 : allOutgoing.filter(p => p.status === "paid");
 
   if (!filtered.length) {
     body.innerHTML = '<div style="text-align:center;color:var(--muted);padding:24px">No records match this filter.</div>';
@@ -977,8 +986,10 @@ function renderPayments() {
 
     const rows = recs.map(p => {
       const bg = p.status === "paid" ? "rgba(63,185,80,.04)" : "rgba(248,81,73,.04)";
+      const labelColor = p.type === 'season' ? "var(--purple)" : "var(--orange)";
+      const labelStyle = p.type === 'season' ? 'background:rgba(188,140,255,.15);color:var(--purple);border:1px solid rgba(188,140,255,.3);border-radius:4px;padding:1px 6px;font-size:.68rem;font-weight:700' : 'color:var(--orange);font-weight:700';
       return '<tr style="background:' + bg + '">' +
-        '<td style="color:var(--orange);font-weight:700">GW' + p.gw + '</td>' +
+        '<td><span style="' + labelStyle + '">' + p.label + '</span></td>' +
         '<td style="color:var(--muted);font-size:.72rem">' + p.reason + '</td>' +
         '<td style="font-weight:700;color:var(--blue)">&#8594; ' + p.owesTo + '</td>' +
         '<td style="text-align:right;font-weight:700;color:' + (p.status === "paid" ? "var(--green)" : "var(--red)") + '">' + p.amount + '</td>' +
@@ -1006,7 +1017,7 @@ function renderPayments() {
         '<div class="tbl-wrap" style="border:none;border-radius:0">' +
         '<table id="' + tid + '">' +
         '<thead><tr>' +
-          '<th data-sort-tbl="' + tid + '" data-sort-col="0">GW</th>' +
+          '<th data-sort-tbl="' + tid + '" data-sort-col="0">Type</th>' +
           '<th data-sort-tbl="' + tid + '" data-sort-col="1">Reason</th>' +
           '<th data-sort-tbl="' + tid + '" data-sort-col="2">Pay To</th>' +
           '<th data-sort-tbl="' + tid + '" data-sort-col="3" style="text-align:right">Amount</th>' +
