@@ -1,11 +1,12 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
-<meta name="apple-mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-<meta name="theme-color" content="#0d1117"/>
+<meta content="width=device-width,initial-scale=1,maximum-scale=1" name="viewport"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
+<meta content="#0d1117" name="theme-color"/>
 <title>F90 FPL Dashboard</title>
 <style>
 :root{--bg:#0d1117;--card:#161b22;--card2:#1c2128;--border:#30363d;--text:#e6edf3;--muted:#8b949e;--orange:#f0883e;--green:#3fb950;--red:#f85149;--blue:#58a6ff;--yellow:#d29922;--radius:10px;--shadow:0 4px 16px rgba(0,0,0,.4);}
@@ -100,140 +101,140 @@ tr:hover td{background:rgba(255,255,255,.02);}
 </head>
 <body>
 <div id="pwa-banner">
-  <span>&#128241; Add to Home Screen for the best experience</span>
-  <button onclick="document.getElementById('pwa-banner').remove()">&#10005;</button>
+<span>📱 Add to Home Screen for the best experience</span>
+<button onclick="document.getElementById('pwa-banner').remove()">✕</button>
 </div>
 <div class="pin-modal" id="pin-modal">
-  <div class="pin-box">
-    <h3 id="pm-title">Admin PIN</h3>
-    <p id="pm-desc">Enter your 4-digit PIN</p>
-    <div class="pin-dots">
-      <div class="pin-dot" id="pd0"></div><div class="pin-dot" id="pd1"></div>
-      <div class="pin-dot" id="pd2"></div><div class="pin-dot" id="pd3"></div>
-    </div>
-    <div class="pin-keypad">
-      <button class="pin-key" data-k="1">1</button><button class="pin-key" data-k="2">2</button><button class="pin-key" data-k="3">3</button>
-      <button class="pin-key" data-k="4">4</button><button class="pin-key" data-k="5">5</button><button class="pin-key" data-k="6">6</button>
-      <button class="pin-key" data-k="7">7</button><button class="pin-key" data-k="8">8</button><button class="pin-key" data-k="9">9</button>
-      <button class="pin-key" data-k="C" style="color:var(--red)">C</button>
-      <button class="pin-key" data-k="0">0</button>
-      <button class="pin-key" data-k="X" style="color:var(--muted);font-size:.8rem">&#10005;</button>
-    </div>
-    <div class="pin-error" id="pm-err"></div>
-  </div>
+<div class="pin-box">
+<h3 id="pm-title">Admin PIN</h3>
+<p id="pm-desc">Enter your 4-digit PIN</p>
+<div class="pin-dots">
+<div class="pin-dot" id="pd0"></div><div class="pin-dot" id="pd1"></div>
+<div class="pin-dot" id="pd2"></div><div class="pin-dot" id="pd3"></div>
+</div>
+<div class="pin-keypad">
+<button class="pin-key" data-k="1">1</button><button class="pin-key" data-k="2">2</button><button class="pin-key" data-k="3">3</button>
+<button class="pin-key" data-k="4">4</button><button class="pin-key" data-k="5">5</button><button class="pin-key" data-k="6">6</button>
+<button class="pin-key" data-k="7">7</button><button class="pin-key" data-k="8">8</button><button class="pin-key" data-k="9">9</button>
+<button class="pin-key" data-k="C" style="color:var(--red)">C</button>
+<button class="pin-key" data-k="0">0</button>
+<button class="pin-key" data-k="X" style="color:var(--muted);font-size:.8rem">✕</button>
+</div>
+<div class="pin-error" id="pm-err"></div>
+</div>
 </div>
 <header>
-  <div class="hdr-left">
-    <h1>&#9917;&#127942; F90 League Dashboard <span>#1204639</span></h1>
-    <div class="hdr-sub">Super90 Classic &middot; GW19&ndash;38 &middot; Tracked by DJ</div>
-  </div>
-  <div class="hdr-right">
-    <span class="badge badge-o">Season Complete ✓</span>
-    <span class="badge badge-g" id="live-badge" style="cursor:pointer" title="Click to refresh">&#9679; LIVE</span>
-  </div>
+<div class="hdr-left">
+<h1>⚽🏆 F90 League Dashboard <span>#1204639</span></h1>
+<div class="hdr-sub">Super90 Classic · GW19–38 · Tracked by DJ</div>
+</div>
+<div class="hdr-right">
+<span class="badge badge-o">Season Complete ✓</span>
+<span class="badge badge-g" id="live-badge" style="cursor:pointer" title="Click to refresh">● LIVE</span>
+</div>
 </header>
 <div class="admin-bar">
-  <span class="admin-status locked" id="admin-status">&#128274; Admin Locked</span>
-  <button class="btn btn-o" id="admin-toggle-btn">Unlock</button>
-  <span id="admin-pending-lbl" style="display:none;color:var(--yellow);font-size:.72rem;font-weight:600">&#9888; Unsaved Changes</span>
-  <button class="btn btn-g" id="admin-save-btn" style="display:none">&#128190; Save Changes</button>
-  <button class="btn btn-r" id="admin-reset-btn" style="display:none">&#128465; Reset Data</button>
-  <button class="btn btn-b" id="btn-export-data" title="Download all data as JSON">&#11015; Export Data</button>
-  <label class="btn btn-b" id="btn-import-label" title="Upload a previously exported JSON file" style="cursor:pointer">&#11014; Import Data<input type="file" id="import-file-input" accept=".json" style="display:none"></label>
+<span class="admin-status locked" id="admin-status">🔒 Admin Locked</span>
+<button class="btn btn-o" id="admin-toggle-btn">Unlock</button>
+<span id="admin-pending-lbl" style="display:none;color:var(--yellow);font-size:.72rem;font-weight:600">⚠ Unsaved Changes</span>
+<button class="btn btn-g" id="admin-save-btn" style="display:none">💾 Save Changes</button>
+<button class="btn btn-r" id="admin-reset-btn" style="display:none">🗑 Reset Data</button>
+<button class="btn btn-b" id="btn-export-data" title="Download all data as JSON">⬇ Export Data</button>
+<label class="btn btn-b" id="btn-import-label" style="cursor:pointer" title="Upload a previously exported JSON file">⬆ Import Data<input accept=".json" id="import-file-input" style="display:none" type="file"/></label>
 </div>
 <nav>
-  <button class="active" data-tab="standings">&#127942; Standings</button>
-  <button data-tab="visual">&#128200; Overview</button>
-  <button data-tab="gw-tracker">&#128197; GW Tracker</button>
-  <button data-tab="payments">&#128179; Payments</button>
-  <button data-tab="debts">&#128202; Total Dt/Cr</button>
-  <button data-tab="gw-input">&#9999; Add New GW</button>
+<button class="active" data-tab="standings">🏆 Standings</button>
+<button data-tab="visual">📈 Overview</button>
+<button data-tab="gw-tracker">📅 GW Tracker</button>
+<button data-tab="payments">💳 Payments</button>
+<button data-tab="debts">📊 Total Dt/Cr</button>
+<button data-tab="gw-input">✏ Add New GW</button>
 </nav>
 <main>
 <div class="tab-content active" id="tab-standings">
-  <div class="alert a-info">&#127942; Live FPL standings for F90 league. GW19&ndash;38 tracked. Ta, June &amp; Kim excluded from prize standings. <strong style="color:var(--green)">GW37 complete &mdash; all scores updated from FPL API.</strong></div>
-  <div class="tbl-wrap">
-  <table id="tbl-standings">
-    <thead><tr>
-      <th data-sort-tbl="tbl-standings" data-sort-col="0">Rank</th>
-      <th data-sort-tbl="tbl-standings" data-sort-col="1">Manager</th>
-      <th data-sort-tbl="tbl-standings" data-sort-col="2">Team</th>
-      <th data-sort-tbl="tbl-standings" data-sort-col="3">GW37 Pts</th>
-      <th data-sort-tbl="tbl-standings" data-sort-col="4">Total</th>
-      <th data-sort-tbl="tbl-standings" data-sort-col="5">+/-</th>
-    </tr></thead>
-    <tbody id="standings-body"></tbody>
-  </table></div>
+<div class="alert a-info">🏆 Live FPL standings for F90 league. GW19–38 tracked. Ta, June &amp; Kim excluded from prize standings. <strong style="color:var(--green)">GW37 complete — all scores updated from FPL API.</strong></div>
+<div class="tbl-wrap">
+<table id="tbl-standings">
+<thead><tr>
+<th data-sort-col="0" data-sort-tbl="tbl-standings">Rank</th>
+<th data-sort-col="1" data-sort-tbl="tbl-standings">Manager</th>
+<th data-sort-col="2" data-sort-tbl="tbl-standings">Team</th>
+<th data-sort-col="3" data-sort-tbl="tbl-standings">GW37 Pts</th>
+<th data-sort-col="4" data-sort-tbl="tbl-standings">Total</th>
+<th data-sort-col="5" data-sort-tbl="tbl-standings">+/-</th>
+</tr></thead>
+<tbody id="standings-body"></tbody>
+</table></div>
 </div>
 <div class="tab-content" id="tab-visual">
-  <div class="alert a-info">&#128200; Full season financial overview &mdash; GW payments + season prize pools.</div>
-  <div id="visual-container"></div>
+<div class="alert a-info">📈 Full season financial overview — GW payments + season prize pools.</div>
+<div id="visual-container"></div>
 </div>
 <div class="tab-content" id="tab-gw-tracker">
-  <div class="alert a-info">&#128197; Master control panel. Expand a gameweek to view and update payment statuses. Admin PIN required for all edits.</div>
-  <div style="margin-bottom:10px">
-    <select id="gw-filter" class="inline-sel" style="min-height:36px;padding:6px 10px;">
-      <option value="all">All Gameweeks</option>
-      <option value="unpaid">Has Unpaid</option>
-      <option value="done">Fully Paid</option>
-    </select>
-  </div>
-  <div id="gw-tracker-body"></div>
+<div class="alert a-info">📅 Master control panel. Expand a gameweek to view and update payment statuses. Admin PIN required for all edits.</div>
+<div style="margin-bottom:10px">
+<select class="inline-sel" id="gw-filter" style="min-height:36px;padding:6px 10px;">
+<option value="all">All Gameweeks</option>
+<option value="unpaid">Has Unpaid</option>
+<option value="done">Fully Paid</option>
+</select>
+</div>
+<div id="gw-tracker-body"></div>
 </div>
 <div class="tab-content" id="tab-payments">
-  <div class="alert a-info">&#128179; Each manager's <strong>outgoing payments only</strong> &mdash; what they have paid or still owe. <span style="color:var(--green);font-weight:700">GREEN = paid</span> &middot; <span style="color:var(--red);font-weight:700">RED = outstanding</span>. Click manager to expand.</div>
-  <div style="margin-bottom:10px">
-    <select id="pay-filter" class="inline-sel" style="min-height:36px;padding:6px 10px;">
-      <option value="all">All Outgoing Payments</option>
-      <option value="unpaid">Outstanding Only</option>
-      <option value="paid">Paid Only</option>
-    </select>
-  </div>
-  <div id="payments-body"></div>
+<div class="alert a-info">💳 Each manager's <strong>outgoing payments only</strong> — what they have paid or still owe. <span style="color:var(--green);font-weight:700">GREEN = paid</span> · <span style="color:var(--red);font-weight:700">RED = outstanding</span>. Click manager to expand.</div>
+<div style="margin-bottom:10px">
+<select class="inline-sel" id="pay-filter" style="min-height:36px;padding:6px 10px;">
+<option value="all">All Outgoing Payments</option>
+<option value="unpaid">Outstanding Only</option>
+<option value="paid">Paid Only</option>
+</select>
+</div>
+<div id="payments-body"></div>
 </div>
 <div class="tab-content" id="tab-debts">
-  <div class="alert a-red">&#128202; Net balances per manager (GW19&ndash;38, excl. GW22/23). Updates when payments are confirmed.</div>
-  <div id="debts-body"></div>
+<div class="alert a-red">📊 Net balances per manager (GW19–38, excl. GW22/23). Updates when payments are confirmed.</div>
+<div id="debts-body"></div>
 </div>
 <div class="tab-content" id="tab-gw-input">
-  <div class="alert a-info">&#9999; Enter results for any upcoming gameweek. Confirming auto-creates all payment records. Admin PIN required.</div>
-  <div class="card" style="padding:14px;margin-bottom:12px">
-    <div style="font-size:.9rem;font-weight:700;margin-bottom:12px;color:var(--orange)">&#9999; Add New Gameweek Result</div>
-    <div class="form-grid">
-      <div class="fg"><label>Gameweek Number</label>
-        <input id="new-gw-num" type="number" min="19" max="50" placeholder="e.g. 38" style="font-weight:700;color:var(--orange)"></div>
-      <div class="fg"><label>&#127945; 1st Place</label>
-        <select id="new-gw-1st"><option value="">&#8212; Select &#8212;</option></select></div>
-      <div class="fg"><label>&#127944; 2nd Place</label>
-        <select id="new-gw-2nd"><option value="">&#8212; Select &#8212;</option></select></div>
-      <div class="fg"><label>Tie for 1st?</label>
-        <select id="new-gw-tie">
-          <option value="no">No &mdash; normal result</option>
-          <option value="yes">Yes &mdash; tied 1st place</option>
-        </select></div>
-    </div>
-    <div id="new-gw-bottom-wrap" class="form-grid">
-      <div class="fg"><label>&#11015; Bottom 1 (pays 2nd)</label>
-        <select id="new-gw-bot1"><option value="">&#8212; Select &#8212;</option></select></div>
-      <div class="fg"><label>&#11015; Bottom 2 (pays 2nd)</label>
-        <select id="new-gw-bot2"><option value="">&#8212; Select &#8212;</option></select></div>
-    </div>
-    <div class="preview-box" id="new-gw-preview"></div>
-    <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
-      <button class="btn btn-o" id="btn-confirm-gw">&#10003; Confirm &amp; Add GW</button>
-      <button class="btn" id="btn-clear-gw">&#128465; Clear</button>
-    </div>
-  </div>
-  <div id="confirmed-gws-list"></div>
-  <div class="sec sec-o" style="margin-top:16px">Payment Rules</div>
-  <div class="tbl-wrap"><table>
-    <thead><tr><th>Role</th><th>Amount</th><th>Direction</th></tr></thead>
-    <tbody>
-      <tr><td>&#127945; 1st (normal)</td><td>200 each</td><td>Received from 3rd&ndash;7th</td></tr>
-      <tr><td>&#127944; 2nd (normal)</td><td>200 each</td><td>Received from bottom 2</td></tr>
-      <tr><td>&#129309; Tie (both 1st)</td><td>100 each</td><td>All others pay 100 to each tied winner</td></tr>
-    </tbody>
-  </table></div>
+<div class="alert a-info">✏ Enter results for any upcoming gameweek. Confirming auto-creates all payment records. Admin PIN required.</div>
+<div class="card" style="padding:14px;margin-bottom:12px">
+<div style="font-size:.9rem;font-weight:700;margin-bottom:12px;color:var(--orange)">✏ Add New Gameweek Result</div>
+<div class="form-grid">
+<div class="fg"><label>Gameweek Number</label>
+<input id="new-gw-num" max="50" min="19" placeholder="e.g. 38" style="font-weight:700;color:var(--orange)" type="number"/></div>
+<div class="fg"><label>🏉 1st Place</label>
+<select id="new-gw-1st"><option value="">— Select —</option></select></div>
+<div class="fg"><label>🏈 2nd Place</label>
+<select id="new-gw-2nd"><option value="">— Select —</option></select></div>
+<div class="fg"><label>Tie for 1st?</label>
+<select id="new-gw-tie">
+<option value="no">No — normal result</option>
+<option value="yes">Yes — tied 1st place</option>
+</select></div>
+</div>
+<div class="form-grid" id="new-gw-bottom-wrap">
+<div class="fg"><label>⬇ Bottom 1 (pays 2nd)</label>
+<select id="new-gw-bot1"><option value="">— Select —</option></select></div>
+<div class="fg"><label>⬇ Bottom 2 (pays 2nd)</label>
+<select id="new-gw-bot2"><option value="">— Select —</option></select></div>
+</div>
+<div class="preview-box" id="new-gw-preview"></div>
+<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+<button class="btn btn-o" id="btn-confirm-gw">✓ Confirm &amp; Add GW</button>
+<button class="btn" id="btn-clear-gw">🗑 Clear</button>
+</div>
+</div>
+<div id="confirmed-gws-list"></div>
+<div class="sec sec-o" style="margin-top:16px">Payment Rules</div>
+<div class="tbl-wrap"><table>
+<thead><tr><th>Role</th><th>Amount</th><th>Direction</th></tr></thead>
+<tbody>
+<tr><td>🏉 1st (normal)</td><td>200 each</td><td>Received from 3rd–7th</td></tr>
+<tr><td>🏈 2nd (normal)</td><td>200 each</td><td>Received from bottom 2</td></tr>
+<tr><td>🤝 Tie (both 1st)</td><td>100 each</td><td>All others pay 100 to each tied winner</td></tr>
+</tbody>
+</table></div>
 </div>
 </main>
 <div id="toast"></div>
@@ -268,9 +269,9 @@ const GW_META = {
 };
 
 const SEASON_PAYS = [
-  {id:"s-cls-korn",manager:"Korn",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic — 1000 entry fee",status:"unpaid",poolKey:"CLS1",custom:false,badDebt:false},
-  {id:"s-cls-komsit",manager:"Komsit",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic — 1000 entry fee",status:"unpaid",poolKey:"CLS1",custom:false,badDebt:false},
-  {id:"s-cls-poom",manager:"Poom",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic — 1000 entry fee",status:"unpaid",poolKey:"CLS1",custom:false,badDebt:false},
+  {id:"s-cls-korn",manager:"Korn",owesTo:"Pladon",amount:1000,reason:"GW1-18 Classic — 1000 → Pladon (CLS1 winner prize redirect)",status:"unpaid",poolKey:"CLS1",custom:false,badDebt:false},
+  {id:"s-cls-komsit",manager:"Komsit",owesTo:"Pladon",amount:1000,reason:"GW1-18 Classic — 1000 → Pladon (CLS1 winner prize redirect)",status:"unpaid",poolKey:"CLS1",custom:false,badDebt:false},
+  {id:"s-cls-poom",manager:"Poom",owesTo:"Pladon",amount:1000,reason:"GW1-18 Classic — 1000 → Pladon (CLS1 winner prize redirect)",status:"unpaid",poolKey:"CLS1",custom:false,badDebt:false},
   {id:"s-cls-dj",manager:"DJ",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic — 1000 entry fee",status:"paid",poolKey:"CLS1",custom:false,badDebt:false},
   {id:"s-cls-note",manager:"Note",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic — 1000 entry fee",status:"paid",poolKey:"CLS1",custom:false,badDebt:false},
   {id:"s-cls-chat",manager:"Chat",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic — 1000 entry fee",status:"paid",poolKey:"CLS1",custom:false,badDebt:false},
@@ -280,9 +281,9 @@ const SEASON_PAYS = [
   {id:"s-cls-passakorn",manager:"Passakorn",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic — 1000 entry fee",status:"paid",poolKey:"CLS1",custom:false,badDebt:false},
   {id:"s-cls-pladon",manager:"Pladon",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic — 1000 entry fee",status:"paid",poolKey:"CLS1",custom:false,badDebt:false},
   {id:"s-cls-june",manager:"June",owesTo:"The Bank",amount:1000,reason:"GW1-18 Classic — 1000 entry fee",status:"paid",poolKey:"CLS1",custom:false,badDebt:false},
-  {id:"s-h2h-korn",manager:"Korn",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H — 1000 entry fee",status:"unpaid",poolKey:"H2H1",custom:false,badDebt:false},
-  {id:"s-h2h-komsit",manager:"Komsit",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H — 1000 entry fee",status:"unpaid",poolKey:"H2H1",custom:false,badDebt:false},
-  {id:"s-h2h-poom",manager:"Poom",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H — 1000 entry fee",status:"unpaid",poolKey:"H2H1",custom:false,badDebt:false},
+  {id:"s-h2h-korn",manager:"Korn",owesTo:"Pladon",amount:1000,reason:"GW1-18 H2H — 1000 → Pladon (CLS1 winner prize redirect)",status:"unpaid",poolKey:"H2H1",custom:false,badDebt:false},
+  {id:"s-h2h-komsit",manager:"Komsit",owesTo:"Pladon",amount:1000,reason:"GW1-18 H2H — 1000 → Pladon (CLS1 winner prize redirect)",status:"unpaid",poolKey:"H2H1",custom:false,badDebt:false},
+  {id:"s-h2h-poom",manager:"Poom",owesTo:"Pladon",amount:1000,reason:"GW1-18 H2H — 1000 → Pladon (CLS1 winner prize redirect)",status:"unpaid",poolKey:"H2H1",custom:false,badDebt:false},
   {id:"s-h2h-dj",manager:"DJ",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H — 1000 entry fee",status:"paid",poolKey:"H2H1",custom:false,badDebt:false},
   {id:"s-h2h-note",manager:"Note",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H — 1000 entry fee",status:"paid",poolKey:"H2H1",custom:false,badDebt:false},
   {id:"s-h2h-chat",manager:"Chat",owesTo:"The Bank",amount:1000,reason:"GW1-18 H2H — 1000 entry fee",status:"paid",poolKey:"H2H1",custom:false,badDebt:false},
@@ -528,7 +529,11 @@ let pendingAction  = null;
 // ═══════════════════════════════════════════
 function saveToStorage() {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(PAYS));
+    const payload = {
+      pays: PAYS,
+      seasonPays: SEASON_PAYS.map(p => ({id: p.id, status: p.status, owesTo: p.owesTo}))
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
     pendingChanges = false;
     updateAdminBar();
     toast("Changes saved to device!");
@@ -540,7 +545,9 @@ function loadFromStorage() {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return;
     const stored = JSON.parse(raw);
-    stored.forEach(s => {
+    // Support both old format (array) and new format (object)
+    const paysData = Array.isArray(stored) ? stored : (stored.pays || []);
+    paysData.forEach(s => {
       const p = PAYS.find(x => x.id === s.id);
       if (p) {
         p.status = s.status;
@@ -549,6 +556,15 @@ function loadFromStorage() {
         if (s.amount) p.amount = s.amount;
       } else {
         PAYS.push(s);
+      }
+    });
+    // Restore SEASON_PAYS statuses
+    const spData = Array.isArray(stored) ? [] : (stored.seasonPays || []);
+    spData.forEach(s => {
+      const p = SEASON_PAYS.find(x => x.id === s.id);
+      if (p) {
+        p.status = s.status;
+        if (s.owesTo) p.owesTo = s.owesTo;
       }
     });
   } catch(e) { console.warn("Storage load failed:", e); }
@@ -1120,8 +1136,10 @@ function renderVisual() {
       const isPaid = p.status === "paid";
       const newStatus = isPaid ? "unpaid" : "paid";
       const rowBg = isPaid ? "rgba(63,185,80,.04)" : "rgba(248,81,73,.04)";
+      const payTo = p.owesTo !== 'The Bank' ? '<strong style="color:var(--blue)">' + p.owesTo + '</strong>' : 'The Bank';
       return '<tr style="background:' + rowBg + '">' +
         '<td><strong>' + p.manager + '</strong></td>' +
+        '<td style="font-size:.75rem">' + payTo + '</td>' +
         '<td style="text-align:right;font-weight:700;color:' + (isPaid ? "var(--green)" : "var(--red)") + '">' + p.amount + '</td>' +
         '<td><span class="pill ' + (isPaid ? "pill-paid" : "pill-unpaid") + '">' + (isPaid ? "Paid" : "Outstanding") + '</span></td>' +
         '<td><button class="season-toggle-btn ' + (isPaid ? "btn" : "btn btn-g") + '" style="padding:3px 8px;font-size:.65rem" data-id="' + p.id + '" data-status="' + newStatus + '">' + (isPaid ? "&#8617; Unpaid" : "&#10003; Paid") + '</button></td>' +
@@ -1132,7 +1150,7 @@ function renderVisual() {
     return '<div class="card" style="padding:12px;margin-bottom:10px">' +
       '<div style="font-size:.78rem;font-weight:700;margin-bottom:8px;color:var(--orange)">' + label + '</div>' +
       '<div class="tbl-wrap" style="border:none;border-radius:0"><table>' +
-      '<thead><tr><th>Manager</th><th style="text-align:right">Amount</th><th>Status</th><th>Action</th></tr></thead>' +
+      '<thead><tr><th>Manager</th><th>Pay To</th><th style="text-align:right">Amount</th><th>Status</th><th>Action</th></tr></thead>' +
       '<tbody>' + rows + '</tbody></table></div>' +
       '<div style="font-size:.72rem;color:var(--muted);margin-top:6px">' +
         '<span style="color:var(--green);font-weight:600">' + paidCount + ' paid</span>' +
@@ -1177,6 +1195,8 @@ function renderVisual() {
 
   body.innerHTML =
     '<div class="alert a-red" style="margin-bottom:10px;font-size:.8rem"><strong>Bad Debts \u2014 Kim &amp; Arm:</strong> Both managers cancelled. 1st half totals reflect 13 managers. GW debts uncollectable.</div>' +
+    '<div class="alert a-orange" style="margin-bottom:10px;font-size:.8rem"><strong>\ud83d\udcb0 Prize Payments Received:</strong> DJ received 1000 (H2H 3rd) \u2713 &nbsp;|&nbsp; Tung received 4000 (H2H 2nd 3000 + CLS 3rd 1000) \u2713 &nbsp;|&nbsp; Note received 9000 (H2H 1st 6000 + CLS 2nd 3000) \u2713</div>' +
+    '<div class="alert a-info" style="margin-bottom:10px;font-size:.8rem"><strong>\ud83d\udd04 Season Fee Redirect:</strong> Korn, Komsit &amp; Poom each owe 2000 (Classic + H2H 1st half fees = 6000 total). This amount goes <strong>directly to Pladon</strong> as his CLS1 1st place prize. Toggle each payment below to mark as paid.</div>' +
     '<div class="sec sec-o">Season Prize Pools</div>' +
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">' +
       '<div><div style="font-size:.68rem;font-weight:700;color:var(--orange);margin-bottom:6px;text-transform:uppercase">1st Half</div>' + prizeCard(H2H1) + prizeCard(CLS1) + '</div>' +
