@@ -241,7 +241,7 @@ tr:hover td{background:rgba(255,255,255,.02);}
 <script>
 
 const ADMIN_PIN = "1904";
-const STORAGE_KEY = "f90_fpl_v4";
+const STORAGE_KEY = "f90_fpl_v5";
 
 const ACTIVE = ["DJ","Note","Korn","Komsit","Chat","Tung","Palmmy","Poom","Phai","Passakorn","Pladon"];
 
@@ -487,7 +487,7 @@ let PAYS = [
   {id:"custom-31-Passakorn-Komsit-1778924164886",gw:31,manager:"Passakorn",owesTo:"Komsit",amount:400,reason:"plus from Note gor GW30 results",status:"paid",note:""},
   {id:"custom-33-Korn-Chat-1778924377102",gw:33,manager:"Korn",owesTo:"Chat",amount:200,reason:"200 left from gw36 (400-300-200)",status:"unpaid",note:""},
   {id:"gw37-fee-Phai",gw:37,manager:"Phai",owesTo:"DJ",amount:200,reason:"GW37 3rd–7th → DJ",status:"unpaid",note:""},
-  {id:"gw37-fee-Note",gw:37,manager:"Note",owesTo:"DJ",amount:200,reason:"GW37 3rd–7th → DJ",status:"unpaid",note:""},
+  {id:"gw37-fee-Note",gw:37,manager:"Note",owesTo:"DJ",amount:200,reason:"GW37 3rd–7th → DJ",status:"paid",note:""},
   {id:"gw37-fee-Passakorn",gw:37,manager:"Passakorn",owesTo:"DJ",amount:200,reason:"GW37 3rd–7th → DJ",status:"unpaid",note:""},
   {id:"gw37-fee-Palmmy",gw:37,manager:"Palmmy",owesTo:"DJ",amount:200,reason:"GW37 3rd–7th → DJ",status:"unpaid",note:""},
   {id:"gw37-fee-Komsit",gw:37,manager:"Komsit",owesTo:"DJ",amount:200,reason:"GW37 3rd–7th → DJ",status:"unpaid",note:""},
@@ -498,7 +498,7 @@ let PAYS = [
   {id:"gw38-fee-Note",gw:38,manager:"Note",owesTo:"Komsit",amount:200,reason:"GW38 3rd-7th to Komsit",status:"paid",note:""},
   {id:"gw38-fee-Korn",gw:38,manager:"Korn",owesTo:"Komsit",amount:200,reason:"GW38 3rd-7th to Komsit",status:"unpaid",note:""},
   {id:"gw38-fee-Chat",gw:38,manager:"Chat",owesTo:"Komsit",amount:200,reason:"GW38 3rd-7th to Komsit",status:"unpaid",note:""},
-  {id:"gw38-fee-Tung",gw:38,manager:"Tung",owesTo:"Komsit",amount:200,reason:"GW38 3rd-7th to Komsit",status:"unpaid",note:""},
+  {id:"gw38-fee-Tung",gw:38,manager:"Tung",owesTo:"Komsit",amount:200,reason:"GW38 3rd-7th to Komsit",status:"paid",note:""},
   {id:"gw38-fee-Palmmy",gw:38,manager:"Palmmy",owesTo:"Komsit",amount:200,reason:"GW38 3rd-7th to Komsit",status:"unpaid",note:""},
   {id:"gw38-fee-Poom",gw:38,manager:"Poom",owesTo:"Komsit",amount:200,reason:"GW38 3rd-7th to Komsit",status:"unpaid",note:""},
   {id:"gw38-fee-Phai",gw:38,manager:"Phai",owesTo:"Komsit",amount:200,reason:"GW38 3rd-7th to Komsit",status:"unpaid",note:""},
@@ -1087,7 +1087,9 @@ function renderVisual() {
     if (gwInU[p.owesTo]   !== undefined) gwInU[p.owesTo]   += p.amount;
   });
 
-  const SEASON_PRIZES = {DJ:6500, Note:11500, Korn:500, Tung:4000, Pladon:6000};
+  // Outstanding prizes only — already received prizes (DJ 1000 H2H3rd, Note 9000, Tung 4000) excluded
+  // Remaining outstanding: CLS2 prizes (not yet paid) + Pladon CLS1 (being paid by Korn/Komsit/Poom)
+  const SEASON_PRIZES = {DJ:5000, Note:2500, Korn:500, Pladon:6000};
 
   const seasonFeesUnpaid = {};
   ACTIVE.forEach(m => { seasonFeesUnpaid[m] = 0; });
@@ -1226,7 +1228,7 @@ function renderVisual() {
     '<div class="alert a-orange" style="font-size:.75rem;margin-bottom:8px">&#128197; 2nd Half Classic: 8 managers pay 1000 each (4th\u201311th). Winners DJ, Note &amp; Korn do not pay. All currently <strong>unpaid</strong>.</div>' +
     '<div style="margin-bottom:14px">' + buildSeasonFeeSection('2nd half', '&#127942; Classic 2nd Half Entry Fee (1000 each) \u2014 Pay to The Bank') + '</div>' +
     '<div class="sec sec-o">True Net Position (GW Outstanding + Season)</div>' +
-    '<div class="alert a-info" style="font-size:.75rem;margin-bottom:10px"><strong>Net = (GW unpaid inflows + season prize winnings) \u2212 (GW unpaid outflows + season fees unpaid)</strong>. DJ +4300 &middot; Poom \u22124800 validated.</div>' +
+    '<div class="alert a-info" style="font-size:.75rem;margin-bottom:10px"><strong>Net = (GW unpaid inflows + outstanding prizes still owed) \u2212 (GW unpaid outflows + season fees unpaid)</strong>. Prizes already received (DJ 1000, Note 9000, Tung 4000) excluded. Only outstanding CLS2 prizes + Pladon CLS1 included.</div>' +
     '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:12px">' +
       '<div class="card" style="padding:10px;text-align:center"><div style="font-size:1.4rem;font-weight:700;color:var(--red)">' + totalGWUnpaid + '</div><div style="font-size:.7rem;color:var(--muted)">GW Outstanding</div></div>' +
       '<div class="card" style="padding:10px;text-align:center"><div style="font-size:1.4rem;font-weight:700;color:var(--green)">' + totalGWPaid + '</div><div style="font-size:.7rem;color:var(--muted)">GW Settled</div></div>' +
