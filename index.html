@@ -128,7 +128,7 @@ tr:hover td{background:rgba(255,255,255,.02);}
     <div class="hdr-sub">Super90 Classic &middot; GW19&ndash;38 &middot; Tracked by DJ</div>
   </div>
   <div class="hdr-right">
-    <span class="badge badge-o">GW38 Pending</span>
+    <span class="badge badge-o">Season Complete ✓</span>
     <span class="badge badge-g" id="live-badge" style="cursor:pointer" title="Click to refresh">&#9679; LIVE</span>
   </div>
 </header>
@@ -264,7 +264,7 @@ const GW_META = {
   35:{p1:"Korn",p2:"Komsit",bot:"Chat/Passakorn",note:""},
   36:{p1:"DJ",p2:"Korn",bot:"Chat/Poom",note:"Current GW"},
   37:{p1:"DJ",p2:"Pladon",bot:"Korn/Tung",note:"Entered via scores"},
-  38:{p1:"—",p2:"—",bot:"—",note:"Not yet played"}
+  38:{p1:"Komsit",p2:"DJ",bot:"Passakorn/Pladon",note:"Entered via dashboard"}
 };
 
 const SEASON_PAYS = [
@@ -438,7 +438,7 @@ let PAYS = [
   {id:"32-passakorn-palmmy",gw:32,manager:"Passakorn",owesTo:"Palmmy",amount:200,reason:"GW32 bottom 2 → Palmmy (2nd)",status:"unpaid",note:""},
   {id:"32-pladon-palmmy",gw:32,manager:"Pladon",owesTo:"Palmmy",amount:200,reason:"GW32 bottom 2 → Palmmy (2nd)",status:"unpaid",note:""},
   {id:"33-dj-note",gw:33,manager:"DJ",owesTo:"Note",amount:200,reason:"GW33 3rd–7th → Note (1st)",status:"paid",note:""},
-  {id:"33-komsit-note",gw:33,manager:"Komsit",owesTo:"Note",amount:200,reason:"GW33 3rd–7th → Note (1st)",status:"unpaid",note:""},
+  {id:"33-komsit-note",gw:33,manager:"Komsit",owesTo:"Note",amount:200,reason:"GW33 3rd–7th → Note (1st)",status:"paid",note:""},
   {id:"33-tung-note",gw:33,manager:"Tung",owesTo:"Note",amount:200,reason:"GW33 3rd–7th → Note (1st)",status:"paid",note:""},
   {id:"33-palmmy-note",gw:33,manager:"Palmmy",owesTo:"Note",amount:200,reason:"GW33 3rd–7th → Note (1st)",status:"paid",note:""},
   {id:"33-poom-note",gw:33,manager:"Poom",owesTo:"Note",amount:200,reason:"GW33 3rd–7th → Note (1st)",status:"unpaid",note:""},
@@ -485,24 +485,33 @@ let PAYS = [
   {id:"gw37-fee-Chat",gw:37,manager:"Chat",owesTo:"DJ",amount:200,reason:"GW37 3rd–7th → DJ",status:"unpaid",note:""},
   {id:"gw37-fee-Poom",gw:37,manager:"Poom",owesTo:"DJ",amount:200,reason:"GW37 3rd–7th → DJ",status:"unpaid",note:""},
   {id:"gw37-bot1-Korn",gw:37,manager:"Korn",owesTo:"Pladon",amount:200,reason:"GW37 bottom → Pladon",status:"paid",note:""},
-  {id:"gw37-bot2-Tung",gw:37,manager:"Tung",owesTo:"Pladon",amount:200,reason:"GW37 bottom → Pladon",status:"paid",note:""}
+  {id:"gw37-bot2-Tung",gw:37,manager:"Tung",owesTo:"Pladon",amount:200,reason:"GW37 bottom → Pladon",status:"paid",note:""},
+  {id:"gw38-fee-Note",gw:38,manager:"Note",owesTo:"Komsit",amount:200,reason:"GW38 3rd-7th to Komsit",status:"paid",note:""},
+  {id:"gw38-fee-Korn",gw:38,manager:"Korn",owesTo:"Komsit",amount:200,reason:"GW38 3rd-7th to Komsit",status:"unpaid",note:""},
+  {id:"gw38-fee-Chat",gw:38,manager:"Chat",owesTo:"Komsit",amount:200,reason:"GW38 3rd-7th to Komsit",status:"unpaid",note:""},
+  {id:"gw38-fee-Tung",gw:38,manager:"Tung",owesTo:"Komsit",amount:200,reason:"GW38 3rd-7th to Komsit",status:"unpaid",note:""},
+  {id:"gw38-fee-Palmmy",gw:38,manager:"Palmmy",owesTo:"Komsit",amount:200,reason:"GW38 3rd-7th to Komsit",status:"unpaid",note:""},
+  {id:"gw38-fee-Poom",gw:38,manager:"Poom",owesTo:"Komsit",amount:200,reason:"GW38 3rd-7th to Komsit",status:"unpaid",note:""},
+  {id:"gw38-fee-Phai",gw:38,manager:"Phai",owesTo:"Komsit",amount:200,reason:"GW38 3rd-7th to Komsit",status:"unpaid",note:""},
+  {id:"gw38-bot1-Passakorn",gw:38,manager:"Passakorn",owesTo:"DJ",amount:200,reason:"GW38 bottom to DJ",status:"unpaid",note:""},
+  {id:"gw38-bot2-Pladon",gw:38,manager:"Pladon",owesTo:"DJ",amount:200,reason:"GW38 bottom to DJ",status:"unpaid",note:""}
 ];
 
 const LIVE = [
-  {rank:1,last:1,name:"DJ",team:"Enzoid & da Moisters",gw:82,total:1110},
-  {rank:2,last:3,name:"Note",team:"FPL Gamo",gw:62,total:1076},
-  {rank:3,last:2,name:"Korn",team:"Korn",gw:45,total:1069},
-  {rank:4,last:7,name:"Palmmy",team:"Pleecheap FC",gw:68,total:1008},
-  {rank:5,last:4,name:"Komsit",team:"CHJR",gw:47,total:997},
-  {rank:6,last:5,name:"Chat",team:"Storm11",gw:46,total:994},
-  {rank:7,last:9,name:"Kim",team:"Khunkim",gw:65,total:989},
-  {rank:8,last:8,name:"Tung",team:"Tung168",gw:36,total:971},
-  {rank:9,last:6,name:"June",team:"June90'",gw:54,total:966},
-  {rank:10,last:10,name:"Poom",team:"PPP",gw:46,total:956},
-  {rank:11,last:12,name:"Phai",team:"Dezign",gw:65,total:950},
-  {rank:12,last:11,name:"Ta",team:"Ta.90",gw:43,total:941},
-  {rank:13,last:13,name:"Pladon",team:"PlaDonATH71",gw:71,total:866},
-  {rank:14,last:14,name:"Passakorn",team:"The Spooky",gw:56,total:789}
+  {rank:1,last:1,name:"DJ",team:"Enzoid & da Moisters",gw:70,total:1176},
+  {rank:2,last:2,name:"Note",team:"FPL Gamo",gw:45,total:1117},
+  {rank:3,last:3,name:"Korn",team:"Korn",gw:42,total:1111},
+  {rank:4,last:5,name:"Komsit",team:"CHJR",gw:70,total:1067},
+  {rank:5,last:7,name:"Kim",team:"Khunkim",gw:62,total:1051},
+  {rank:6,last:6,name:"Chat",team:"Storm11",gw:57,total:1051},
+  {rank:7,last:4,name:"Palmmy",team:"Pleecheap FC",gw:37,total:1045},
+  {rank:8,last:9,name:"June",team:"June90'",gw:65,total:1031},
+  {rank:9,last:8,name:"Tung",team:"Tung168",gw:54,total:1025},
+  {rank:10,last:10,name:"Poom",team:"PPP",gw:59,total:1015},
+  {rank:11,last:11,name:"Phai",team:"Dezign",gw:63,total:1013},
+  {rank:12,last:12,name:"Ta",team:"Ta.90",gw:18,total:959},
+  {rank:13,last:13,name:"Pladon",team:"PlaDonATH71",gw:39,total:905},
+  {rank:14,last:14,name:"Passakorn",team:"The Spooky",gw:38,total:827}
 ];
 
 // ═══════════════════════════════════════════
@@ -1054,7 +1063,7 @@ function renderVisual() {
     if (gwInU[p.owesTo]   !== undefined) gwInU[p.owesTo]   += p.amount;
   });
 
-  const SEASON_PRIZES = {DJ:1500, Note:9000, Tung:4000, Pladon:6000};
+  const SEASON_PRIZES = {DJ:6500, Note:11500, Korn:500, Tung:4000, Pladon:6000};
 
   const seasonFeesUnpaid = {};
   ACTIVE.forEach(m => { seasonFeesUnpaid[m] = 0; });
@@ -1105,7 +1114,7 @@ function renderVisual() {
   const totalSeasonPaid   = SEASON_PAYS.filter(p => p.status === "paid"  && !p.badDebt).reduce((s,p) => s+p.amount, 0);
 
   function buildSeasonFeeSection(leagueType, label) {
-    const entries = SEASON_PAYS.filter(p => !p.badDebt && p.reason && p.reason.toLowerCase().includes(leagueType));
+    const winners1H = ["Note","Tung","DJ","Pladon"]; const entries = SEASON_PAYS.filter(p => !p.badDebt && p.reason && p.reason.toLowerCase().includes(leagueType) && !winners1H.includes(p.manager));
     if (!entries.length) return '';
     const rows = entries.map(p => {
       const isPaid = p.status === "paid";
@@ -1163,8 +1172,8 @@ function renderVisual() {
       paid, unpaid};
   })();
   const CLS2 = {pot:8000, note:"Classic 2nd half (11 managers, 1000 from 4th\u201311th)",
-    results:[{rank:1,mgr:"TBD",prize:5000},{rank:2,mgr:"TBD",prize:2500},{rank:3,mgr:"TBD",prize:500}],
-    paid:[], unpaid:["Season in progress"]};
+    results:[{rank:1,mgr:"DJ",prize:5000},{rank:2,mgr:"Note",prize:2500},{rank:3,mgr:"Korn",prize:500}],
+    paid:["Chat","Komsit","Tung","Palmmy","Phai","Passakorn","Pladon","Poom"], unpaid:[]};
 
   body.innerHTML =
     '<div class="alert a-red" style="margin-bottom:10px;font-size:.8rem"><strong>Bad Debts \u2014 Kim &amp; Arm:</strong> Both managers cancelled. 1st half totals reflect 13 managers. GW debts uncollectable.</div>' +
