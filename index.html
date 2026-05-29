@@ -1150,10 +1150,9 @@ function renderVisual() {
   const totalSeasonUnpaid = SEASON_PAYS.filter(p => p.status !== "paid" && !p.badDebt).reduce((s,p) => s+p.amount, 0);
   const totalSeasonPaid   = SEASON_PAYS.filter(p => p.status === "paid"  && !p.badDebt).reduce((s,p) => s+p.amount, 0);
 
-  function buildSeasonFeeSection(leagueType, label) {
-    const winners1H = ["Note","Tung","DJ","Pladon"];
-    const is2ndHalf = leagueType === '2nd half';
-    const entries = SEASON_PAYS.filter(p => !p.badDebt && p.reason && p.reason.toLowerCase().includes(leagueType) && (is2ndHalf || !winners1H.includes(p.manager)));
+  function buildSeasonFeeSection(poolKey, label) {
+    // Filter by poolKey directly — avoids text matching issues
+    const entries = SEASON_PAYS.filter(p => !p.badDebt && p.poolKey === poolKey);
     if (!entries.length) return '';
     const rows = entries.map(p => {
       const isPaid = p.status === "paid";
@@ -1232,12 +1231,12 @@ function renderVisual() {
     '</div>' +
     '<div class="sec sec-o">Season Entry Fees (1st Half \u2014 Paid to The Bank)</div>' +
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">' +
-      '<div>' + buildSeasonFeeSection('classic', '&#127942; Classic Entry Fee (1000 each)') + '</div>' +
-      '<div>' + buildSeasonFeeSection('h2h', '&#129309; H2H Entry Fee (1000 each)') + '</div>' +
+      '<div>' + buildSeasonFeeSection('CLS1', '&#127942; Classic Entry Fee (1000 each)') + '</div>' +
+      '<div>' + buildSeasonFeeSection('H2H1', '&#129309; H2H Entry Fee (1000 each)') + '</div>' +
     '</div>' +
     '<div class="sec sec-o">Season Entry Fees (2nd Half \u2014 Paid to The Bank)</div>' +
     '<div class="alert a-orange" style="font-size:.75rem;margin-bottom:8px">&#128197; 2nd Half Classic: 8 managers pay 1000 each (4th\u201311th). Winners DJ, Note &amp; Korn do not pay. All currently <strong>unpaid</strong>.</div>' +
-    '<div style="margin-bottom:14px">' + buildSeasonFeeSection('2nd half', '&#127942; Classic 2nd Half Entry Fee (1000 each) \u2014 Pay to The Bank') + '</div>' +
+    '<div style="margin-bottom:14px">' + buildSeasonFeeSection('CLS2', '&#127942; Classic 2nd Half Entry Fee (1000 each) \u2014 Pay to The Bank') + '</div>' +
     '<div class="sec sec-o">True Net Position (GW Outstanding + Season)</div>' +
     '<div class="alert a-info" style="font-size:.75rem;margin-bottom:10px"><strong>Net = (GW unpaid inflows + outstanding prizes still owed) \u2212 (GW unpaid outflows + season fees unpaid)</strong>. Prizes already received (DJ 1000, Note 9000, Tung 4000) excluded. Only outstanding CLS2 prizes + Pladon CLS1 included.</div>' +
     '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:12px">' +
